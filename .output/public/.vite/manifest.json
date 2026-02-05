@@ -1,0 +1,170 @@
+{
+  "../../../../../~start/default-client-entry.tsx": {
+    "file": "assets/main-BCeWWukX.js",
+    "name": "index",
+    "src": "../../../../../~start/default-client-entry.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "_index-CT_x_aJ4.js"
+    ],
+    "assets": [
+      "assets/globals-B3VnlgVg.css"
+    ]
+  },
+  "/Users/yaroslavkozak/Desktop/Projects/spravzni/src/globals.css": {
+    "file": "assets/globals-B3VnlgVg.css",
+    "src": "/Users/yaroslavkozak/Desktop/Projects/spravzni/src/globals.css"
+  },
+  "_BackgroundMedia-1ev7pbEK.js": {
+    "file": "assets/BackgroundMedia-1ev7pbEK.js",
+    "name": "BackgroundMedia",
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "_index-CT_x_aJ4.js": {
+    "file": "assets/index-CT_x_aJ4.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ],
+    "dynamicImports": [
+      "components/SliderSection.tsx",
+      "components/AboutSection.tsx",
+      "components/SpaceSection.tsx",
+      "components/TextOverImageSection.tsx",
+      "components/ServicesSection.tsx",
+      "components/PricingCTASection.tsx",
+      "components/VideoSection.tsx",
+      "components/SupportCaptionSection.tsx",
+      "components/StatsSection.tsx",
+      "components/ContributionSection.tsx",
+      "components/DirectionsSection.tsx",
+      "components/InstagramCarouselSection.tsx",
+      "components/FooterSection.tsx"
+    ]
+  },
+  "components/AboutSection.tsx": {
+    "file": "assets/AboutSection-CiCMx84Y.js",
+    "name": "AboutSection",
+    "src": "components/AboutSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/ContributionSection.tsx": {
+    "file": "assets/ContributionSection-CZsmTknx.js",
+    "name": "ContributionSection",
+    "src": "components/ContributionSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx",
+      "_BackgroundMedia-1ev7pbEK.js"
+    ]
+  },
+  "components/DirectionsSection.tsx": {
+    "file": "assets/DirectionsSection-Euq4Fh2r.js",
+    "name": "DirectionsSection",
+    "src": "components/DirectionsSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/FooterSection.tsx": {
+    "file": "assets/FooterSection-SqGZu8Yz.js",
+    "name": "FooterSection",
+    "src": "components/FooterSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx",
+      "_BackgroundMedia-1ev7pbEK.js"
+    ]
+  },
+  "components/InstagramCarouselSection.tsx": {
+    "file": "assets/InstagramCarouselSection-w_E0Go8R.js",
+    "name": "InstagramCarouselSection",
+    "src": "components/InstagramCarouselSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/PricingCTASection.tsx": {
+    "file": "assets/PricingCTASection-3-HrMNQo.js",
+    "name": "PricingCTASection",
+    "src": "components/PricingCTASection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/ServicesSection.tsx": {
+    "file": "assets/ServicesSection-DsJdsTaa.js",
+    "name": "ServicesSection",
+    "src": "components/ServicesSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/SliderSection.tsx": {
+    "file": "assets/SliderSection-B0ZiPnMY.js",
+    "name": "SliderSection",
+    "src": "components/SliderSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/SpaceSection.tsx": {
+    "file": "assets/SpaceSection-Diz-43Rx.js",
+    "name": "SpaceSection",
+    "src": "components/SpaceSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/StatsSection.tsx": {
+    "file": "assets/StatsSection-BEwDcgYP.js",
+    "name": "StatsSection",
+    "src": "components/StatsSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx"
+    ]
+  },
+  "components/SupportCaptionSection.tsx": {
+    "file": "assets/SupportCaptionSection-C3rrG6_N.js",
+    "name": "SupportCaptionSection",
+    "src": "components/SupportCaptionSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx",
+      "_BackgroundMedia-1ev7pbEK.js"
+    ]
+  },
+  "components/TextOverImageSection.tsx": {
+    "file": "assets/TextOverImageSection-DH8XMUol.js",
+    "name": "TextOverImageSection",
+    "src": "components/TextOverImageSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx",
+      "_BackgroundMedia-1ev7pbEK.js"
+    ]
+  },
+  "components/VideoSection.tsx": {
+    "file": "assets/VideoSection-D9uT8Vm3.js",
+    "name": "VideoSection",
+    "src": "components/VideoSection.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "../../../../../~start/default-client-entry.tsx",
+      "_index-CT_x_aJ4.js"
+    ]
+  }
+}

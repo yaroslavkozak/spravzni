@@ -1,0 +1,74 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next/
+out/
+
+# OpenNext
+.open-next/
+
+# Wrangler
+.wrangler/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.dev.vars
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+*.pem
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+.output/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Example directories
+example/
+examples/
+RESEND_INTEGRATION/
+docs/*
+
+# Documentation and notes
+docs/
+# Ignore documentation markdown files in root directory
+CHAT_*.md
+CLOUDFLARE_*.md
+DURABLE_OBJECTS_*.md
+INSTAGRAM_*.md
+LIVECHAT_*.md
+QUESTIONNAIRE_*.md
+QUICK_SETUP_*.md
+TELEGRAM_*.md
+TEST_*.md
+WAYFORPAY_*.md
+PRODUCTION_SECRETS_*.md
+# Keep README.md and any markdown files in src/ directories
+
+# Utility scripts (not part of core codebase)
+check-missing-keys.js
+
+# Lock files (uncomment if you want to ignore them)
+# package-lock.json
+# bun.lock
+# yarn.lock
+# pnpm-lock.yaml

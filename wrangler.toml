@@ -1,0 +1,47 @@
+# Cloudflare Workers Configuration for TanStack Start
+# This file is used for CI/CD deployments via Git integration
+
+name = "spravzni"
+account_id = "e6317dc0edd7a98503b9e07a10f396b0"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+main = "./src/server.ts"
+
+[assets]
+directory = "./dist/client"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "spravzni-db"
+database_id = "96ec2230-58df-4cce-bd11-8a9bcf5c67f5"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "spravzni-storage"
+
+[queues]
+
+[[queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "notifications-queue"
+
+[[queues.consumers]]
+queue = "notifications-queue"
+max_batch_size = 10
+max_batch_timeout = 30
+
+[durable_objects]
+bindings = [
+  { name = "CHAT_ROOM", class_name = "ChatRoom" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]
+
+[vars]
+WAYFORPAY_MERCHANT_ACCOUNT = "spravzhni_com_ua"
+RESEND_FROM = "noreply@mail.spravzhni.com.ua"

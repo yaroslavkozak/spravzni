@@ -1,0 +1,1 @@
+import{j as n}from"./main-BCeWWukX.js";function l({src:r,className:e="",children:t}){const a=`url(${r.startsWith("url(")?r.replace(/^url\(['"]?/,"").replace(/['"]?\)$/,""):r})`;return n.jsx("div",{className:e,style:{backgroundImage:a},children:t})}export{l as B};
