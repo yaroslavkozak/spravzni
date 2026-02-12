@@ -55,6 +55,7 @@ export default function Header() {
     <>
       <header 
         className={`absolute top-0 left-0 right-0 z-50 backdrop-blur-header bg-black/30 header-fade-in`}
+        data-inner-page={!isHome ? '' : undefined}
         style={{
           WebkitBackdropFilter: 'blur(4px)',
           backdropFilter: 'blur(4px)',

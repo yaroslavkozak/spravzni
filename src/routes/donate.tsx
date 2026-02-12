@@ -223,10 +223,6 @@ function DonatePageContent() {
                 .donate-page header button.text-white {
                     color: #111111 !important;
                 }
-                .donate-page header button[class*="28694D"] span.text-white,
-                .donate-page header button[class*="28694D"] .text-white {
-                    color: #ffffff !important;
-                }
                 .donate-page header svg.icon-stroke-hover,
                 .donate-page header svg[stroke="currentColor"] {
                     stroke: #111111 !important;
@@ -303,9 +299,9 @@ function DonatePageContent() {
                 </div>
             </div>
             
-            <div className="bg-[#fbfbf9] pt-8 pb-12 sm:pt-12 sm:pb-16">
+            <div className="bg-[#fbfbf9] pt-8 pb-12 sm:pt-10 sm:pb-16">
                 {/* Title Section */}
-                <div className="max-w-[1200px] mx-auto mb-12 donate-title-container">
+                <div className="max-w-[1200px] mx-auto mb-6 donate-title-container">
                     <h1 className="font-alternates leading-[1.1] font-medium text-[#111]" style={{ fontWeight: 500, lineHeight: '110%', letterSpacing: '-0.02em' }}>
                         {t('donate.title')}
                     </h1>
@@ -315,7 +311,7 @@ function DonatePageContent() {
                 </div>
 
                 {/* Donation Section */}
-                <div className="w-full border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
+                <div className="w-full border-y border-[#1111111C] mt-6 pt-2 lg:pt-0">
                     {/* Desktop layout */}
                     <div className="hidden lg:flex items-stretch gap-0 min-w-0">
                         <div className="w-[clamp(0px,14.93vw,215px)] flex-shrink-0" />
@@ -357,92 +353,38 @@ function DonatePageContent() {
                                 </h3>
                                 <div className="font-montserrat space-y-2">
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
-                                        {copiedItem === 'iban' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'iban' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span> UA24 3003 3500 0000 0260 0323 9362 5
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
-                                        {copiedItem === 'bank' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'bank' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span> {t('donate.bankNameValue')}
                                         </div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start relative">
-                                        {copiedItem === 'recipient' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'recipient' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span> {t('donate.recipientValue')}</div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start relative">
-                                        {copiedItem === 'edrpou' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'edrpou' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span> 45793627</div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
-                                        {copiedItem === 'purpose' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'purpose' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span> {t('donate.purposeValue')}
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
-                                        {copiedItem === 'currency' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'currency' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span> UAH
                                         </div>
@@ -518,16 +460,7 @@ function DonatePageContent() {
                                                 UA24 3003 3500 0000 0260 0323 9362 5
                                             </div>
                                         </div>
-                                        {copiedItem === 'iban' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'iban' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
@@ -539,16 +472,7 @@ function DonatePageContent() {
                                                 {t('donate.bankNameValue')}
                                             </div>
                                         </div>
-                                        {copiedItem === 'bank' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'bank' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
 
                                     <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start justify-between relative">
@@ -560,16 +484,7 @@ function DonatePageContent() {
                                                 {t('donate.recipientValue')}
                                             </div>
                                         </div>
-                                        {copiedItem === 'recipient' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'recipient' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
 
                                     <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start justify-between relative">
@@ -581,16 +496,7 @@ function DonatePageContent() {
                                                 45793627
                                             </div>
                                         </div>
-                                        {copiedItem === 'edrpou' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'edrpou' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
@@ -602,16 +508,7 @@ function DonatePageContent() {
                                                 {t('donate.purposeValue')}
                                             </div>
                                         </div>
-                                        {copiedItem === 'purpose' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'purpose' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
@@ -623,16 +520,7 @@ function DonatePageContent() {
                                                 UAH
                                             </div>
                                         </div>
-                                        {copiedItem === 'currency' ? (
-                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
-                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        )}
+                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'currency' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                     </div>
                                 </div>
                             </div>

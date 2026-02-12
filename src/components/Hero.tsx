@@ -60,12 +60,22 @@ export default function Hero() {
   const parallaxOffset = scrollY * 0.5
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Image - fades in smoothly as part of continuous animation */}
+    <section ref={sectionRef} className="relative min-h-[95vh] flex flex-col items-center justify-center overflow-hidden">
+      {/* Background Image - Mobile: CMS or hero-main.jpg */}
       <div 
-        className={`absolute inset-0 bg-cover bg-no-repeat hero-bg-reveal`}
+        className={`absolute inset-0 bg-cover bg-no-repeat hero-bg-reveal lg:hidden`}
         style={{
           backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundPosition: 'bottom center',
+          transform: animationStarted ? `translateY(${parallaxOffset}px)` : 'none',
+          willChange: animationStarted ? 'transform' : 'auto',
+        }}
+      />
+      {/* Background Image - Desktop: hero.webp */}
+      <div 
+        className={`absolute inset-0 bg-cover bg-no-repeat hero-bg-reveal hidden lg:block`}
+        style={{
+          backgroundImage: `url(/hero.webp)`,
           backgroundPosition: 'bottom center',
           transform: animationStarted ? `translateY(${parallaxOffset}px)` : 'none',
           willChange: animationStarted ? 'transform' : 'auto',
@@ -77,8 +87,14 @@ export default function Hero() {
         className={`absolute inset-0 bg-black z-[1] hero-overlay-fade`}
       />
 
+      {/* Semi-transparent overlay - #00000033 */}
+      <div 
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{ backgroundColor: '#00000033' }}
+      />
+
       {/* Main Content Container - centered horizontally and vertically */}
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto min-h-screen flex max-md:items-start md:items-center justify-center pb-16 md:pb-16 max-md:pt-[7.5rem] md:pt-[2.6875rem] xl:pt-[14rem]">
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto min-h-[95vh] flex max-md:items-start md:items-center justify-center pb-16 md:pb-16 max-md:pt-[7.5rem] md:pt-[2.6875rem] xl:pt-[14rem]">
         <div className="flex flex-col items-center justify-center gap-0 md:gap-[2.5rem] lg:gap-0 xl:gap-[1.875rem] w-full max-w-[45.9375rem] px-0 md:px-[2.03125rem] lg:mt-[1.875rem]">
           {/* Main Heading Text - continuous smooth animation from large centered to final position */}
           <div className="flex flex-col items-center w-full hero-text-animation mt-[7.5rem] md:mt-[9.1875rem] lg:mt-[9.375rem] xl:mt-0 gap-2">
@@ -94,12 +110,12 @@ export default function Hero() {
           <div className="flex flex-col items-center gap-0 w-full mt-[6.125rem] md:mt-[10.25rem] lg:mt-[7.625rem] xl:mt-[6.125rem]">
             {/* Text Content - appears first */}
             <div className="flex flex-col items-start md:items-center gap-4 hero-content-text w-[43.9375rem] md:w-[43.9375rem] lg:w-[43.9375rem] xl:w-[43.9375rem] 2xl:w-[56.25rem] max-w-full px-[2.5rem] md:mx-[2.03125rem] lg:-mt-[1.875rem]">
-              <p className="text-white font-montserrat font-bold leading-[1.3] tracking-[-0.015em] xl:font-bold xl:text-[24px] xl:leading-[1.3] xl:tracking-[1.5%] text-left md:text-center xl:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
+              <p className="text-white font-montserrat font-bold leading-[1.3] tracking-[-0.015em] xl:font-bold xl:text-[24px] xl:leading-[1.3] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
                 {t('hero.subtitle.main')}
               </p>
               
               <div className="flex items-center justify-start md:justify-center gap-2 flex-wrap md:flex-nowrap">
-                <p className="text-white font-montserrat font-normal leading-[1.3] tracking-[-0.015em] xl:tracking-[1.5%] text-left md:text-center xl:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
+                <p className="text-white font-montserrat font-normal leading-[1.3] tracking-[-0.015em] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
                   {t('hero.subtitle.donationInfo')}{' '}
                   <a
                     href="/report"

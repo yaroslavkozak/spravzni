@@ -102,12 +102,6 @@ function ReportPageContent() {
         .report-page header button.text-white:not([class*="28694D"]) {
           color: #111111 !important;
         }
-        .report-page header button[class*="28694D"],
-        .report-page header button[class*="28694D"] span,
-        .report-page header button[class*="28694D"] .text-white,
-        .report-page header button[class*="28694D"] * {
-          color: #ffffff !important;
-        }
         .report-page header svg.icon-stroke-hover,
         .report-page header svg[stroke="currentColor"] {
           stroke: #111111 !important;

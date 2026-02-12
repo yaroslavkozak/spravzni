@@ -51,12 +51,6 @@ function PrivacyPageContent() {
         .privacy-page header button.text-white:not([class*="28694D"]) {
           color: #111111 !important;
         }
-        .privacy-page header button[class*="28694D"],
-        .privacy-page header button[class*="28694D"] span,
-        .privacy-page header button[class*="28694D"] .text-white,
-        .privacy-page header button[class*="28694D"] * {
-          color: #ffffff !important;
-        }
         .privacy-page header svg.icon-stroke-hover,
         .privacy-page header svg[stroke="currentColor"] {
           stroke: #111111 !important;

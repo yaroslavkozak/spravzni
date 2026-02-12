@@ -51,12 +51,6 @@ function TermsPageContent() {
         .terms-page header button.text-white:not([class*="28694D"]) {
           color: #111111 !important;
         }
-        .terms-page header button[class*="28694D"],
-        .terms-page header button[class*="28694D"] span,
-        .terms-page header button[class*="28694D"] .text-white,
-        .terms-page header button[class*="28694D"] * {
-          color: #ffffff !important;
-        }
         .terms-page header svg.icon-stroke-hover,
         .terms-page header svg[stroke="currentColor"] {
           stroke: #111111 !important;

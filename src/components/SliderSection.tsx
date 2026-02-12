@@ -36,7 +36,7 @@ const renderSlideWithQuote = (slide: Slide, slideNumber: number, totalSlides: nu
 
     {/* Quote Block - Bottom right - Desktop only */}
     {slide.text && (
-      <div className="hidden lg:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 xl:bottom-[40px] xl:right-[40px] z-20">
+      <div className="hidden min-[756px]:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 xl:bottom-[40px] xl:right-[40px] z-20">
         <div className="bg-white border border-[rgba(17,17,17,0.07)] p-4 sm:p-6 md:p-8 lg:p-10 w-full max-w-[526px] shadow-lg">
           {/* Text Content */}
           <div className="flex flex-col gap-3 sm:gap-4">
@@ -216,7 +216,7 @@ export default function SliderSection() {
   }, [disableTransition])
 
   return (
-    <section id="mi" className="bg-[#FBFBF9] pb-0 lg:pb-16">
+    <section id="mi" className="bg-[#FBFBF9] pb-0 min-[756px]:pb-16">
       <div className="max-w-[1440px] mx-auto">
         {/* Heading */}
         <div className="flex flex-col items-start sm:items-center gap-2 p-4 sm:p-0 sm:px-6 md:px-8 lg:px-[100px] xl:px-[215px] mb-0 sm:mb-8 md:mb-12 lg:mb-16 border-b border-[rgba(17,17,17,0.11)] sm:border-b-0">
@@ -229,7 +229,7 @@ export default function SliderSection() {
         </div>
 
         {/* Slider Container - desktop only */}
-        <div className="hidden lg:block relative w-full max-w-[1360px] mx-auto lg:max-w-none lg:mx-0 bg-white px-4 sm:px-6 md:px-8 lg:px-[40px]">
+        <div className="hidden min-[756px]:block relative w-full max-w-[1360px] mx-auto min-[756px]:max-w-none min-[756px]:mx-0 bg-white px-4 sm:px-6 md:px-8 lg:px-[40px]">
           <div className="relative overflow-hidden h-[300px] sm:h-[375px] md:h-[450px] lg:h-[525px] xl:h-[800px] xl:max-h-[800px]">
             {/* Navigation Arrows - Positioned for all slides */}
             <div className={`absolute top-1/2 left-0 right-0 flex ${showOnlyNext ? 'justify-end' : 'justify-between'} px-2 sm:px-4 md:px-6 lg:px-10 -translate-y-1/2 pointer-events-none z-20`}>
@@ -309,7 +309,7 @@ export default function SliderSection() {
 
                 {/* Quote Block - Bottom right - Desktop only */}
                 {slides[1].text && (
-                  <div className="hidden lg:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 xl:bottom-[40px] xl:right-[40px] z-20">
+                  <div className="hidden min-[756px]:block absolute bottom-4 right-4 sm:bottom-6 sm:right-6 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10 xl:bottom-[40px] xl:right-[40px] z-20">
                     <div className="bg-white border border-[rgba(17,17,17,0.07)] p-4 sm:p-6 md:p-8 lg:p-10 w-full max-w-[526px] shadow-lg">
                       {/* Text Content */}
                       <div className="flex flex-col gap-3 sm:gap-4">

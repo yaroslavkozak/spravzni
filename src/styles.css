@@ -545,6 +545,27 @@ code {
 		/* Force hardware acceleration and create own layer */
 		will-change: backdrop-filter;
 	}
+
+	/* Inner pages CTA button - light style (donate, report, terms, privacy) */
+	header[data-inner-page] button[class*="28694D"] {
+		background: #FBFBF9 !important;
+		border: 1px solid rgba(17, 17, 17, 0.1) !important;
+		width: 256px !important;
+		height: 48px !important;
+		padding: 8px 64px !important;
+		border-radius: 32px !important;
+		gap: 8px;
+	}
+	header[data-inner-page] button[class*="28694D"] span,
+	header[data-inner-page] button[class*="28694D"] .text-white,
+	header[data-inner-page] button[class*="28694D"] * {
+		color: #28694D !important;
+		font-family: 'Montserrat', sans-serif !important;
+		font-weight: 400 !important;
+		font-size: 20px !important;
+		line-height: 130% !important;
+		letter-spacing: 0.015em !important;
+	}
 	
 	/* Ensure backdrop-filter works during header animation - but don't override visibility */
 	.header-fade-in.backdrop-blur-header {

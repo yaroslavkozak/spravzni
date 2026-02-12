@@ -89,9 +89,9 @@ export default function MobileSliderBlock() {
   const showOnlyNext = false
 
   return (
-    <div className="lg:hidden bg-white overflow-x-clip">
+    <div className="min-[756px]:hidden bg-white overflow-x-clip">
       <div className="relative w-screen left-1/2 -translate-x-1/2 bg-white">
-        <div className="relative overflow-hidden h-[300px]">
+        <div className="relative overflow-hidden h-[375px] min-[600px]:h-[70vh]">
           <div className={`absolute bottom-4 left-0 right-0 flex ${showOnlyNext ? 'justify-end' : 'justify-between'} px-2 pointer-events-none z-20`}>
             {!showOnlyNext && (
               <button onClick={prevSlide} className="w-[48px] h-[48px] flex items-center justify-center bg-white/80 hover:bg-white rounded-full shadow-lg pointer-events-auto" aria-label={t('slider.prev')}>
@@ -110,7 +110,7 @@ export default function MobileSliderBlock() {
         </div>
       </div>
       {allSlides[currentSlide]?.text && (
-        <div className="pl-5 pr-4 py-6 border-t border-[rgba(17,17,17,0.11)] max-w-[1440px] mx-auto">
+        <div className="pl-5 pr-4 py-6 border-t border-[rgba(17,17,17,0.11)] max-w-[1440px] mx-auto h-[225px] overflow-y-auto">
           <div className="flex flex-col gap-3 max-w-[526px]">
             <div className="flex items-start gap-2 sm:gap-3">
               <span className="flex-shrink-0 mt-1 pr-4">
