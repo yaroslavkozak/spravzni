@@ -28,15 +28,18 @@ export default function VacationOptionsPopup({
   const { t, language } = useI18n()
   const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([])
   const loopCopies = 3
+  const loopResetDelayMs = 420
 
   const getItemsPerView = () => {
     if (typeof window === 'undefined') return 1
     return window.innerWidth >= 1440 ? 3 : 1
   }
 
-  const isDesktopThreeUp = () => {
-    if (typeof window === 'undefined') return false
-    return window.innerWidth >= 1440
+  const setScrollLeftInstant = (container: HTMLDivElement, left: number) => {
+    const previousBehavior = container.style.scrollBehavior
+    container.style.scrollBehavior = 'auto'
+    container.scrollLeft = left
+    container.style.scrollBehavior = previousBehavior
   }
 
   // Load service options from API
@@ -71,21 +74,6 @@ export default function VacationOptionsPopup({
     return container.scrollWidth / loopCopies
   }
 
-  const recenterLoopIfNeeded = () => {
-    const container = scrollRef.current
-    if (!container || serviceOptions.length <= 1) return
-
-    const segmentWidth = getLoopSegmentWidth()
-    if (!segmentWidth) return
-
-    // Keep the viewport in the middle copy to create an infinite loop illusion.
-    if (container.scrollLeft < segmentWidth * 0.5) {
-      container.scrollLeft += segmentWidth
-    } else if (container.scrollLeft > segmentWidth * 1.5) {
-      container.scrollLeft -= segmentWidth
-    }
-  }
-
   const handleScroll = (direction: 'left' | 'right') => {
     const container = scrollRef.current
     if (!container) return
@@ -101,13 +89,23 @@ export default function VacationOptionsPopup({
     const offset = direction === 'left' ? -scrollAmount : scrollAmount
     container.scrollBy({ left: offset, behavior: 'smooth' })
 
-    // Update scroll buttons after a short delay
+    // After smooth scrolling completes, silently recenter only when crossing loop edges.
     setTimeout(() => {
       if (container) {
-        recenterLoopIfNeeded()
+        const segmentWidth = getLoopSegmentWidth()
+        if (segmentWidth && serviceOptions.length > 1) {
+          const leftEdgeThreshold = 2
+          const rightEdgeThreshold = segmentWidth * 2 - 2
+
+          if (container.scrollLeft <= leftEdgeThreshold) {
+            setScrollLeftInstant(container, container.scrollLeft + segmentWidth)
+          } else if (container.scrollLeft >= rightEdgeThreshold) {
+            setScrollLeftInstant(container, container.scrollLeft - segmentWidth)
+          }
+        }
         checkScrollButtons()
       }
-    }, 100)
+    }, loopResetDelayMs)
   }
 
   const checkScrollButtons = () => {
@@ -139,7 +137,7 @@ export default function VacationOptionsPopup({
         const segmentWidth = getLoopSegmentWidth()
         if (segmentWidth) {
           // Start from the middle copy so users can move in both directions immediately.
-          container.scrollLeft = segmentWidth
+          setScrollLeftInstant(container, segmentWidth)
         }
       }
       checkScrollButtons()
@@ -174,11 +172,8 @@ export default function VacationOptionsPopup({
         <div className="relative py-12 px-4 md:px-8">
           <div
             ref={scrollRef}
-            onScroll={() => {
-              recenterLoopIfNeeded()
-              checkScrollButtons()
-            }}
-            className="flex gap-10 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
+            onScroll={checkScrollButtons}
+            className="flex gap-10 overflow-x-auto pb-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {[...Array(loopCopies)].flatMap((_, copyIndex) =>
