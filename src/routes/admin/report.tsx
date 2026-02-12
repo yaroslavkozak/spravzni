@@ -10,6 +10,9 @@ interface ReportItem {
   period: string
   amount: string
   category: string
+  period_en?: string | null
+  amount_en?: string | null
+  category_en?: string | null
   created_at: string
   updated_at: string
 }
@@ -18,6 +21,8 @@ interface ReportSettings {
   updated_date: string | null
   incoming_amount: string | null
   outgoing_amount: string | null
+  incoming_amount_en?: string | null
+  outgoing_amount_en?: string | null
 }
 
 function AdminReport() {
@@ -33,10 +38,15 @@ function AdminReport() {
     period: '',
     amount: '',
     category: '',
+    period_en: '',
+    amount_en: '',
+    category_en: '',
   })
   const [updatedDateDraft, setUpdatedDateDraft] = useState<string>('')
   const [incomingAmountDraft, setIncomingAmountDraft] = useState<string>('')
   const [outgoingAmountDraft, setOutgoingAmountDraft] = useState<string>('')
+  const [incomingAmountEnDraft, setIncomingAmountEnDraft] = useState<string>('')
+  const [outgoingAmountEnDraft, setOutgoingAmountEnDraft] = useState<string>('')
 
   useEffect(() => {
     checkAuth()
@@ -99,6 +109,8 @@ function AdminReport() {
         setUpdatedDateDraft(settingsData.settings?.updated_date || '')
         setIncomingAmountDraft(settingsData.settings?.incoming_amount || '')
         setOutgoingAmountDraft(settingsData.settings?.outgoing_amount || '')
+        setIncomingAmountEnDraft(settingsData.settings?.incoming_amount_en || '')
+        setOutgoingAmountEnDraft(settingsData.settings?.outgoing_amount_en || '')
       }
     } catch (err) {
       console.error('Load report data error:', err)
@@ -110,7 +122,14 @@ function AdminReport() {
 
   const resetForm = () => {
     setEditingItem(null)
-    setFormData({ period: '', amount: '', category: '' })
+    setFormData({
+      period: '',
+      amount: '',
+      category: '',
+      period_en: '',
+      amount_en: '',
+      category_en: '',
+    })
   }
 
   const handleEdit = (item: ReportItem) => {
@@ -119,6 +138,9 @@ function AdminReport() {
       period: item.period,
       amount: item.amount,
       category: item.category,
+      period_en: item.period_en || '',
+      amount_en: item.amount_en || '',
+      category_en: item.category_en || '',
     })
   }
 
@@ -187,8 +209,10 @@ function AdminReport() {
         credentials: 'include',
         body: JSON.stringify({
           updated_date: updatedDateDraft || null,
-              incoming_amount: incomingAmountDraft || null,
-              outgoing_amount: outgoingAmountDraft || null,
+          incoming_amount: incomingAmountDraft || null,
+          outgoing_amount: outgoingAmountDraft || null,
+          incoming_amount_en: incomingAmountEnDraft || null,
+          outgoing_amount_en: outgoingAmountEnDraft || null,
         }),
       })
 
@@ -264,10 +288,10 @@ function AdminReport() {
                 className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
               </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Вхідний залишок
+                    Вхідний залишок (UA)
                   </label>
                   <input
                     type="text"
@@ -279,7 +303,19 @@ function AdminReport() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Вихідний залишок
+                    Вхідний залишок (EN)
+                  </label>
+                  <input
+                    type="text"
+                    value={incomingAmountEnDraft}
+                    onChange={(event) => setIncomingAmountEnDraft(event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                    placeholder="229 850.00 UAH"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Вихідний залишок (UA)
                   </label>
                   <input
                     type="text"
@@ -287,6 +323,18 @@ function AdminReport() {
                     onChange={(event) => setOutgoingAmountDraft(event.target.value)}
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                     placeholder="160 036, 00 ₴"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Вихідний залишок (EN)
+                  </label>
+                  <input
+                    type="text"
+                    value={outgoingAmountEnDraft}
+                    onChange={(event) => setOutgoingAmountEnDraft(event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                    placeholder="160 036.00 UAH"
                   />
                 </div>
               </div>
@@ -305,38 +353,72 @@ function AdminReport() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             {editingItem ? 'Редагування рядка' : 'Новий рядок'}
           </h2>
-          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Період</label>
-              <input
-                type="text"
-                value={formData.period}
-                onChange={(event) => setFormData({ ...formData, period: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 p-2 text-sm"
-                required
-              />
+          <form onSubmit={handleSave} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Період (UA)</label>
+                <input
+                  type="text"
+                  value={formData.period}
+                  onChange={(event) => setFormData({ ...formData, period: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Кошти UAH (UA)</label>
+                <input
+                  type="text"
+                  value={formData.amount}
+                  onChange={(event) => setFormData({ ...formData, amount: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Стаття витрат (UA)</label>
+                <input
+                  type="text"
+                  value={formData.category}
+                  onChange={(event) => setFormData({ ...formData, category: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Кошти (UAH)</label>
-              <input
-                type="text"
-                value={formData.amount}
-                onChange={(event) => setFormData({ ...formData, amount: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 p-2 text-sm"
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Період (EN)</label>
+                <input
+                  type="text"
+                  value={formData.period_en}
+                  onChange={(event) => setFormData({ ...formData, period_en: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  placeholder="Optional"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Amount (EN)</label>
+                <input
+                  type="text"
+                  value={formData.amount_en}
+                  onChange={(event) => setFormData({ ...formData, amount_en: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  placeholder="Optional"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Expense category (EN)</label>
+                <input
+                  type="text"
+                  value={formData.category_en}
+                  onChange={(event) => setFormData({ ...formData, category_en: event.target.value })}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm"
+                  placeholder="Optional"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Стаття витрат</label>
-              <input
-                type="text"
-                value={formData.category}
-                onChange={(event) => setFormData({ ...formData, category: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 p-2 text-sm"
-                required
-              />
-            </div>
-            <div className="md:col-span-3 flex flex-wrap gap-3 justify-end">
+            <div className="flex flex-wrap gap-3 justify-end">
               {editingItem && (
                 <button
                   type="button"

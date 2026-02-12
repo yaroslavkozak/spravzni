@@ -176,6 +176,9 @@ export interface ReportItem {
   period: string;
   amount: string;
   category: string;
+  period_en?: string | null;
+  amount_en?: string | null;
+  category_en?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -184,12 +187,18 @@ export interface CreateReportItemInput {
   period: string;
   amount: string;
   category: string;
+  period_en?: string | null;
+  amount_en?: string | null;
+  category_en?: string | null;
 }
 
 export interface UpdateReportItemInput {
   period?: string;
   amount?: string;
   category?: string;
+  period_en?: string | null;
+  amount_en?: string | null;
+  category_en?: string | null;
 }
 
 export interface ReportSettings {
@@ -197,6 +206,8 @@ export interface ReportSettings {
   updated_date: string | null;
   incoming_amount: string | null;
   outgoing_amount: string | null;
+  incoming_amount_en?: string | null;
+  outgoing_amount_en?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -205,4 +216,6 @@ export interface UpdateReportSettingsInput {
   updated_date?: string | null;
   incoming_amount?: string | null;
   outgoing_amount?: string | null;
+  incoming_amount_en?: string | null;
+  outgoing_amount_en?: string | null;
 }

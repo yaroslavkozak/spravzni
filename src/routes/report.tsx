@@ -28,7 +28,7 @@ function ReportPage() {
 }
 
 function ReportPageContent() {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
   const [reportRows, setReportRows] = useState<
     Array<{ period: string; amount: string; category: string }>
   >([])
@@ -39,7 +39,7 @@ function ReportPageContent() {
   useEffect(() => {
     const loadReportData = async () => {
       try {
-        const response = await fetch('/api/report')
+        const response = await fetch(`/api/report?lang=${language}`)
         if (!response.ok) {
           return
         }
@@ -60,7 +60,7 @@ function ReportPageContent() {
     }
 
     loadReportData()
-  }, [])
+  }, [language])
 
   const formatReportDate = (value: string | null) => {
     if (!value) return t('report.updatedDate')

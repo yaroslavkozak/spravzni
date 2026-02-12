@@ -125,6 +125,7 @@ export type TranslationKey =
   | 'stats.card1'
   | 'stats.card2'
   | 'stats.card3'
+  | 'stats.currency'
   | 'stats.report'
   // Services
   | 'services.title'
@@ -526,7 +527,7 @@ export const translationsByLanguage: TranslationsByLanguage = {
     'contribution.title': 'Зроби внесок',
     'contribution.p1': 'Ти можеш збільшити цифру накопичення ще до відкриття центру.',
     'contribution.p2': 'Кожен внесок йтиме на відновлення та інтеграцію ветеранів, а також покриватиме проведення програми «Шлях сили». Для ветеранів, військовослужбовців, їхніх родин, а також родин загиблих і зниклих безвісти участь у програмі безкоштовна.',
-    'contribution.p3': 'Твій внесок додається до загальної суми, що відображається на сайті. Ми звітуємо щомісяця.',
+    'contribution.p3': 'Твій внесок додається до загальної суми, що відображається на сайті.',
     'contribution.cta': 'Підтримати фінансово',
     'directions.title': 'Локація',
     'directions.body': 'Центр «Справжні» розташований неподалік Стільського Городища — унікальній локації між Львовом і Стриєм. Це історичне місце, в якому ще до появи Київської Русі жили білі хорвати, котрі, як стверджують науковці, залишили по собі печери та ціле підземне місто.',
@@ -565,6 +566,7 @@ export const translationsByLanguage: TranslationsByLanguage = {
     'stats.card1': 'Це — тренування з адаптивного плавання та програма відновлення «Шлях сили», яка відбуватиметься у нашому центрі.',
     'stats.card2': '80% прибутку центру також йтиме на проекти відновлення ветеранів та членів їхніх родин.',
     'stats.card3': 'Ми публікуємо оновлену суму зібраних та витрачених коштів наприкінці кожного місяця, після всіх підрахунків.',
+    'stats.currency': 'грн',
     'stats.report': 'Звіт',
     'services.title': 'Послуги',
     'services.subtitle': 'будуть доступні навіть без проживання',
@@ -986,6 +988,7 @@ export const translationsByLanguage: TranslationsByLanguage = {
     'stats.card1': 'These are adaptive swimming trainings and the “Path of Strength” recovery program held at our center.',
     'stats.card2': '80% of the center’s profits also go to veterans’ recovery projects and their families.',
     'stats.card3': 'We publish the updated totals of collected and spent funds at the end of each month, after all calculations.',
+    'stats.currency': 'UAH',
     'stats.report': 'Report',
     'services.title': 'Services',
     'services.subtitle': 'are available even without accommodation',

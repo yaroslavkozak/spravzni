@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { Env } from '@/types/cloudflare'
-import { getReportItems, getReportSettings } from '@/src/lib/database/report'
+import type { SupportedLanguage } from '@/src/lib/i18n'
+import {
+  getReportItems,
+  getReportSettings,
+  localizeReportItem,
+  localizeReportSettings,
+} from '@/src/lib/database/report'
 
 async function getDatabaseFromContext(context: unknown): Promise<Env['DB'] | null> {
   try {
@@ -14,7 +20,7 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB'] | nul
 export const Route = createFileRoute('/api/report')({
   server: {
     handlers: {
-      GET: async ({ context }) => {
+      GET: async ({ request, context }) => {
         try {
           const db = await getDatabaseFromContext(context)
           if (!db) {
@@ -27,18 +33,24 @@ export const Route = createFileRoute('/api/report')({
             )
           }
 
-          const [items, settings] = await Promise.all([
+          const url = new URL(request.url)
+          const lang = (url.searchParams.get('lang') || 'uk') as SupportedLanguage
+
+          const [rawItems, rawSettings] = await Promise.all([
             getReportItems(db),
             getReportSettings(db),
           ])
+
+          const items = rawItems.map((item) => localizeReportItem(item, lang))
+          const localizedSettings = localizeReportSettings(rawSettings, lang)
 
           return new Response(
             JSON.stringify({
               success: true,
               items,
-              updatedDate: settings?.updated_date || null,
-              incomingAmount: settings?.incoming_amount || null,
-              outgoingAmount: settings?.outgoing_amount || null,
+              updatedDate: localizedSettings.updatedDate,
+              incomingAmount: localizedSettings.incomingAmount,
+              outgoingAmount: localizedSettings.outgoingAmount,
             }),
             {
               status: 200,

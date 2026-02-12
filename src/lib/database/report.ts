@@ -3,6 +3,7 @@
  * Functions for working with report_items and report_settings tables in D1
  */
 
+import type { SupportedLanguage } from '@/src/lib/i18n';
 import type { D1Database } from '../../../types/cloudflare';
 import type {
   ReportItem,
@@ -40,10 +41,17 @@ export async function createReportItem(
 ): Promise<ReportItem> {
   const result = await db
     .prepare(
-      `INSERT INTO report_items (period, amount, category)
-       VALUES (?, ?, ?) RETURNING *`
+      `INSERT INTO report_items (period, amount, category, period_en, amount_en, category_en)
+       VALUES (?, ?, ?, ?, ?, ?) RETURNING *`
     )
-    .bind(input.period, input.amount, input.category)
+    .bind(
+      input.period,
+      input.amount,
+      input.category,
+      input.period_en ?? null,
+      input.amount_en ?? null,
+      input.category_en ?? null
+    )
     .first<ReportItem>();
 
   if (!result) {
@@ -73,6 +81,18 @@ export async function updateReportItem(
     updates.push('category = ?');
     values.push(input.category);
   }
+  if (input.period_en !== undefined) {
+    updates.push('period_en = ?');
+    values.push(input.period_en);
+  }
+  if (input.amount_en !== undefined) {
+    updates.push('amount_en = ?');
+    values.push(input.amount_en);
+  }
+  if (input.category_en !== undefined) {
+    updates.push('category_en = ?');
+    values.push(input.category_en);
+  }
 
   if (updates.length === 0) {
     return getReportItemById(db, id);
@@ -94,6 +114,37 @@ export async function deleteReportItem(db: D1Database, id: number): Promise<bool
   return result.success && result.meta.changes > 0;
 }
 
+export function localizeReportItem(
+  item: ReportItem,
+  language: SupportedLanguage
+): { period: string; amount: string; category: string } {
+  const useEn = language === 'en';
+  return {
+    period: (useEn && item.period_en) || item.period,
+    amount: (useEn && item.amount_en) || item.amount,
+    category: (useEn && item.category_en) || item.category,
+  };
+}
+
+export function localizeReportSettings(
+  settings: ReportSettings | null,
+  language: SupportedLanguage
+): {
+  updatedDate: string | null;
+  incomingAmount: string | null;
+  outgoingAmount: string | null;
+} {
+  if (!settings) {
+    return { updatedDate: null, incomingAmount: null, outgoingAmount: null };
+  }
+  const useEn = language === 'en';
+  return {
+    updatedDate: settings.updated_date,
+    incomingAmount: (useEn && settings.incoming_amount_en) || settings.incoming_amount,
+    outgoingAmount: (useEn && settings.outgoing_amount_en) || settings.outgoing_amount,
+  };
+}
+
 // ============================================================================
 // REPORT SETTINGS
 // ============================================================================
@@ -112,19 +163,23 @@ export async function updateReportSettings(
   const updatedDate = input.updated_date ?? null;
   const incomingAmount = input.incoming_amount ?? null;
   const outgoingAmount = input.outgoing_amount ?? null;
+  const incomingAmountEn = input.incoming_amount_en ?? null;
+  const outgoingAmountEn = input.outgoing_amount_en ?? null;
 
   const result = await db
     .prepare(
-      `INSERT INTO report_settings (id, updated_date, incoming_amount, outgoing_amount)
-       VALUES (1, ?, ?, ?)
+      `INSERT INTO report_settings (id, updated_date, incoming_amount, outgoing_amount, incoming_amount_en, outgoing_amount_en)
+       VALUES (1, ?, ?, ?, ?, ?)
        ON CONFLICT(id) DO UPDATE SET
          updated_date = excluded.updated_date,
          incoming_amount = excluded.incoming_amount,
          outgoing_amount = excluded.outgoing_amount,
+         incoming_amount_en = excluded.incoming_amount_en,
+         outgoing_amount_en = excluded.outgoing_amount_en,
          updated_at = CURRENT_TIMESTAMP
        RETURNING *`
     )
-    .bind(updatedDate, incomingAmount, outgoingAmount)
+    .bind(updatedDate, incomingAmount, outgoingAmount, incomingAmountEn, outgoingAmountEn)
     .first<ReportSettings>();
 
   if (!result) {

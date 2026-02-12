@@ -21,7 +21,7 @@ export default function StaticStatsSection({ t, amount = '229 850' }: StaticStat
           </p>
           <p className="text-[#111111] text-[clamp(2.75rem,_calc(0.329rem+10.328vw),_9.625rem)] font-alternates font-light leading-[1] flex items-center justify-center">
             <span className="inline-flex tracking-[0.02em]">{amount}</span>
-            <span className="ml-2 sm:ml-3 text-[clamp(2.75rem,_calc(0.329rem+10.328vw),_9.625rem)]">грн</span>
+            <span className="ml-2 sm:ml-3 text-[clamp(2.75rem,_calc(0.329rem+10.328vw),_9.625rem)]">{t('stats.currency')}</span>
           </p>
           <p className="text-[#111111] text-[clamp(1rem,_calc(0.824rem+0.751vw),_1.5rem)] font-montserrat font-light mt-3 sm:mt-4">
             {t('stats.subtitle')}
