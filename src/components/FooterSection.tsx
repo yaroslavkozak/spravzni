@@ -1,27 +1,31 @@
 'use client'
 
-import { Link } from '@tanstack/react-router'
+import { Link, useRouterState } from '@tanstack/react-router'
 import MediaImage from '@/src/components/MediaImage'
 import BackgroundMedia from '@/src/components/BackgroundMedia'
 import { useI18n } from '@/src/contexts/I18nContext'
 
 export default function FooterSection() {
   const { t } = useI18n()
+  const location = useRouterState({ select: (state) => state.location })
+  const isHome = location.pathname === '/'
+
+  const navHref = (id: string) => (isHome ? `#${id}` : `/?section=${id}`)
 
   const services = [
-    { id: 1, label: t('services.service1.title'), href: '#service-1' },
-    { id: 2, label: t('services.service2.title'), href: '#service-2' },
-    { id: 3, label: t('services.service3.title'), href: '#service-3' },
-    { id: 4, label: t('services.service4.title'), href: '#service-4' },
-    { id: 5, label: t('services.service5.title'), href: '#service-5' },
+    { id: 1, label: t('services.service1.title'), href: navHref('service-1') },
+    { id: 2, label: t('services.service2.title'), href: navHref('service-2') },
+    { id: 3, label: t('services.service3.title'), href: navHref('service-3') },
+    { id: 4, label: t('services.service4.title'), href: navHref('service-4') },
+    { id: 5, label: t('services.service5.title'), href: navHref('service-5') },
   ]
 
   const navigation = [
-    { label: t('header.nav.us'), href: '#mi' },
-    { label: t('header.nav.services'), href: '#services' },
-    { label: t('header.nav.socialRole'), href: '#social' },
-    { label: t('header.nav.contribute'), href: '#contribute' },
-    { label: t('header.nav.location'), href: '#location' },
+    { label: t('header.nav.us'), href: navHref('mi') },
+    { label: t('header.nav.services'), href: navHref('services') },
+    { label: t('header.nav.socialRole'), href: navHref('social') },
+    { label: t('header.nav.contribute'), href: navHref('contribute') },
+    { label: t('header.nav.location'), href: navHref('location') },
   ]
 
   return (

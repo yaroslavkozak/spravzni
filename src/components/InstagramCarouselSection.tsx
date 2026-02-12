@@ -67,9 +67,9 @@ export default function InstagramCarouselSection() {
     const firstChild = container.firstElementChild as HTMLElement
     if (!firstChild) return
     
-    // Calculate scroll amount: item width + gap (40px)
+    // Calculate scroll amount: item width + gap (20px)
     const itemWidth = firstChild.offsetWidth
-    const gap = 40
+    const gap = 20
     const scrollAmount = itemWidth + gap
     const offset = direction === 'left' ? -scrollAmount : scrollAmount
     
@@ -82,10 +82,10 @@ export default function InstagramCarouselSection() {
   return (
     <section className="bg-[#FBFBF9] pt-[120px] pb-[80px]">
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-16 text-center">
-        <p className="text-[#165731] text-[1.125rem] sm:text-[1.25rem] md:text-[1.375rem] lg:text-[1.5rem] font-normal font-montserrat mb-1 tracking-[-0.01em]">
+        <p className="text-[#28694D] text-[16px] leading-[150%] tracking-[0.5%] font-bold sm:font-normal sm:text-[1.25rem] md:text-[1.375rem] lg:text-[1.5rem] font-montserrat mb-1 text-center">
           {t('instagram.title')}
         </p>
-        <p className="text-[#111111] text-[0.75rem] xs:text-[1rem] sm:text-[0.8125rem] md:text-[0.875rem] lg:text-[0.9375rem] font-normal font-montserrat leading-[1.7] tracking-[0.1em] mb-[40px]">
+        <p className="text-[#111111] text-[16px] font-normal font-montserrat leading-[150%] tracking-[0.5%] mb-[40px] text-center sm:text-[0.8125rem] md:text-[0.875rem] lg:text-[0.9375rem]">
           {t('instagram.subtitle')}
         </p>
         <a 
@@ -97,15 +97,17 @@ export default function InstagramCarouselSection() {
           <span className="inline-flex w-6 h-6 sm:w-7 sm:h-7 relative">
             <MediaImage src="/images/instagram/instb.svg" alt="Instagram icon" fill className="object-contain" />
           </span>
-          <span className="font-semibold font-montserrat">spravzhni.lviv</span>
+          <span className="font-montserrat font-extrabold text-[16px] leading-[150%] tracking-[0.5%] text-[#404040] sm:font-semibold sm:text-[0.9375rem] md:text-[1.0625rem]">
+            spravzhni.lviv
+          </span>
         </a>
       </div>
 
       <div className="relative">
-        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-16 relative">
+        <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:pl-10 lg:pr-0 relative">
           <button
             onClick={() => handleScroll('left')}
-            className="flex absolute left-2 md:left-4 lg:-left-[12px] top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 bg-white/80 border border-[#D1D1D1] rounded-full shadow-sm items-center justify-center text-lg md:text-xl text-[#111111] hover:bg-white transition-colors"
+            className="flex absolute left-2 md:left-4 lg:left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 bg-white/80 border border-[#D1D1D1] rounded-full shadow-sm items-center justify-center text-lg md:text-xl text-[#111111] hover:bg-white transition-colors"
             aria-label={t('instagram.scrollLeft')}
           >
             ‹
@@ -114,14 +116,14 @@ export default function InstagramCarouselSection() {
           <div className="overflow-hidden">
             <div
               ref={scrollRef}
-              className="flex gap-[40px] overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
+              className="flex gap-[20px] overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
             >
               {isLoading ? (
                 // Loading skeleton
                 Array.from({ length: 5 }).map((_, index) => (
                   <div
                     key={`loading-${index}`}
-                    className="flex-shrink-0 w-[calc((100%-40px)/2)] md:w-[calc((100%-80px)/3)] lg:w-[calc((100%-120px)/4)] aspect-[5/6] bg-gray-200 animate-pulse rounded"
+                    className="flex-shrink-0 w-[289px] h-[387px] sm:w-[calc((100%-40px)/2)] sm:h-auto md:w-[calc((100%-80px)/3)] lg:w-[320px] lg:h-[384px] sm:aspect-[5/6] lg:aspect-auto bg-gray-200 animate-pulse rounded"
                   />
                 ))
               ) : useFallback ? (
@@ -129,7 +131,7 @@ export default function InstagramCarouselSection() {
                 fallbackPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="flex-shrink-0 w-[calc((100%-40px)/2)] md:w-[calc((100%-80px)/3)] lg:w-[calc((100%-120px)/4)] aspect-[5/6] overflow-hidden relative group"
+                    className="flex-shrink-0 w-[289px] h-[387px] sm:w-[calc((100%-40px)/2)] sm:h-auto md:w-[calc((100%-80px)/3)] lg:w-[320px] lg:h-[384px] sm:aspect-[5/6] lg:aspect-auto overflow-hidden relative group"
                   >
                     <MediaImage
                       src={`/images/instagram/inst${post.id}.jpg`}
@@ -147,7 +149,7 @@ export default function InstagramCarouselSection() {
                     href={post.permalink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 w-[calc((100%-40px)/2)] md:w-[calc((100%-80px)/3)] lg:w-[calc((100%-120px)/4)] aspect-[5/6] overflow-hidden relative group cursor-pointer"
+                    className="flex-shrink-0 w-[289px] h-[387px] sm:w-[calc((100%-40px)/2)] sm:h-auto md:w-[calc((100%-80px)/3)] lg:w-[320px] lg:h-[384px] sm:aspect-[5/6] lg:aspect-auto overflow-hidden relative group cursor-pointer"
                   >
                     <img
                       src={post.imageUrl}
@@ -163,7 +165,7 @@ export default function InstagramCarouselSection() {
 
           <button
             onClick={() => handleScroll('right')}
-            className="flex absolute right-2 md:right-4 lg:-right-[12px] top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 bg-white/80 border border-[#D1D1D1] rounded-full shadow-sm items-center justify-center text-lg md:text-xl text-[#111111] hover:bg-white transition-colors"
+            className="flex absolute right-2 md:right-4 lg:right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 md:w-10 md:h-10 bg-white/80 border border-[#D1D1D1] rounded-full shadow-sm items-center justify-center text-lg md:text-xl text-[#111111] hover:bg-white transition-colors"
             aria-label={t('instagram.scrollRight')}
           >
             ›

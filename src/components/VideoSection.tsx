@@ -26,7 +26,7 @@ export default function VideoSection() {
               aria-label="Play video"
             >
               <MediaImage
-                src="/image.png"
+                src="/video-2.webp"
                 alt="Spravzhni video preview"
                 fill
                 className="object-cover"

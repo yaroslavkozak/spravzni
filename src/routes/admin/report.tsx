@@ -317,7 +317,7 @@ function AdminReport() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Кошти</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Кошти (UAH)</label>
               <input
                 type="text"
                 value={formData.amount}

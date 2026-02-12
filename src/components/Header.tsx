@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useRouterState } from '@tanstack/react-router'
 import Image from 'next/image'
 import LanguageSwitcher from '@/src/components/LanguageSwitcher'
 import { useContactPopup } from '@/src/contexts/ContactPopupContext'
@@ -14,6 +15,12 @@ export default function Header() {
   const { openPopup } = useContactPopup()
   const { isPreloadComplete } = usePreload()
   const { t } = useI18n()
+  const location = useRouterState({ select: (state) => state.location })
+  const isHome = location.pathname === '/'
+
+  const navHref = useMemo(() => {
+    return (id: string) => (isHome ? `#${id}` : `/?section=${id}`)
+  }, [isHome])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +63,7 @@ export default function Header() {
         {/* Header 1 - Top Banner */}
         {!isBannerClosed && (
           <div className="bg-[#fbfbf9] backdrop-blur-md h-[2.25rem] md:h-[2.5rem] flex items-center relative">
-            <div className="max-w-[90rem] mx-auto px-8 flex items-center justify-center">
+            <div className="max-w-[90rem] mx-auto px-5 md:px-8 flex items-center justify-center">
               <p className="font-montserrat font-bold leading-[150%] tracking-[0.5%] text-[#28694D] text-sm md:text-[15px] xl:text-base" style={{ fontWeight: 700 }}>
                 {t('header.banner.openingSummer')}
               </p>
@@ -81,7 +88,7 @@ export default function Header() {
         <div 
           className="transition-all duration-300 h-[5.625rem] md:h-[6.5rem]"
         >
-          <div className="max-w-[90rem] mx-auto pl-[2.25rem] pr-[2.25rem] md:pl-[2.5rem] md:pr-[2.5rem] xl:pl-10 xl:pr-10 flex items-center h-full relative">
+          <div className="max-w-[90rem] mx-auto px-5 md:pl-[2.5rem] md:pr-[2.5rem] xl:pl-10 xl:pr-10 flex items-center h-full relative">
           {/* Logo - Left */}
           <a
             href="/"
@@ -196,19 +203,19 @@ export default function Header() {
 
           {/* Navigation - Menu Items next to logo - Only shown above 1440px */}
           <nav className="hidden xl:flex items-center gap-4 ml-6">
-            <a href="#mi" className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.us')}>
+            <a href={navHref('mi')} className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.us')}>
               <span>{t('header.nav.us')}</span>
             </a>
-            <a href="#services" className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.services')}>
+            <a href={navHref('services')} className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.services')}>
               <span>{t('header.nav.services')}</span>
             </a>
-            <a href="#social" className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.socialRole')}>
+            <a href={navHref('social')} className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.socialRole')}>
               <span>{t('header.nav.socialRole')}</span>
             </a>
-            <a href="#contribute" className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.contribute')}>
+            <a href={navHref('contribute')} className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.contribute')}>
               <span>{t('header.nav.contribute')}</span>
             </a>
-            <a href="#location" className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.location')}>
+            <a href={navHref('location')} className="hover-bold-no-shift font-montserrat text-white font-medium leading-[1.5em] tracking-[0.5%] whitespace-nowrap" style={{ fontSize: '1rem' }} data-text={t('header.nav.location')}>
               <span>{t('header.nav.location')}</span>
             </a>
           </nav>
@@ -338,7 +345,7 @@ export default function Header() {
           <span>{t('header.nav.us')}</span>
         </a>
         <a 
-          href="#services" 
+          href={navHref('services')} 
           onClick={handleLinkClick}
           className="hover-bold-no-shift font-montserrat text-white font-medium py-2" 
           style={{ fontSize: '1rem' }}
@@ -347,7 +354,7 @@ export default function Header() {
           <span>{t('header.nav.services')}</span>
         </a>
         <a 
-          href="#social" 
+          href={navHref('social')} 
           onClick={handleLinkClick}
           className="hover-bold-no-shift font-montserrat text-white font-medium py-2" 
           style={{ fontSize: '1rem' }}
@@ -356,7 +363,7 @@ export default function Header() {
           <span>{t('header.nav.socialRole')}</span>
         </a>
         <a 
-          href="#contribute" 
+          href={navHref('contribute')} 
           onClick={handleLinkClick}
           className="hover-bold-no-shift font-montserrat text-white font-medium py-2" 
           style={{ fontSize: '1rem' }}
@@ -365,7 +372,7 @@ export default function Header() {
           <span>{t('header.nav.contribute')}</span>
         </a>
         <a 
-          href="#location" 
+          href={navHref('location')} 
           onClick={handleLinkClick}
           className="hover-bold-no-shift font-montserrat text-white font-medium py-2" 
           style={{ fontSize: '1rem' }}

@@ -3,6 +3,8 @@ import { useState, lazy, Suspense, useEffect } from 'react'
 import { cn } from '@/src/lib/utils'
 import Header from '@/src/components/Header'
 import { useI18n } from '@/src/contexts/I18nContext'
+import PageClientShell from '@/src/components/PageClientShell'
+import MediaImage from '@/src/components/MediaImage'
 
 // Lazy load FooterSection for better performance
 const FooterSection = lazy(() => import('@/src/components/FooterSection'))
@@ -22,6 +24,14 @@ export const Route = createFileRoute('/donate')({
 })
 
 function DonatePage() {
+    return (
+        <PageClientShell>
+            <DonatePageContent />
+        </PageClientShell>
+    )
+}
+
+function DonatePageContent() {
     const { t } = useI18n()
     const [amount, setAmount] = useState<string>('100')
     const [isRecurring, setIsRecurring] = useState(false)
@@ -202,7 +212,7 @@ function DonatePage() {
                     opacity: 1 !important;
                     transform: translateY(0) !important;
                     pointer-events: auto !important;
-                    background: #fbfbf9 !important;
+                    background: #11111100 !important;
                     backdrop-filter: none !important;
                     -webkit-backdrop-filter: none !important;
                 }
@@ -242,7 +252,42 @@ function DonatePage() {
                     -webkit-backdrop-filter: none !important;
                 }
                 .donate-page header > div > div[class*="max-w"] {
-                    background: #fbfbf9 !important;
+                    background: #11111100 !important;
+                }
+                .donate-title-container {
+                    margin-left: 0;
+                    padding-left: 20px;
+                }
+                .donate-title-container h1 {
+                    font-size: 32px;
+                    text-align: left;
+                }
+                .donate-title-container p {
+                    font-size: 16px;
+                    text-align: left;
+                    padding-right: 20px;
+                }
+                .donate-breadcrumbs {
+                    margin-left: 0;
+                }
+                @media (min-width: 768px) {
+                    .donate-title-container h1 {
+                        font-size: 62px !important;
+                        text-align: left !important;
+                    }
+                    .donate-title-container p {
+                        font-size: 24px !important;
+                    }
+                }
+                @media (min-width: 1440px) {
+                    .donate-title-container {
+                        padding-left: 215px;
+                        margin-left: 0;
+                    }
+                    .donate-breadcrumbs {
+                        padding-left: 40px;
+                        margin-left: 0;
+                    }
                 }
             `}</style>
             <div className="donate-page">
@@ -251,158 +296,345 @@ function DonatePage() {
             
             {/* Breadcrumbs */}
             <div className="bg-[#fbfbf9] border-b border-[#FBFBF9] pt-[8rem] md:pt-[9rem]" style={{ borderBottom: '1px solid #0000001A' }}>
-                <div className="max-w-[1200px] mx-auto px-4 py-4">
-                    <a href="/" className="font-montserrat font-semibold text-[16px] hover:underline" style={{ fontWeight: 600, fontSize: '16px', color: 'hsla(154, 45%, 28%, 1)' }}>
+                <div className="max-w-[1200px] mx-auto px-4 py-2 donate-breadcrumbs">
+                    <a href="/" className="font-montserrat text-[16px] hover:underline" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(154, 45%, 28%, 1)' }}>
                         &lt; {t('donate.back')}
                     </a>
                 </div>
             </div>
             
             <div className="bg-[#fbfbf9] pt-8 pb-12 sm:pt-12 sm:pb-16">
-                <div className="max-w-[1200px] mx-auto px-4">
-                    {/* Title Section */}
-                    <div className="mb-12">
-                        <h1 className="font-alternates text-[62px] leading-[1.1] font-medium text-[#111] text-left mb-4" style={{ fontSize: '62px', fontWeight: 500 }}>
-                            {t('donate.title')}
-                        </h1>
-                        <p className="font-montserrat text-[24px] text-[#28694D] font-medium leading-[1.1]" style={{ fontSize: '24px', fontWeight: 500 }}>
-                            {t('donate.subtitle')}
-                        </p>
-                    </div>
+                {/* Title Section */}
+                <div className="max-w-[1200px] mx-auto mb-12 donate-title-container">
+                    <h1 className="font-alternates leading-[1.1] font-medium text-[#111]" style={{ fontWeight: 500, lineHeight: '110%', letterSpacing: '-0.02em' }}>
+                        {t('donate.title')}
+                    </h1>
+                    <p className="font-montserrat text-[#28694D] font-medium leading-[1.3]" style={{ fontWeight: 500, lineHeight: '130%', letterSpacing: '0.015em', color: '#28694D' }}>
+                        {t('donate.subtitle')}
+                    </p>
                 </div>
 
-                {/* Donation Section - Full Width */}
-                <div className="bg-[#F0F3F0] border-t border-b py-8 lg:py-12 mb-12" style={{ borderColor: 'rgba(17, 17, 17, 0.12)' }}>
-                    <div className="max-w-[1200px] mx-auto px-4 lg:px-12">
-                        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-                            {/* Right Column - Info Text */}
-                            <div className="lg:col-span-2 lg:pb-16 lg:pl-16 lg:pr-16">
-                                <div className="flex flex-col">
-                                    <p className="font-montserrat leading-[1.6] mb-6" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(0, 0%, 0%, 0.9)' }}>
-                                        {t('donate.info1')}
-                                    </p>
-                                    <p className="font-montserrat leading-[1.6] mb-6" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(0, 0%, 0%, 0.9)' }}>
-                                        {t('donate.info2')}{' '}
-                                        <a
-                                            href="/report"
-                                            className="font-medium text-[#28694D] underline"
-                                        >
-                                            {t('donate.reportLink')}
-                                        </a>
-                                    </p>
-                                </div>
+                {/* Donation Section */}
+                <div className="w-full border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
+                    {/* Desktop layout */}
+                    <div className="hidden lg:flex items-stretch gap-0 min-w-0">
+                        <div className="w-[clamp(0px,14.93vw,215px)] flex-shrink-0" />
+                        <div className="w-[485px] flex-shrink-0 flex flex-col pt-[clamp(24px,4.44vw,64px)] pb-[clamp(9px,calc(4.44vw-15px),49px)]">
+                            {/* First Block - Info Paragraph */}
+                            <div className="mb-8">
+                                <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця.
+                                </p>
+                                <a href="/report" className="font-medium text-[#28694D] underline block mt-4" style={{ fontSize: '16px', fontWeight: 500, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                    {t('donate.reportLink')}
+                                </a>
+                            </div>
+
+                            {/* Second Block - Title, Button, Terms */}
+                            <div className="mb-8">
+                                <h3 className="font-montserrat text-[#111111] mb-2" style={{ fontSize: '20px', fontWeight: 700, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                    {t('donate.bankDetailsTitle')}
+                                </h3>
                                 <a
                                     href="https://send.monobank.ua/jar/8XQeqKnrET"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="inline-flex items-center justify-center w-[310px] h-[60px] bg-[#2E5C46] text-white font-montserrat rounded-[32px] hover:bg-[#254A38] transition-colors"
-                                    style={{ fontWeight: 400, fontSize: '20px' }}
+                                    className="inline-flex items-center justify-center w-full bg-[#28694D] rounded-[2rem] px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 mb-2 transition-all duration-300 hover:opacity-95"
                                 >
-                                    Зробити переказ
+                                    <span className="font-montserrat text-white text-center" style={{ fontSize: '20px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                        Зробити переказ
+                                    </span>
                                 </a>
+                                <p className="font-montserrat" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
+                                    Натискаючи, ви приймаєте <a href="/terms" className="underline">Умови</a> та <a href="/privacy" className="underline">Політику конфіденційності</a>.
+                                </p>
+                            </div>
+
+                            {/* Third Block - Bank Details */}
+                            <div>
+                                <h3 className="font-montserrat mb-2" style={{ fontSize: '20px', fontWeight: 700, lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                    Реквізити для переказу
+                                </h3>
+                                <div className="font-montserrat space-y-2">
+                                    <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
+                                        {copiedItem === 'iban' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span> UA24 3003 3500 0000 0260 0323 9362 5
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
+                                        {copiedItem === 'bank' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span> {t('donate.bankNameValue')}
+                                        </div>
+                                    </div>
+
+                                    <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start relative">
+                                        {copiedItem === 'recipient' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span> {t('donate.recipientValue')}</div>
+                                    </div>
+
+                                    <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start relative">
+                                        {copiedItem === 'edrpou' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span> 45793627</div>
+                                    </div>
+
+                                    <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
+                                        {copiedItem === 'purpose' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span> {t('donate.purposeValue')}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
+                                        {copiedItem === 'currency' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 mr-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span> UAH
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="w-[clamp(0px,4.17vw,60px)] flex-shrink-0" />
+                        <div className="relative flex-1 h-full min-w-0 flex justify-end">
+                            <div className="relative w-[clamp(320px,45.83vw,660px)] aspect-square bg-gray-300 overflow-hidden">
+                                <MediaImage
+                                    src="/donate.png"
+                                    alt="Donate"
+                                    fill
+                                    className="object-cover object-right"
+                                />
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    {/* Mobile layout */}
+                    <div className="lg:hidden pt-8 pb-8">
+                        <div className="space-y-8">
+                            {/* First Block - Info Paragraph */}
+                            <div className="px-5">
+                                <p className="font-montserrat text-[hsla(0,0%,7%,1)] text-[16px] font-normal leading-[1.5em] tracking-[0.5%]">
+                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця. <a href="/report" className="font-medium text-[#28694D] underline">{t('donate.reportLink')}</a>
+                                </p>
+                            </div>
 
-                {/* Bank Details Section */}
-                <div className="max-w-[1200px] mx-auto px-4">
-                    <div className="mb-12">
-                        <h3 className="font-alternates text-2xl text-[#111] font-medium mb-6">
-                            {t('donate.bankDetailsTitle')}
-                        </h3>
+                            {/* Image */}
+                            <div className="w-full h-[400px] relative -mx-5" style={{ width: 'calc(100% + 40px)', marginLeft: '-20px', marginRight: '-20px' }}>
+                                <MediaImage
+                                    src="/donate.png"
+                                    alt="Donate"
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
 
-                        <div className="space-y-4 font-montserrat text-sm sm:text-base text-[#111]">
-                            <div className="flex items-start justify-between gap-4 group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
-                                <div>
-                                    <span className="font-bold">{t('donate.ibanLabel')}</span> UA24 3003 3500 0000 0260 0323 9362 5
+                            {/* Second Block - Title, Button, Terms */}
+                            <div className="px-5">
+                                <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2">
+                                    {t('donate.bankDetailsTitle')}
+                                </h3>
+                                <a
+                                    href="https://send.monobank.ua/jar/8XQeqKnrET"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center justify-center w-full bg-[#28694D] rounded-[2rem] px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 mb-2 transition-all duration-300 hover:opacity-95"
+                                >
+                                    <span className="font-montserrat text-white text-[clamp(1rem,_calc(0.912rem+0.375vw),_1.25rem)] font-normal leading-[1.5em] tracking-[0.5%]">
+                                        Зробити переказ
+                                    </span>
+                                </a>
+                                <p className="font-montserrat" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
+                                    Натискаючи, ви приймаєте <a href="/terms" className="underline">Умови</a> та <a href="/privacy" className="underline">Політику конфіденційності</a>.
+                                </p>
+                            </div>
+
+                            {/* Third Block - Bank Details */}
+                            <div className="px-5">
+                                <h3 className="font-montserrat mb-2" style={{ fontSize: '20px', fontWeight: 700, lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                    Реквізити для переказу
+                                </h3>
+                                <div className="font-montserrat space-y-2">
+                                    <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                UA24 3003 3500 0000 0260 0323 9362 5
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'iban' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                {t('donate.bankNameValue')}
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'bank' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
+
+                                    <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start justify-between relative">
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                {t('donate.recipientValue')}
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'recipient' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
+
+                                    <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start justify-between relative">
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                45793627
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'edrpou' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                {t('donate.purposeValue')}
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'purpose' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
+                                        <div className="flex-1">
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                                <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span>
+                                            </div>
+                                            <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111', fontWeight: 400 }}>
+                                                UAH
+                                            </div>
+                                        </div>
+                                        {copiedItem === 'currency' ? (
+                                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
+                                                <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </div>
+                                        ) : (
+                                            <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0 ml-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        )}
+                                    </div>
                                 </div>
-                                {copiedItem === 'iban' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
-                            </div>
-
-                            <div className="flex items-start justify-between gap-4 group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
-                                <div>
-                                    <span className="font-bold">{t('donate.bankNameLabel')}</span> {t('donate.bankNameValue')}
-                                </div>
-                                {copiedItem === 'bank' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
-                            </div>
-
-                            <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex justify-between items-start gap-4 relative">
-                                <div><span className="font-bold">{t('donate.recipientLabel')}</span> {t('donate.recipientValue')}</div>
-                                {copiedItem === 'recipient' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
-                            </div>
-
-                            <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex justify-between items-start gap-4 relative">
-                                <div><span className="font-bold">{t('donate.edrpouLabel')}</span> 45793627</div>
-                                {copiedItem === 'edrpou' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
-                            </div>
-
-                            <div className="flex items-start justify-between gap-4 group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
-                                <div>
-                                    <span className="font-bold">{t('donate.purposeLabel')}</span> {t('donate.purposeValue')}
-                                </div>
-                                {copiedItem === 'purpose' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
-                            </div>
-
-                            <div className="flex items-start justify-between gap-4 group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
-                                <div>
-                                    <span className="font-bold">{t('donate.currencyLabel')}</span> UAH
-                                </div>
-                                {copiedItem === 'currency' ? (
-                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                        <span className="text-[#165731] text-xs font-medium">{t('donate.copied')}</span>
-                                        <svg className="w-5 h-5 text-[#165731] transition-colors" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                ) : (
-                                    <svg className="w-5 h-5 text-[#CBCBCB] group-hover:text-[#165731] transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                )}
                             </div>
                         </div>
                     </div>

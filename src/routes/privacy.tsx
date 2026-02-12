@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { lazy, Suspense } from 'react'
 import Header from '@/src/components/Header'
 import { useI18n } from '@/src/contexts/I18nContext'
+import PageClientShell from '@/src/components/PageClientShell'
 
 const FooterSection = lazy(() => import('@/src/components/FooterSection'))
 
@@ -19,10 +20,18 @@ export const Route = createFileRoute('/privacy')({
 })
 
 function PrivacyPage() {
+  return (
+    <PageClientShell>
+      <PrivacyPageContent />
+    </PageClientShell>
+  )
+}
+
+function PrivacyPageContent() {
   const { t, language } = useI18n()
 
   return (
-    <main className="min-h-screen bg-[#FBFBF9]">
+      <main className="min-h-screen bg-[#FBFBF9]">
       <style>{`
         .privacy-page header.header-fade-in {
           animation: none !important;
@@ -203,6 +212,6 @@ function PrivacyPage() {
       <Suspense fallback={<LoadingFallback />}>
         <FooterSection />
       </Suspense>
-    </main>
+      </main>
   )
 }

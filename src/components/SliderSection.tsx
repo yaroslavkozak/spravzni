@@ -216,20 +216,20 @@ export default function SliderSection() {
   }, [disableTransition])
 
   return (
-    <section id="mi" className="bg-[#FBFBF9] pb-16">
+    <section id="mi" className="bg-[#FBFBF9] pb-0 lg:pb-16">
       <div className="max-w-[1440px] mx-auto">
         {/* Heading */}
-        <div className="flex flex-col items-start sm:items-center gap-2 px-4 sm:px-6 md:px-8 lg:px-[100px] xl:px-[215px] py-0 mb-6 sm:mb-8 md:mb-12 lg:mb-16">
-          <h2 className="font-alternates text-[#111111] text-[28px] sm:text-[36px] md:text-[48px] lg:text-[62px] font-medium leading-[1.1em] tracking-[-2%] text-left sm:text-center">
+        <div className="flex flex-col items-start sm:items-center gap-2 p-4 sm:p-0 sm:px-6 md:px-8 lg:px-[100px] xl:px-[215px] mb-0 sm:mb-8 md:mb-12 lg:mb-16 border-b border-[rgba(17,17,17,0.11)] sm:border-b-0">
+          <h2 className="font-alternates text-[#111111] text-[32px] sm:text-[36px] md:text-[48px] lg:text-[62px] font-medium leading-[1.1em] tracking-[-2%] text-center">
             {t('slider.title')}
           </h2>
-          <p className="text-[#28694D] text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-medium leading-[1.3em] tracking-[1.5%] text-left sm:text-center">
+          <p className="font-montserrat text-[#28694D] text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-normal sm:font-medium leading-[1.3em] tracking-[1.5%] text-center">
             {t('slider.subtitle')}
           </p>
         </div>
 
-        {/* Slider Container */}
-        <div className="relative w-full max-w-[1360px] mx-auto bg-white px-4 sm:px-6 md:px-8 lg:px-10 xl:px-[40px]">
+        {/* Slider Container - desktop only */}
+        <div className="hidden lg:block relative w-full max-w-[1360px] mx-auto lg:max-w-none lg:mx-0 bg-white px-4 sm:px-6 md:px-8 lg:px-[40px]">
           <div className="relative overflow-hidden h-[300px] sm:h-[375px] md:h-[450px] lg:h-[525px] xl:h-[800px] xl:max-h-[800px]">
             {/* Navigation Arrows - Positioned for all slides */}
             <div className={`absolute top-1/2 left-0 right-0 flex ${showOnlyNext ? 'justify-end' : 'justify-between'} px-2 sm:px-4 md:px-6 lg:px-10 -translate-y-1/2 pointer-events-none z-20`}>
@@ -363,6 +363,7 @@ export default function SliderSection() {
             </div>
           </div>
         </div>
+
       </div>
     </section>
   )

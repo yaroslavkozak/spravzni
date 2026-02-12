@@ -271,6 +271,7 @@ export default function Modal({
         ref={modalRef}
         className={className}
         style={style}
+        data-lenis-prevent
         onClick={(e) => e.stopPropagation()}
         onTouchMove={(e) => {
           // Allow touch scrolling within modal content

@@ -29,6 +29,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
   const [hoveredContact, setHoveredContact] = useState<string | null>(null)
   const [nameValue, setNameValue] = useState<string>('')
   const [commentValue, setCommentValue] = useState<string>('')
+  const [nameError, setNameError] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -39,6 +40,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
   const [textareaHeight, setTextareaHeight] = useState<number>(70) // Default height for 2 rows
   const [isResizing, setIsResizing] = useState<boolean>(false)
   const { t } = useI18n()
+  const isEmailPreferred = contactPreference === 'email'
 
   // Email validation function
   const validateEmail = (email: string): boolean => {
@@ -357,11 +359,11 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
 
     const updateModalHeight = () => {
       if (window.innerWidth < 640) {
-        // Mobile: use dvh (dynamic viewport height) for better Safari support
+        // Mobile: use dvh (dynamic viewport height) for full screen height
         setModalStyle({ height: '100dvh' })
       } else {
-        // Desktop: use max-height constraint
-        setModalStyle({ maxHeight: '100vh' })
+        // Desktop: keep current top offset (5vh) and stretch to the viewport bottom
+        setModalStyle({ height: '95vh' })
       }
     }
 
@@ -387,6 +389,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
     setEmailError(false)
     setEmailFormatError(false)
     setEmailCyrillicError(false)
+    setNameError(false)
     onClose()
   }
 
@@ -395,19 +398,19 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
       isOpen={isOpen}
       onClose={handleClose}
       title={t('contact.title')}
-      overlayClassName="bg-black/50 backdrop-blur-sm sm:items-center sm:justify-center"
+      overlayClassName="bg-black/50 backdrop-blur-sm items-start justify-start sm:items-start sm:justify-center"
       className={
         submitSuccess
-          ? "bg-transparent w-full h-full sm:max-w-2xl sm:w-auto sm:h-auto sm:mx-4 sm:mx-6 sm:max-h-[100vh] overflow-y-auto overscroll-contain relative flex flex-col"
-          : "bg-white w-full h-full sm:max-w-2xl sm:w-auto sm:h-auto sm:mx-4 sm:mx-6 sm:max-h-[100vh] overflow-y-auto overscroll-contain relative flex flex-col"
+          ? "bg-transparent w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[95vh] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
+          : "bg-white w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[95vh] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
       }
       style={modalStyle}
-      closeOnOverlayClick={submitSuccess}
+      closeOnOverlayClick={!isSubmitting}
       renderScreenReaderTitle={false}
     >
       {/* Form Content */}
       <div 
-        className={submitSuccess ? "px-0" : "px-4 sm:px-5 md:px-6 pt-[3.125rem] sm:pt-[3.125rem] md:pt-[3.125rem] pb-12 sm:pb-16 md:pb-20 overflow-y-auto flex-1"}
+        className={submitSuccess ? "px-0 overflow-y-auto overscroll-contain flex-1" : "px-4 sm:px-5 md:px-6 pt-[3.125rem] sm:pt-[3.125rem] md:pt-[3.125rem] pb-12 sm:pb-16 md:pb-20 overflow-y-auto overscroll-contain flex-1"}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {submitSuccess ? (
@@ -448,7 +451,10 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               {t('contact.title')}
             </h2>
 
-          <form className="space-y-4 sm:space-y-5" onSubmit={async (e) => {
+          <form
+            noValidate
+            className="space-y-4 sm:space-y-5"
+            onSubmit={async (e) => {
             e.preventDefault()
             
             // Reset previous states
@@ -457,6 +463,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
             
             // Validate name - should not be empty or only spaces
             if (!nameValue || !nameValue.trim()) {
+              setNameError(true)
               nameInputRef.current?.focus()
               return
             }
@@ -478,31 +485,38 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               return
             }
             
-            // Validate email (required)
-            if (!emailValue) {
-              setEmailError(true)
+            // Validate email only when email is selected as response channel
+            if (isEmailPreferred) {
+              if (!emailValue) {
+                setEmailError(true)
+                setEmailFormatError(false)
+                setEmailCyrillicError(false)
+                emailInputRef.current?.focus()
+                return
+              }
+
+              // Check for Cyrillic letters or incomplete email first
+              if (hasCyrillicLetters(emailValue) || isIncompleteEmail(emailValue)) {
+                setEmailCyrillicError(true)
+                setEmailFormatError(false)
+                setEmailError(false)
+                emailInputRef.current?.focus()
+                return
+              }
+
+              if (!validateEmail(emailValue)) {
+                // Email format is invalid
+                setEmailFormatError(true)
+                setEmailError(false)
+                setEmailCyrillicError(false)
+                emailInputRef.current?.focus()
+                return
+              }
+            } else {
+              // Ensure no stale email errors are shown when email is not the selected channel.
+              setEmailError(false)
               setEmailFormatError(false)
               setEmailCyrillicError(false)
-              emailInputRef.current?.focus()
-              return
-            }
-
-            // Check for Cyrillic letters or incomplete email first
-            if (hasCyrillicLetters(emailValue) || isIncompleteEmail(emailValue)) {
-              setEmailCyrillicError(true)
-              setEmailFormatError(false)
-              setEmailError(false)
-              emailInputRef.current?.focus()
-              return
-            }
-
-            if (!validateEmail(emailValue)) {
-              // Email format is invalid
-              setEmailFormatError(true)
-              setEmailError(false)
-              setEmailCyrillicError(false)
-              emailInputRef.current?.focus()
-              return
             }
             
             // Validate that at least one interest is selected
@@ -545,7 +559,8 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
             } finally {
               setIsSubmitting(false)
             }
-          }}>
+            }}
+          >
             {/* Top Row: Name and Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {/* Name Field */}
@@ -557,14 +572,34 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                   ref={nameInputRef}
                   type="text"
                   id="name"
-                  required
                   value={nameValue}
-                  onChange={handleNameChange}
+                  onChange={(e) => {
+                    handleNameChange(e)
+                    if (nameError && e.target.value.trim()) {
+                      setNameError(false)
+                    }
+                  }}
                   onKeyDown={handleNameKeyDown}
                   onPaste={handleNamePaste}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-2.5 border border-[#11111126] focus:outline-none focus:ring-2 focus:ring-[#28694D] focus:border-transparent text-[16px] sm:text-base font-montserrat"
+                  onBlur={() => {
+                    if (!nameValue || !nameValue.trim()) {
+                      setNameError(true)
+                    } else {
+                      setNameError(false)
+                    }
+                  }}
+                  className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border focus:outline-none focus:ring-2 focus:border-transparent text-[16px] sm:text-base font-montserrat ${
+                    nameError
+                      ? 'border-red-500 focus:ring-red-500'
+                      : 'border-[#11111126] focus:ring-[#28694D]'
+                  }`}
                   placeholder={t('contact.field.namePlaceholder')}
                 />
+                {nameError && (
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
+                    Будь ласка, вкажіть ваше ім&#39;я
+                  </p>
+                )}
               </div>
 
               {/* Phone Field */}
@@ -583,12 +618,10 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                     onKeyDown={handlePhoneKeyDown}
                     onPaste={handlePhonePaste}
                     onBlur={handlePhoneBlur}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border pr-10 focus:outline-none text-[16px] sm:text-base font-montserrat focus:ring-2 focus:ring-[#28694D] focus:border-transparent ${
-                      phoneError && phonePartialError
-                        ? 'border-red-500'
-                        : phoneError && !phonePartialError
-                        ? 'border-gray-400'
-                        : 'border-[#11111126]'
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border pr-10 focus:outline-none text-[16px] sm:text-base font-montserrat focus:ring-2 focus:border-transparent ${
+                      phoneError
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-[#11111126] focus:ring-[#28694D]'
                     }`}
                     placeholder="+380"
                   />
@@ -605,6 +638,11 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                     {t('contact.error.phoneInvalid')}
                   </p>
                 )}
+                {phoneError && !phonePartialError && (
+                  <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
+                    Будь ласка, введіть свій номер
+                  </p>
+                )}
               </div>
             </div>
 
@@ -613,7 +651,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               {/* Email Field */}
               <div>
                 <label htmlFor="email" className="block text-[#111111] text-base font-normal font-montserrat mb-1.5 sm:mb-2">
-                  {t('contact.field.email')}<span className="text-[#111111]">*</span>
+                  {t('contact.field.email')}{isEmailPreferred && <span className="text-[#111111]">*</span>}
                 </label>
                 <div className="relative">
                   <input
@@ -624,7 +662,15 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                     onChange={(e) => {
                       const value = e.target.value
                       setEmailValue(value)
-                      
+
+                      if (!isEmailPreferred) {
+                        // Email is optional unless "email" channel is selected.
+                        setEmailError(false)
+                        setEmailFormatError(false)
+                        setEmailCyrillicError(false)
+                        return
+                      }
+
                       // Check for Cyrillic letters or incomplete email
                       if (hasCyrillicLetters(value) || isIncompleteEmail(value)) {
                         setEmailCyrillicError(true)
@@ -632,7 +678,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                       } else {
                         setEmailCyrillicError(false)
                       }
-                      
+
                       // Clear other errors while typing to allow user to correct
                       if (value && emailError) {
                         setEmailError(false)
@@ -642,6 +688,13 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                       }
                     }}
                     onBlur={() => {
+                      if (!isEmailPreferred) {
+                        setEmailError(false)
+                        setEmailFormatError(false)
+                        setEmailCyrillicError(false)
+                        return
+                      }
+
                       // Check for Cyrillic letters or incomplete email
                       if (emailValue && (hasCyrillicLetters(emailValue) || isIncompleteEmail(emailValue))) {
                         setEmailCyrillicError(true)
@@ -659,14 +712,14 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                         setEmailCyrillicError(false)
                       }
                     }}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border pr-10 focus:outline-none text-[16px] sm:text-base font-montserrat focus:ring-2 focus:ring-[#28694D] focus:border-transparent ${
-                      (emailError && contactPreference === 'email') || emailFormatError || emailCyrillicError
-                        ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
-                        : 'border-[#11111126]'
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 border pr-10 focus:outline-none text-[16px] sm:text-base font-montserrat focus:ring-2 focus:border-transparent ${
+                      isEmailPreferred && (emailError || emailFormatError || emailCyrillicError)
+                        ? 'border-red-500 focus:ring-red-500'
+                        : 'border-[#11111126] focus:ring-[#28694D]'
                     }`}
                     placeholder="example@mail.com"
                   />
-                  {((emailError && contactPreference === 'email') || emailFormatError || emailCyrillicError) && (
+                  {isEmailPreferred && (emailError || emailFormatError || emailCyrillicError) && (
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
                       <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
@@ -674,17 +727,17 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                     </div>
                   )}
                 </div>
-                {emailError && (
+                {isEmailPreferred && emailError && (
                   <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
                     {t('contact.error.emailRequired')}
                   </p>
                 )}
-                {emailCyrillicError && emailValue && (
+                {isEmailPreferred && emailCyrillicError && emailValue && (
                   <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
                     {t('contact.error.emailFormatHint')}
                   </p>
                 )}
-                {emailFormatError && emailValue && !emailCyrillicError && (
+                {isEmailPreferred && emailFormatError && emailValue && !emailCyrillicError && (
                   <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
                     {t('contact.error.emailFormatHint')}
                   </p>
@@ -758,26 +811,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                     onClick={() => {
                       const newPreference = contactPreference === 'email' ? null : 'email'
                       setContactPreference(newPreference)
-                      if (newPreference === 'email') {
-                        if (!emailValue) {
-                          setEmailError(true)
-                          setEmailFormatError(false)
-                          setEmailCyrillicError(false)
-                        } else {
-                          // Check for Cyrillic letters or incomplete email first
-                          if (hasCyrillicLetters(emailValue) || isIncompleteEmail(emailValue)) {
-                            setEmailCyrillicError(true)
-                            setEmailFormatError(false)
-                            setEmailError(false)
-                          } else {
-                            // Validate format if email is already entered
-                            const isValid = validateEmail(emailValue)
-                            setEmailFormatError(!isValid)
-                            setEmailError(false)
-                            setEmailCyrillicError(false)
-                          }
-                        }
-                      } else {
+                      if (newPreference !== 'email') {
                         setEmailError(false)
                         setEmailFormatError(false)
                         setEmailCyrillicError(false)
@@ -1034,31 +1068,10 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
             )}
 
             {/* Submit Button */}
-            <p className="text-xs text-gray-500 font-montserrat leading-[150%]">
-              {t('form.consent.prefix')}{' '}
-              <a
-                href="https://spravzhni.com.ua/terms"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-[#28694D] transition-colors"
-              >
-                {t('form.consent.terms')}
-              </a>{' '}
-              {t('form.consent.and')}{' '}
-              <a
-                href="https://spravzhni.com.ua/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-[#28694D] transition-colors"
-              >
-                {t('form.consent.privacy')}
-              </a>
-              .
-            </p>
             <button
               type="submit"
               disabled={isSubmitting || submitSuccess}
-              className={`w-full bg-[#28694D] rounded-[32px] py-2.5 sm:py-3 px-6 sm:px-8 flex items-center justify-center transition-all duration-300 ${
+              className={`w-full bg-[#28694D] rounded-[32px] py-2.5 sm:py-3 px-6 sm:px-8 flex items-center justify-center transition-all duration-300 mb-2 ${
                 isSubmitting || submitSuccess
                   ? 'opacity-50 cursor-not-allowed'
                   : 'hover:bg-[#28694D]/90'
@@ -1068,6 +1081,27 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                 <span>{isSubmitting ? t('contact.submit.sending') : submitSuccess ? t('contact.submit.sent') : t('contact.submit.send')}</span>
               </span>
             </button>
+            {/* Consent Text */}
+            <p className="font-montserrat text-left" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
+              {t('form.consent.prefix')}{' '}
+              <a
+                href="https://spravzhni.com.ua/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#28694D] hover:underline"
+              >
+                {t('form.consent.terms')}
+              </a>
+              {' '}{t('form.consent.and')}{' '}
+              <a
+                href="https://spravzhni.com.ua/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#28694D] hover:underline"
+              >
+                {t('form.consent.privacy')}
+              </a>
+            </p>
           </form>
           </>
         )}

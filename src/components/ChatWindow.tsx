@@ -634,8 +634,15 @@ export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
 
           {/* Send Button */}
           <form onSubmit={handleSubmit}>
+            <button
+              type="submit"
+              disabled={isSending}
+              className="w-full bg-[#28694D] text-white rounded-[32px] py-3 px-6 font-montserrat text-[20px] font-normal leading-[150%] tracking-[0.5%] hover:bg-[#1f5239] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#28694D] mb-2"
+            >
+              {isSending ? t('chatWindow.sending') : t('chatWindow.send')}
+            </button>
             {/* Consent Text */}
-            <p className="text-xs text-gray-600 mb-3 font-montserrat text-center">
+            <p className="font-montserrat text-left" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
               {t('form.consent.prefix')}{' '}
               <a 
                 href="https://spravzhni.com.ua/terms" 
@@ -655,13 +662,6 @@ export default function ChatWindow({ isOpen, onClose }: ChatWindowProps) {
                 {t('form.consent.privacy')}
               </a>
             </p>
-            <button
-              type="submit"
-              disabled={isSending}
-              className="w-full bg-[#28694D] text-white rounded-[32px] py-3 px-6 font-montserrat text-[20px] font-normal leading-[150%] tracking-[0.5%] hover:bg-[#1f5239] transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#28694D]"
-            >
-              {isSending ? t('chatWindow.sending') : t('chatWindow.send')}
-            </button>
           </form>
 
           {/* Success Popup */}

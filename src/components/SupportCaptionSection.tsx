@@ -7,11 +7,15 @@ export default function SupportCaptionSection() {
   const { t } = useI18n()
 
   return (
-    <section id="social" className="relative w-full h-[562px] sm:h-[80vh] lg:h-screen overflow-hidden text-white sm:px-6 lg:px-8">
+    <section id="social" className="relative w-full h-[1290px] sm:h-[80vh] lg:h-screen overflow-hidden text-white sm:px-6 lg:px-8">
       <div className="absolute inset-0">
         <BackgroundMedia
+          src="/backg.jpg"
+          className="w-full h-full bg-cover bg-[60%_center] bg-no-repeat sm:hidden"
+        />
+        <BackgroundMedia
           src="/images/other/mangirl.png"
-          className="w-full h-full bg-cover bg-[60%_center] sm:bg-center bg-no-repeat"
+          className="hidden w-full h-full bg-cover bg-[60%_center] sm:bg-center bg-no-repeat sm:block"
         />
       </div>
 

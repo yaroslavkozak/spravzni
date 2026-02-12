@@ -21,6 +21,7 @@ export default function VideoPartnersSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isCenterHovered, setIsCenterHovered] = useState(false)
+  const [hasUserClicked, setHasUserClicked] = useState(false)
   const [volume, setVolume] = useState(1)
   const [showVolumeControl, setShowVolumeControl] = useState(false)
   const { t } = useI18n()
@@ -29,6 +30,7 @@ export default function VideoPartnersSection() {
   const duplicatedPartners = [...partners, ...partners]
 
   const togglePlayPause = () => {
+    setHasUserClicked(true)
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play().catch(() => {
@@ -109,6 +111,9 @@ export default function VideoPartnersSection() {
     }
   }, [])
 
+  const showPlayIcon = hasUserClicked && !isPlaying
+  const hoverActionLabel = showPlayIcon ? t('videoPartners.play') : t('videoPartners.pause')
+
   return (
     <section className="bg-[#FBFBF9] pb-12 sm:pb-16 md:pb-20 lg:pb-[120px] min-h-[50vh] sm:min-h-[70vh] md:min-h-screen flex flex-col">
       {/* Video Section - Full Width */}
@@ -125,7 +130,7 @@ export default function VideoPartnersSection() {
 
         {/* Center Hover Area */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 z-10 pointer-events-auto"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 z-10 pointer-events-auto"
           onMouseEnter={() => setIsCenterHovered(true)}
           onMouseLeave={() => setIsCenterHovered(false)}
         />
@@ -136,11 +141,11 @@ export default function VideoPartnersSection() {
             onClick={togglePlayPause}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-20 h-20 flex items-center justify-center transition-all pointer-events-auto"
             onMouseEnter={() => setIsCenterHovered(true)}
-            aria-label={isPlaying ? t('videoPartners.pause') : t('videoPartners.play')}
+            aria-label={hoverActionLabel}
           >
               <MediaImage
-                src={isPlaying ? '/images/video/pause.svg' : '/images/video/play.svg'}
-                alt={isPlaying ? t('videoPartners.pause') : t('videoPartners.play')}
+                src={showPlayIcon ? '/images/video/play.svg' : '/images/video/pause.svg'}
+                alt={hoverActionLabel}
                 width={56}
                 height={56}
                 className="object-contain"
@@ -195,7 +200,7 @@ export default function VideoPartnersSection() {
       </div>
 
       {/* Partner Carousel - Full Width with column layout for captions */}
-      <div className="relative overflow-hidden sm:border-t border-[rgba(17,17,17,0.11)] w-full mt-8 sm:mt-12 md:mt-16 lg:mt-24">
+      <div className="relative overflow-hidden w-full mt-8 sm:mt-12 md:mt-16 lg:mt-24">
         <div className="flex flex-col">
           {/* Caption container on the right, above carousel */}
           <div className="flex justify-end pr-4 sm:pr-8 md:pr-12 lg:pr-16 py-2">
@@ -206,7 +211,7 @@ export default function VideoPartnersSection() {
           
           {/* Carousel Row */}
           <div className="relative overflow-hidden w-full">
-            <div className="flex items-center py-[26px] sm:py-4 animate-scroll-left bg-[#FBFBF9] border border-[#1111111C] sm:bg-transparent sm:border-0" style={{ width: 'max-content' }}>
+            <div className="flex items-center py-[26px] sm:py-4 animate-scroll-left bg-[#FBFBF9] sm:bg-transparent border-y border-[rgba(17,17,17,0.11)]" style={{ width: 'max-content' }}>
               {duplicatedPartners.map((partner, index) => (
                 <div
                   key={`${partner.id}-${index}`}

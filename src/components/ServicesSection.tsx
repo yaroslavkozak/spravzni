@@ -60,13 +60,13 @@ const ServiceItem = ({
   const hasPrimaryButton = showPrimaryButton && isValidButtonText(primaryButtonText)
   const hasSecondaryButton = isValidButtonText(secondaryButtonText)
   return (
-    <div className="w-full border-t lg:border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
+    <div className="w-full border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
       {/* Desktop layout */}
       <div className="hidden lg:flex items-stretch gap-0 min-w-0">
         <div className="w-[clamp(0px,14.93vw,215px)] flex-shrink-0" />
         <div className="w-[clamp(320px,30.4vw,438px)] flex-shrink-0 flex flex-col h-[clamp(320px,45.83vw,660px)] pt-[clamp(24px,4.44vw,64px)] justify-between">
           <div>
-            <h3 className="font-montserrat text-[hsla(0,0%,7%,1)] text-[clamp(1.125rem,_calc(0.993rem+0.563vw),_1.5rem)] font-bold leading-[1.3em] tracking-[-1%]">
+            <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%]">
               {heading}
             </h3>
             <div className="space-y-3 sm:space-y-4 md:space-y-5 pt-4">
@@ -144,12 +144,12 @@ const ServiceItem = ({
       </div>
 
       {/* Mobile layout */}
-      <div className="lg:hidden grid grid-cols-1 gap-2">
-        <h3 className="font-montserrat text-[hsla(0,0%,7%,1)] text-[clamp(1.125rem,_calc(0.993rem+0.563vw),_1.5rem)] font-bold leading-[1.3em] tracking-[-1%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16">
+      <div className="lg:hidden grid grid-cols-1 gap-4 pr-5">
+        <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16">
           {heading}
         </h3>
-        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pr-5 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32">
-          <div className="relative w-full min-w-[375px] aspect-square bg-gray-300 overflow-hidden mx-auto">
+        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32">
+          <div className="relative w-[clamp(280px,89.33vw,335px)] aspect-square bg-gray-300 overflow-hidden mx-auto">
             <MediaImage
               src={
                 imageSrc.startsWith('/')
@@ -162,7 +162,7 @@ const ServiceItem = ({
             />
             {safeOverlayText && (
               <div className="absolute bottom-0 left-0 right-0 bg-[#111111]/60 text-white px-4 sm:px-6 z-10">
-                <div className="flex items-center justify-center min-h-[104px]">
+                <div className="flex items-center justify-center min-h-[80px]">
                   <p className="font-montserrat text-[16px] text-[hsla(0,0%,100%,1)] text-center">
                     {safeOverlayText}
                   </p>
@@ -172,7 +172,7 @@ const ServiceItem = ({
           </div>
         </div>
         <div className="max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 h-full flex flex-col">
-          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px] pr-5 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32">
+          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px]">
             {paragraphs
               .filter((paragraph) => {
                 if (!paragraph) return false
@@ -189,7 +189,7 @@ const ServiceItem = ({
               ))}
           </div>
           {hasPrimaryButton || hasSecondaryButton ? (
-            <div className="flex flex-col gap-2 sm:gap-3 md:gap-4 w-full mt-auto pb-6 pr-5 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32">
+            <div className="flex flex-col gap-2 w-full mt-4 mt-auto pb-6">
               {hasPrimaryButton && safePrimaryButtonText && (
                 <button
                   onClick={
@@ -423,8 +423,8 @@ export default function ServicesSection() {
   return (
     <section id="services" className="bg-white py-16 md:py-20 lg:py-24">
       <div className="w-full">
-        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8 lg:px-16">
-          <div className="space-y-2 md:space-y-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14 pl-0 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32">
+        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8 lg:pr-16 lg:pl-[clamp(0px,14.93vw,215px)]">
+          <div className="space-y-2 md:space-y-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14">
             <h2 className="font-alternates text-[#111111] text-[clamp(2rem,_calc(1.34rem+2.817vw),_3.875rem)] font-medium leading-[1.1em] tracking-[-2%]">
               {t('services.title')}
             </h2>

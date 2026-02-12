@@ -5,19 +5,12 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import '../styles.css'
-import { ContactPopupProvider } from '@/src/contexts/ContactPopupContext'
-import { VacationOptionsPopupProvider } from '@/src/contexts/VacationOptionsPopupContext'
-import VacationOptionsPopupWrapper from '@/src/components/VacationOptionsPopupWrapper'
-import { ChatWindowProvider } from '@/src/contexts/ChatWindowContext'
-import ChatButton from '@/src/components/ChatButton'
-import { I18nProvider } from '@/src/contexts/I18nContext'
-import SmoothScroll from '@/src/components/SmoothScroll'
-import { PreloadProvider } from '@/src/contexts/PreloadContext'
-import { SliderProvider } from '@/src/contexts/SliderContext'
-import { useI18n } from '@/src/contexts/I18nContext'
+import { getStaticTranslator } from '@/src/lib/i18n-static'
+import type { SupportedLanguage } from '@/src/lib/i18n'
 
 function NotFound() {
-  const { t } = useI18n()
+  const language: SupportedLanguage = 'uk'
+  const t = getStaticTranslator(language)
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#FBFBF9] px-4">
@@ -134,23 +127,7 @@ function RootLayout() {
         <HeadContent />
       </head>
       <body>
-        <SmoothScroll>
-          <PreloadProvider>
-            <I18nProvider>
-              <SliderProvider>
-                <ContactPopupProvider>
-                  <VacationOptionsPopupProvider>
-                    <ChatWindowProvider>
-                      <Outlet />
-                      <VacationOptionsPopupWrapper />
-                      <ChatButton />
-                    </ChatWindowProvider>
-                  </VacationOptionsPopupProvider>
-                </ContactPopupProvider>
-              </SliderProvider>
-            </I18nProvider>
-          </PreloadProvider>
-        </SmoothScroll>
+        <Outlet />
         <Scripts />
       </body >
     </html >

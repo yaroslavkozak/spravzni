@@ -86,9 +86,9 @@ export default function SpaceSection() {
   const showNextArrow = true // Always show next arrow
 
   return (
-    <section className="bg-[#FBFBF9] pt-0 pb-16 md:py-20 lg:py-24">
+    <section className="bg-[#FBFBF9] pt-0 pb-16 md:py-20 lg:pt-20 lg:pb-24">
       {/* Title Section - Desktop only, above border */}
-      <div className="hidden lg:block max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16 mb-8">
+      <div className="hidden lg:block max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-[215px] mb-8">
         <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2">
           {t('space.title')}
         </h2>
