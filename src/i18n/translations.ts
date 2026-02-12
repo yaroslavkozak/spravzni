@@ -336,6 +336,13 @@ export type TranslationKey =
   | 'donate.error.recurringUnavailable'
   | 'donate.error.generic'
   | 'donate.description'
+  | 'donate.infoParagraph'
+  | 'donate.reportMonthly'
+  | 'donate.termsPrefix'
+  | 'donate.termsLink'
+  | 'donate.termsAnd'
+  | 'donate.privacyLink'
+  | 'donate.bankDetailsSectionTitle'
   // Terms
   | 'terms.title'
   | 'terms.section1.title'
@@ -766,6 +773,13 @@ export const translationsByLanguage: TranslationsByLanguage = {
     'donate.error.recurringUnavailable': 'Регулярні платежі наразі недоступні. Будь ласка, зверніться до підтримки Monobank для активації функції регулярних платежів у вашому обліковому записі.',
     'donate.error.generic': 'Щось пішло не так. Спробуйте пізніше.',
     'donate.description': 'Донат {{amount}} грн',
+    'donate.infoParagraph': 'Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо.',
+    'donate.reportMonthly': 'Звітуємо щомісяця.',
+    'donate.termsPrefix': 'Натискаючи, ви приймаєте',
+    'donate.termsLink': 'Умови',
+    'donate.termsAnd': 'та',
+    'donate.privacyLink': 'Політику конфіденційності',
+    'donate.bankDetailsSectionTitle': 'Реквізити для переказу',
     'terms.title': 'Умови використання',
     'terms.section1.title': '1. Прийняття умов',
     'terms.section1.body': 'Використовуючи наш веб-сайт та послуги, ви погоджуєтеся дотримуватися цих Умов використання. Якщо ви не згодні з будь-якою частиною цих умов, будь ласка, не використовуйте наш веб-сайт.',
@@ -1188,6 +1202,13 @@ export const translationsByLanguage: TranslationsByLanguage = {
     'donate.error.recurringUnavailable': 'Recurring payments are currently unavailable. Please contact Monobank support to enable recurring payments for your account.',
     'donate.error.generic': 'Something went wrong. Please try later.',
     'donate.description': 'Donation {{amount}} UAH',
+    'donate.infoParagraph': 'Each donation supports veterans’ recovery and integration: adaptive swimming groups; the “Path of Strength” program for veterans, military personnel, their families, and families of the fallen and missing; and more.',
+    'donate.reportMonthly': 'We report monthly.',
+    'donate.termsPrefix': 'By clicking, you accept the',
+    'donate.termsLink': 'Terms',
+    'donate.termsAnd': 'and',
+    'donate.privacyLink': 'Privacy Policy',
+    'donate.bankDetailsSectionTitle': 'Bank details for transfer',
     'terms.title': 'Terms of Use',
     'terms.section1.title': '1. Acceptance of terms',
     'terms.section1.body': 'By using our website and services, you agree to comply with these Terms of Use. If you do not agree with any part of these terms, please do not use our website.',

@@ -30,21 +30,23 @@ export function I18nProvider({
   const [loading, setLoading] = useState(false);
   const languageRef = useRef<SupportedLanguage>(initialLanguage);
 
-  // Load translations from static files (bundled)
+  // Load translations from static files (bundled) + API overrides from admin/translations
   const loadTranslations = useCallback(async (lang: SupportedLanguage) => {
     setLoading(true);
-    const baseTranslations = translationsByLanguage[lang] || {};
-    setTranslations(baseTranslations as Record<string, string>);
+    const baseTranslations = (translationsByLanguage[lang] || {}) as Record<string, string>;
+    setTranslations(baseTranslations);
 
     try {
-      const response = await fetch(`/api/translations?lang=${encodeURIComponent(lang)}`);
+      // Cache-bust to avoid stale responses after admin edits
+      const url = `/api/translations?lang=${encodeURIComponent(lang)}&_=${Date.now()}`;
+      const response = await fetch(url, { cache: 'no-store' });
       if (response.ok) {
-        const data = await response.json() as { translations?: Record<string, string> };
-        if (languageRef.current === lang && data.translations) {
-          setTranslations({
-            ...(baseTranslations as Record<string, string>),
-            ...data.translations,
-          });
+        const data = (await response.json()) as { translations?: Record<string, string> };
+        const overrides = data.translations != null && typeof data.translations === 'object'
+          ? data.translations
+          : {};
+        if (languageRef.current === lang) {
+          setTranslations({ ...baseTranslations, ...overrides });
         }
       }
     } catch (error) {
@@ -96,6 +98,18 @@ export function I18nProvider({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Refetch translations when tab becomes visible (e.g. after editing in admin)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const handler = () => {
+      if (document.visibilityState === 'visible') {
+        void loadTranslations(languageRef.current);
+      }
+    };
+    document.addEventListener('visibilitychange', handler);
+    return () => document.removeEventListener('visibilitychange', handler);
+  }, [loadTranslations]);
 
   // Translation function
   const t = useCallback(

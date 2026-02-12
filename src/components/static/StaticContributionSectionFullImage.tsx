@@ -41,7 +41,7 @@ export default function StaticContributionSectionFullImage({
               style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
             >
               {t('contribution.p3')}{' '}
-              <a href="/report" className="underline hover:opacity-80 transition-opacity">
+              <a href="/report" className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                 {t('hero.subtitle.report')}
               </a>
             </p>
@@ -78,7 +78,7 @@ export default function StaticContributionSectionFullImage({
               style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
             >
               {t('contribution.p3')}{' '}
-              <a href="/report" className="underline hover:opacity-80 transition-opacity">
+              <a href="/report" className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                 {t('hero.subtitle.report')}
               </a>
             </p>

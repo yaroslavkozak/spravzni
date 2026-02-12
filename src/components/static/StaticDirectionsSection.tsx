@@ -35,7 +35,7 @@ export default function StaticDirectionsSection({ t }: StaticDirectionsSectionPr
                   </span>
                   <a
                     href="https://maps.app.goo.gl/z4d33r87E1eAJ6rs9"
-                    className={`${detailTextClass} font-semibold underline underline-offset-2 hover:opacity-80 transition-opacity cursor-pointer`}
+                    className={`${detailTextClass} font-normal underline underline-offset-4 hover:opacity-80 transition-opacity cursor-pointer`}
                   >
                     {t('directions.address.value')}
                   </a>
@@ -92,7 +92,7 @@ export default function StaticDirectionsSection({ t }: StaticDirectionsSectionPr
                   </span>
                   <a
                     href="https://maps.app.goo.gl/z4d33r87E1eAJ6rs9"
-                    className={`${detailTextClass} font-semibold underline underline-offset-2 hover:opacity-80 transition-opacity cursor-pointer`}
+                    className={`${detailTextClass} font-normal underline underline-offset-4 hover:opacity-80 transition-opacity cursor-pointer`}
                   >
                     {t('directions.address.value')}
                   </a>

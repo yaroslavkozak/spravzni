@@ -23,16 +23,23 @@ export default function VacationOptionsPopup({
   serviceId,
 }: VacationOptionsPopupProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const wheelLockTimeoutRef = useRef<number | null>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const [desktopCardWidth, setDesktopCardWidth] = useState<number | null>(null)
   const { t, language } = useI18n()
   const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([])
   const loopCopies = 3
   const loopResetDelayMs = 420
 
+  const isDesktopCarousel = () => {
+    if (typeof window === 'undefined') return false
+    return window.innerWidth >= 1024
+  }
+
   const getItemsPerView = () => {
     if (typeof window === 'undefined') return 1
-    return window.innerWidth >= 1440 ? 3 : 1
+    return isDesktopCarousel() ? 3 : 1
   }
 
   const setScrollLeftInstant = (container: HTMLDivElement, left: number) => {
@@ -108,6 +115,22 @@ export default function VacationOptionsPopup({
     }, loopResetDelayMs)
   }
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (!isDesktopCarousel() || serviceOptions.length <= 1) return
+
+    const dominantDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+    if (Math.abs(dominantDelta) < 3) return
+
+    e.preventDefault()
+
+    if (wheelLockTimeoutRef.current !== null) return
+
+    handleScroll(dominantDelta > 0 ? 'right' : 'left')
+    wheelLockTimeoutRef.current = window.setTimeout(() => {
+      wheelLockTimeoutRef.current = null
+    }, loopResetDelayMs + 80)
+  }
+
   const checkScrollButtons = () => {
     const container = scrollRef.current
     if (!container) return
@@ -145,6 +168,40 @@ export default function VacationOptionsPopup({
     return () => clearTimeout(timer)
   }, [isOpen, serviceOptions.length])
 
+  // Desktop: size cards to show 3 items + hint of 4th.
+  useEffect(() => {
+    if (!isOpen) return
+
+    const updateDesktopCardWidth = () => {
+      const container = scrollRef.current
+      if (!container) return
+
+      if (!isDesktopCarousel()) {
+        setDesktopCardWidth(null)
+        return
+      }
+
+      const styles = window.getComputedStyle(container)
+      const gap = parseFloat(styles.columnGap || styles.gap || '0')
+      const hintWidth = 64
+      const rawCardWidth = (container.clientWidth - gap * 3 - hintWidth) / 3
+      const boundedCardWidth = Math.max(220, Math.min(rawCardWidth, 360))
+      setDesktopCardWidth(boundedCardWidth)
+    }
+
+    updateDesktopCardWidth()
+    window.addEventListener('resize', updateDesktopCardWidth)
+    return () => window.removeEventListener('resize', updateDesktopCardWidth)
+  }, [isOpen, serviceOptions.length])
+
+  useEffect(() => {
+    return () => {
+      if (wheelLockTimeoutRef.current !== null) {
+        window.clearTimeout(wheelLockTimeoutRef.current)
+      }
+    }
+  }, [])
+
   if (!isOpen) return null
 
   return (
@@ -173,6 +230,7 @@ export default function VacationOptionsPopup({
           <div
             ref={scrollRef}
             onScroll={checkScrollButtons}
+            onWheel={handleWheel}
             className="flex gap-10 overflow-x-auto pb-4 scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
@@ -181,6 +239,7 @@ export default function VacationOptionsPopup({
               <div
                 key={`${copyIndex}-${option.id}`}
                 className="flex-shrink-0 w-[320px] md:w-[380px] xl:w-[400px] bg-[#FBFBF9] overflow-hidden border border-[#28694D1A]"
+                style={desktopCardWidth ? { width: `${desktopCardWidth}px` } : undefined}
               >
                 {/* Image */}
                 <div className="relative w-full aspect-square bg-gray-200 overflow-hidden">

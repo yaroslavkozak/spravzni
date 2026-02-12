@@ -3,18 +3,18 @@ import MediaImage from '@/src/components/MediaImage'
 import MediaVideo from '@/src/components/MediaVideo'
 import { useI18n } from '@/src/contexts/I18nContext'
 
-// Partner logos - loading from public/images/brands/
+// Partner logos - loading from public/images/brands/new/
 const partners = [
-  { id: 1, src: '/images/brands/fond.svg', alt: 'Fond', width: 200, height: 56 },
-  { id: 2, src: '/images/brands/Group.svg', alt: 'Group', width: 200, height: 56 },
-  { id: 3, src: '/images/brands/habilitationcenter.svg', alt: 'Habilitation Center', width: 200, height: 56 },
-  { id: 4, src: '/images/brands/lvivskamiskarada.svg', alt: 'Lvivska Miska Rada', width: 200, height: 56 },
-  { id: 5, src: '/images/brands/manivci.svg', alt: 'Manivci', width: 200, height: 56 },
-  // { id: 6, src: '/images/brands/par.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 7, src: '/images/brands/parr.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 8, src: '/images/brands/parrr.svg', alt: 'Partner', width: 200, height: 56 },
-  // { id: 9, src: '/images/brands/parrrrr.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 10, src: '/images/brands/parrrrrrr.svg', alt: 'Partner', width: 200, height: 56 },
+  { id: 1, src: '/images/brands/new/fond.svg', alt: 'Fond', width: 200, height: 56 },
+  { id: 2, src: '/images/brands/new/Group.svg', alt: 'Group', width: 200, height: 56 },
+  { id: 3, src: '/images/brands/new/habilitationcenter.svg', alt: 'Habilitation Center', width: 200, height: 56 },
+  { id: 4, src: '/images/brands/new/lvivskamiskarada.svg', alt: 'Lvivska Miska Rada', width: 200, height: 56 },
+  { id: 5, src: '/images/brands/new/manivci.svg', alt: 'Manivci', width: 200, height: 56 },
+  // { id: 6, src: '/images/brands/new/par.svg', alt: 'Partner', width: 200, height: 56 },
+  { id: 7, src: '/images/brands/new/parr.svg', alt: 'Partner', width: 200, height: 56 },
+  { id: 8, src: '/images/brands/new/parrr.svg', alt: 'Partner', width: 200, height: 56 },
+  // { id: 9, src: '/images/brands/new/parrrrr.svg', alt: 'Partner', width: 200, height: 56 },
+  { id: 10, src: '/images/brands/new/parrrrrrr.svg', alt: 'Partner', width: 200, height: 56 },
 ]
 
 export default function VideoPartnersSection() {

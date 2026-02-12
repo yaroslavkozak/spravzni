@@ -30,12 +30,12 @@ export default function StaticAboutSection({ t }: StaticAboutSectionProps) {
                   className="object-contain w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 min-[756px]:w-28 min-[756px]:h-28"
                 />
               </span>
-              <p className="font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] flex-1 min-w-0 mt-[51px] min-[756px]:mt-0">
+              <p className="font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] flex-1 min-w-0 mt-[80px] min-[756px]:mt-0">
                 {t('about.p1')}
               </p>
             </div>
 
-            <p className="relative z-10 font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] ml-0 sm:ml-[calc(5rem+0.75rem)] md:ml-[calc(6rem+0.75rem)] min-[756px]:ml-[calc(7rem+0.75rem)]">
+            <p className="relative z-10 font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] ml-0 min-[756px]:ml-[calc(7rem+0.75rem)]">
               {t('about.p2')}
             </p>
 

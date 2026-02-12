@@ -204,6 +204,19 @@ function DonatePageContent() {
         }
     }
 
+    const CopyIcon = ({ isCopied, className }: { isCopied: boolean; className?: string }) => (
+        isCopied ? (
+            <svg className={cn('w-5 h-5 flex-shrink-0 transition-colors text-[#165731]', className)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        ) : (
+            <svg className={cn('w-5 h-5 flex-shrink-0 transition-colors text-[#CBCBCB] group-hover:text-[#165731]', className)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        )
+    )
+
     return (
         <main className="min-h-screen bg-[#F5F6F3]">
             <style>{`
@@ -319,10 +332,10 @@ function DonatePageContent() {
                             {/* First Block - Info Paragraph */}
                             <div className="mb-8">
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо.
+                                    {t('donate.infoParagraph')}
                                 </p>
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)] lg:mt-4" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    Звітуємо щомісяця. <a href="/report" className="underline" style={{ color: '#000000E5' }}>{t('donate.reportLink')}</a>
+                                    {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ color: '#000000E5' }}>{t('donate.reportLink')}</a>
                                 </p>
                             </div>
 
@@ -338,53 +351,53 @@ function DonatePageContent() {
                                     className="inline-flex items-center justify-center w-full bg-[#28694D] rounded-[2rem] px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 mb-2 transition-all duration-300 hover:opacity-95"
                                 >
                                     <span className="font-montserrat text-white text-center" style={{ fontSize: '20px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                        Зробити переказ
+                                        {t('donate.payButton')}
                                     </span>
                                 </a>
                                 <p className="font-montserrat" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
-                                    Натискаючи, ви приймаєте <a href="/terms" className="underline">Умови</a> та <a href="/privacy" className="underline">Політику конфіденційності</a>.
+                                    {t('donate.termsPrefix')} <a href="/terms" className="underline underline-offset-4">{t('donate.termsLink')}</a> {t('donate.termsAnd')} <a href="/privacy" className="underline underline-offset-4">{t('donate.privacyLink')}</a>.
                                 </p>
                             </div>
 
                             {/* Third Block - Bank Details */}
                             <div>
                                 <h3 className="font-montserrat mb-2" style={{ fontSize: '20px', fontWeight: 700, lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                    Реквізити для переказу
+                                    {t('donate.bankDetailsSectionTitle')}
                                 </h3>
                                 <div className="font-montserrat space-y-2">
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'iban' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'iban'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span> UA24 3003 3500 0000 0260 0323 9362 5
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'bank' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'bank'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span> {t('donate.bankNameValue')}
                                         </div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start relative">
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'recipient' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'recipient'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span> {t('donate.recipientValue')}</div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start relative">
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'edrpou' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'edrpou'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span> 45793627</div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'purpose' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'purpose'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span> {t('donate.purposeValue')}
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
-                                        <svg className={`w-5 h-5 flex-shrink-0 mr-2 transition-colors ${copiedItem === 'currency' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'currency'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
                                             <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span> UAH
                                         </div>
@@ -411,7 +424,7 @@ function DonatePageContent() {
                             {/* First Block - Info Paragraph */}
                             <div className="px-5">
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця. <a href="/report" className="underline" style={{ fontWeight: 400, fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#000000E5' }}>{t('donate.reportLink')}</a>
+                                    {t('donate.infoParagraph')} {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ fontWeight: 400, fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#000000E5' }}>{t('donate.reportLink')}</a>
                                 </p>
                             </div>
 
@@ -437,18 +450,18 @@ function DonatePageContent() {
                                     className="inline-flex items-center justify-center w-full bg-[#28694D] rounded-[2rem] px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 mb-2 transition-all duration-300 hover:opacity-95"
                                 >
                                     <span className="font-montserrat text-white text-[clamp(1rem,_calc(0.912rem+0.375vw),_1.25rem)] font-normal leading-[1.5em] tracking-[0.5%]">
-                                        Зробити переказ
+                                        {t('donate.payButton')}
                                     </span>
                                 </a>
                                 <p className="font-montserrat" style={{ fontSize: '14px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%', color: '#28694D' }}>
-                                    Натискаючи, ви приймаєте <a href="/terms" className="underline">Умови</a> та <a href="/privacy" className="underline">Політику конфіденційності</a>.
+                                    {t('donate.termsPrefix')} <a href="/terms" className="underline underline-offset-4">{t('donate.termsLink')}</a> {t('donate.termsAnd')} <a href="/privacy" className="underline underline-offset-4">{t('donate.privacyLink')}</a>.
                                 </p>
                             </div>
 
                             {/* Third Block - Bank Details */}
                             <div className="px-5">
                                 <h3 className="font-montserrat mb-2" style={{ fontSize: '20px', fontWeight: 700, lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                    Реквізити для переказу
+                                    {t('donate.bankDetailsSectionTitle')}
                                 </h3>
                                 <div className="font-montserrat space-y-2">
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
@@ -460,7 +473,7 @@ function DonatePageContent() {
                                                 UA24 3003 3500 0000 0260 0323 9362 5
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'iban' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'iban'} className="ml-2" />
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
@@ -472,7 +485,7 @@ function DonatePageContent() {
                                                 {t('donate.bankNameValue')}
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'bank' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'bank'} className="ml-2" />
                                     </div>
 
                                     <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start justify-between relative">
@@ -484,7 +497,7 @@ function DonatePageContent() {
                                                 {t('donate.recipientValue')}
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'recipient' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'recipient'} className="ml-2" />
                                     </div>
 
                                     <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start justify-between relative">
@@ -496,7 +509,7 @@ function DonatePageContent() {
                                                 45793627
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'edrpou' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'edrpou'} className="ml-2" />
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
@@ -508,7 +521,7 @@ function DonatePageContent() {
                                                 {t('donate.purposeValue')}
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'purpose' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'purpose'} className="ml-2" />
                                     </div>
 
                                     <div className="flex items-start justify-between group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
@@ -520,7 +533,7 @@ function DonatePageContent() {
                                                 UAH
                                             </div>
                                         </div>
-                                        <svg className={`w-5 h-5 flex-shrink-0 ml-2 transition-colors ${copiedItem === 'currency' ? 'text-[#165731]' : 'text-[#CBCBCB] group-hover:text-[#165731]'}`} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4H18C19.1046 4 20 4.89543 20 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16 8H6C4.89543 8 4 8.89543 4 10V20C4 21.1046 4.89543 22 6 22H16C17.1046 22 18 21.1046 18 20V10C18 8.89543 17.1046 8 16 8Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                                        <CopyIcon isCopied={copiedItem === 'currency'} className="ml-2" />
                                     </div>
                                 </div>
                             </div>

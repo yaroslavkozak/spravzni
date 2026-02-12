@@ -362,8 +362,8 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
         // Mobile: use dvh (dynamic viewport height) for full screen height
         setModalStyle({ height: '100dvh' })
       } else {
-        // Desktop: keep current top offset (5vh) and stretch to the viewport bottom
-        setModalStyle({ height: '95vh' })
+        // Desktop: keep a fixed modal height to avoid excessive white space.
+        setModalStyle({ height: '813px' })
       }
     }
 
@@ -401,8 +401,8 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
       overlayClassName="bg-black/50 backdrop-blur-sm items-start justify-start sm:items-start sm:justify-center"
       className={
         submitSuccess
-          ? "bg-transparent w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[95vh] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
-          : "bg-white w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[95vh] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
+          ? "bg-transparent w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
+          : "bg-white w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
       }
       style={modalStyle}
       closeOnOverlayClick={!isSubmitting}

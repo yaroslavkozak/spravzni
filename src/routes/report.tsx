@@ -67,7 +67,13 @@ function ReportPageContent() {
     const parts = value.split('-')
     if (parts.length === 3) {
       const [year, month, day] = parts
-      return `${day}.${month}.${year}`
+      const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))
+      const locale = language === 'en' ? 'en-GB' : 'uk-UA'
+      return date.toLocaleDateString(locale, {
+        day: 'numeric',
+        month: language === 'en' ? 'short' : 'numeric',
+        year: 'numeric',
+      })
     }
     return value
   }
@@ -181,7 +187,7 @@ function ReportPageContent() {
           <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16 pt-8 xl:pt-12 pb-0">
             <div className="max-w-5xl mx-auto">
               <div className="flex flex-col md:flex-row gap-y-6 md:gap-6 xl:gap-x-[80px] xl:items-end">
-                <div className="bg-white rounded-xl px-0 py-0 md:px-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end relative">
+                <div className="bg-white rounded-xl px-0 py-0 md:pl-0 md:pr-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end relative">
                   <div className="text-[#666] text-[14px] font-montserrat absolute top-0 right-0 md:hidden">
                     {t('report.updatedLabel')} {formatReportDate(updatedDate)}
                   </div>
@@ -201,7 +207,7 @@ function ReportPageContent() {
                     {t('report.incoming.label')}
                   </div>
                 </div>
-                <div className="bg-white rounded-xl px-0 py-0 md:px-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end">
+                <div className="bg-white rounded-xl px-0 py-0 md:pl-0 md:pr-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end">
                   <div className="text-[#28694D] pr-5 pl-0 md:px-0 xl:px-0">
                     <img
                       src="/icons/report/funds.svg"
@@ -247,8 +253,8 @@ function ReportPageContent() {
               <table className="min-w-full border border-[#1111111C] text-left table-fixed w-full md:max-w-none">
                 <thead className="bg-[#FBFBF9] text-[#656565] text-[14px] md:text-[16px] font-normal font-montserrat">
                   <tr>
-                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top md:align-middle w-[30.72%] md:w-[21.68%]">{t('report.table.period')}</th>
-                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top md:align-middle w-[23.20%] md:w-[16.26%]">
+                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top text-left md:align-middle w-[30.72%] md:w-[21.68%]">{t('report.table.period')}</th>
+                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top text-left md:align-middle w-[23.20%] md:w-[16.26%]">
                       {(() => {
                         const { main, suffix } = formatAmountHeader()
                         return (
@@ -259,15 +265,15 @@ function ReportPageContent() {
                         )
                       })()}
                     </th>
-                    <th className="px-[7px] py-[7px] border-b border-[#1111111C] font-normal align-top md:align-middle w-[46.08%] md:w-[62.06%]">{t('report.table.category')}</th>
+                    <th className="px-[7px] py-[7px] border-b border-[#1111111C] font-normal align-top text-left md:align-middle w-[46.08%] md:w-[62.06%]">{t('report.table.category')}</th>
                   </tr>
                 </thead>
                 <tbody className="text-[#111111] font-normal font-montserrat">
                   {reportRows.map((row, index) => (
                     <tr key={`${row.period}-${index}`} className="border-b border-[#1111111C] last:border-b-0">
-                      <td className="px-[7px] py-[7px] border-r border-[#1111111C] text-[14px] md:text-[16px]">{row.period}</td>
-                      <td className="px-[7px] py-[7px] border-r border-[#1111111C] text-[14px] md:text-[16px]">{row.amount}</td>
-                      <td className="px-[7px] py-[7px] text-[14px] md:text-[16px]">{row.category}</td>
+                      <td className="px-[7px] py-[7px] border-r border-[#1111111C] text-[14px] md:text-[16px] align-top text-left">{row.period}</td>
+                      <td className="px-[7px] py-[7px] border-r border-[#1111111C] text-[14px] md:text-[16px] align-top text-left">{row.amount}</td>
+                      <td className="px-[7px] py-[7px] text-[14px] md:text-[16px] align-top text-left">{row.category}</td>
                     </tr>
                   ))}
                 </tbody>

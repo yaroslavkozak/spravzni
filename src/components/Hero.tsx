@@ -119,7 +119,7 @@ export default function Hero() {
                   {t('hero.subtitle.donationInfo')}{' '}
                   <a
                     href="/report"
-                    className="underline font-medium hover:opacity-80 transition-opacity"
+                    className="underline underline-offset-4 font-medium hover:opacity-80 transition-opacity"
                   >
                     {t('hero.subtitle.report')}
                   </a>
