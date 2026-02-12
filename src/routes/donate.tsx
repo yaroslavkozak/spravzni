@@ -323,11 +323,11 @@ function DonatePageContent() {
                             {/* First Block - Info Paragraph */}
                             <div className="mb-8">
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця.
+                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо.
                                 </p>
-                                <a href="/report" className="font-medium text-[#28694D] underline block mt-4" style={{ fontSize: '16px', fontWeight: 500, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    {t('donate.reportLink')}
-                                </a>
+                                <p className="font-montserrat text-[hsla(0,0%,7%,1)] lg:mt-4" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                    Звітуємо щомісяця. <a href="/report" className="underline" style={{ color: '#000000E5' }}>{t('donate.reportLink')}</a>
+                                </p>
                             </div>
 
                             {/* Second Block - Title, Button, Terms */}
@@ -468,8 +468,8 @@ function DonatePageContent() {
                         <div className="space-y-8">
                             {/* First Block - Info Paragraph */}
                             <div className="px-5">
-                                <p className="font-montserrat text-[hsla(0,0%,7%,1)] text-[16px] font-normal leading-[1.5em] tracking-[0.5%]">
-                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця. <a href="/report" className="font-medium text-[#28694D] underline">{t('donate.reportLink')}</a>
+                                <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
+                                    Кожна пожертва підтримує відновлення та інтеграцію ветеранів: групи адаптивного плавання; програму «Шлях сили» для військових, їхніх родин, родин загиблих та зниклих безвісти; тощо. Звітуємо щомісяця. <a href="/report" className="underline" style={{ fontWeight: 400, fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#000000E5' }}>{t('donate.reportLink')}</a>
                                 </p>
                             </div>
 

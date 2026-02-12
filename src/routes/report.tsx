@@ -184,11 +184,11 @@ function ReportPageContent() {
 
       <div className="pb-12 sm:pb-16 md:pb-20">
         <section className="border-t border-[#1111111C] w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-          <div className="max-w-[90rem] mx-auto px-5 md:px-6 lg:px-8 xl:px-16 pt-8 xl:pt-12 pb-0 md:pb-6">
+          <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16 pt-8 xl:pt-12 pb-0">
             <div className="max-w-5xl mx-auto">
               <div className="flex flex-col md:flex-row gap-y-6 md:gap-6 xl:gap-x-[80px] xl:items-end">
                 <div className="bg-white rounded-xl px-0 py-0 md:px-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end relative">
-                  <div className="text-[#666] text-[14px] font-montserrat absolute top-0 right-[21px] md:hidden">
+                  <div className="text-[#666] text-[14px] font-montserrat absolute top-0 right-0 md:hidden">
                     {t('report.updatedLabel')} {formatReportDate(updatedDate)}
                   </div>
                   <div className="text-[#28694D] pr-5 pl-0 md:px-0 xl:px-0">
@@ -224,7 +224,7 @@ function ReportPageContent() {
                     {t('report.outgoing.label')}
                   </div>
                 </div>
-                <div className="text-[#666] text-[14px] font-montserrat pr-5 pl-0 md:pl-0 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:flex xl:items-end hidden md:block">
+                <div className="text-[#666] text-[14px] font-montserrat pr-0 pl-0 hidden md:flex md:flex-1 md:items-end md:justify-end md:text-right">
                   {t('report.updatedLabel')} {formatReportDate(updatedDate)}
                 </div>
               </div>
@@ -232,10 +232,10 @@ function ReportPageContent() {
           </div>
         </section>
         <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16">
-          <div className="max-w-5xl mx-auto mt-6 md:mt-10 space-y-10">
+          <div className="max-w-5xl mx-auto mt-6 md:mt-12 space-y-10">
 
-          <section className="bg-white rounded-xl pt-0 pb-6 md:py-6 pl-0 pr-0 md:px-0 md:pr-6">
-            <div className="flex flex-col items-start gap-2 mb-4 px-0 md:pr-6">
+          <section className="bg-white rounded-xl pt-0 pb-6 pl-0 pr-0 md:px-0 md:pr-0">
+            <div className="flex flex-col items-start gap-2 mb-4 px-0 md:pr-0">
               <div className="text-[#28694D]">
                 <img
                   src="/icons/report/swipe.svg"
@@ -253,8 +253,8 @@ function ReportPageContent() {
               <table className="min-w-full border border-[#1111111C] text-left table-fixed w-full md:max-w-none">
                 <thead className="bg-[#FBFBF9] text-[#656565] text-[14px] md:text-[16px] font-normal font-montserrat">
                   <tr>
-                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal w-[30.72%] md:w-[21.68%]">{t('report.table.period')}</th>
-                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal w-[23.20%] md:w-[16.26%]">
+                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top md:align-middle w-[30.72%] md:w-[21.68%]">{t('report.table.period')}</th>
+                    <th className="px-[7px] py-[7px] border-b border-r border-[#1111111C] font-normal align-top md:align-middle w-[23.20%] md:w-[16.26%]">
                       {(() => {
                         const { main, suffix } = formatAmountHeader()
                         return (
@@ -265,7 +265,7 @@ function ReportPageContent() {
                         )
                       })()}
                     </th>
-                    <th className="px-[7px] py-[7px] border-b border-[#1111111C] font-normal w-[46.08%] md:w-[62.06%]">{t('report.table.category')}</th>
+                    <th className="px-[7px] py-[7px] border-b border-[#1111111C] font-normal align-top md:align-middle w-[46.08%] md:w-[62.06%]">{t('report.table.category')}</th>
                   </tr>
                 </thead>
                 <tbody className="text-[#111111] font-normal font-montserrat">
