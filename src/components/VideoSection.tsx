@@ -1,10 +1,30 @@
 'use client'
 
-import { useState } from 'react'
-import MediaImage from '@/src/components/MediaImage'
+import { useState, useEffect } from 'react'
+import { useI18n } from '@/src/contexts/I18nContext'
 
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const { language } = useI18n()
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = () => setIsMobile(mq.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  const videoPreviewSrc = isMobile
+    ? language === 'uk'
+      ? '/video-2-mobile-ua.png'
+      : language === 'en'
+        ? '/video-2-mobile-eng.png'
+        : '/video-2.webp'
+    : language === 'en'
+      ? '/eng/video-2-banner.jpg'
+      : '/video-2.webp'
 
   return (
     <section className="bg-[#FBFBF9] py-16 md:py-20 lg:py-24">
@@ -25,11 +45,10 @@ export default function VideoSection() {
               className="absolute inset-0 w-full h-full"
               aria-label="Play video"
             >
-              <MediaImage
-                src="/video-2.webp"
+              <img
+                src={videoPreviewSrc}
                 alt="Spravzhni video preview"
-                fill
-                className="object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-center"
               />
               <div className="absolute inset-0 bg-black/20" />
             </button>

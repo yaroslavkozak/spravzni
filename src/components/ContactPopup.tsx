@@ -401,8 +401,8 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
       overlayClassName="bg-black/50 backdrop-blur-sm items-start justify-start sm:items-start sm:justify-center"
       className={
         submitSuccess
-          ? "bg-transparent w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
-          : "bg-white w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:mt-[5vh] sm:max-h-none overflow-hidden relative flex flex-col"
+          ? "bg-transparent w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:max-h-[calc(100dvh-10vh)] sm:mt-[5vh] overflow-hidden relative flex flex-col"
+          : "bg-white w-full sm:max-w-2xl sm:w-auto sm:mx-4 sm:mx-6 h-[100dvh] sm:h-[813px] sm:max-h-[calc(100dvh-10vh)] sm:mt-[5vh] overflow-hidden relative flex flex-col"
       }
       style={modalStyle}
       closeOnOverlayClick={!isSubmitting}
@@ -410,7 +410,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
     >
       {/* Form Content */}
       <div 
-        className={submitSuccess ? "px-0 overflow-y-auto overscroll-contain flex-1" : "px-4 sm:px-5 md:px-6 pt-[3.125rem] sm:pt-[3.125rem] md:pt-[3.125rem] pb-12 sm:pb-16 md:pb-20 overflow-y-auto overscroll-contain flex-1"}
+        className={submitSuccess ? "px-0 overflow-y-auto overscroll-contain flex-1 min-h-0" : "px-4 sm:px-5 md:px-6 pt-[3.125rem] sm:pt-[3.125rem] md:pt-[3.125rem] pb-12 sm:pb-16 md:pb-[50px] overflow-y-auto overscroll-contain flex-1 min-h-0"}
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {submitSuccess ? (
@@ -419,7 +419,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               {/* Close Button - positioned in top right of grey background */}
               <button
                 onClick={handleClose}
-                className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10"
+                className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10 outline-none focus:outline-none focus:ring-0"
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -439,7 +439,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10"
+              className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10 outline-none focus:outline-none focus:ring-0"
               aria-label="Close modal"
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

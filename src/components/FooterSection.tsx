@@ -6,7 +6,11 @@ import BackgroundMedia from '@/src/components/BackgroundMedia'
 import { useI18n } from '@/src/contexts/I18nContext'
 
 export default function FooterSection() {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
+  const logoSrc =
+    language === 'en' ? '/logo-white.svg'
+    : language === 'uk' ? '/logo-white-ua.svg'
+    : '/images/header/logo.svg'
   const location = useRouterState({ select: (state) => state.location })
   const isHome = location.pathname === '/'
 
@@ -43,7 +47,7 @@ export default function FooterSection() {
           <div className="min-w-0">
             <div className="flex items-center gap-3">
               <MediaImage
-                src="/images/header/logo.svg"
+                src={logoSrc}
                 alt="Logo"
                 width={172}
                 height={76}

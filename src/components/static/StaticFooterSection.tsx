@@ -1,10 +1,16 @@
 import type { StaticTranslator } from '@/src/lib/i18n-static'
+import type { SupportedLanguage } from '@/src/lib/i18n'
 
 interface StaticFooterSectionProps {
   t: StaticTranslator
+  language?: SupportedLanguage
 }
 
-export default function StaticFooterSection({ t }: StaticFooterSectionProps) {
+export default function StaticFooterSection({ t, language }: StaticFooterSectionProps) {
+  const logoSrc =
+    language === 'en' ? '/logo-white.svg'
+    : language === 'uk' ? '/logo-white-ua.svg'
+    : '/images/header/logo.svg'
   const services = [
     { id: 1, label: t('services.service1.title'), href: '/?section=service-1' },
     { id: 2, label: t('services.service2.title'), href: '/?section=service-2' },
@@ -34,7 +40,7 @@ export default function StaticFooterSection({ t }: StaticFooterSectionProps) {
           <div className="min-w-0">
             <div className="flex items-center gap-3">
               <img
-                src="/images/header/logo.svg"
+                src={logoSrc}
                 alt="Logo"
                 width={172}
                 height={76}

@@ -110,11 +110,10 @@ export default function SpaceSection() {
                 {t('space.subtitle')}
               </p>
             </div>
-            {/* Image Gallery - Mobile only */}
+            {/* Image Gallery - Mobile only (no modal on click; zoom shown from 1024px+ only) */}
             <div className="relative h-[18.75rem] sm:h-[25rem] md:h-[31.25rem] lg:hidden w-screen left-1/2 -translate-x-1/2 sm:w-auto sm:left-0 sm:translate-x-0 sm:-ml-6 md:-ml-8 order-1">
             <div 
-              className="relative w-full h-full bg-gray-300 overflow-hidden cursor-pointer group"
-              onClick={handleImageClick}
+              className="relative w-full h-full bg-gray-300 overflow-hidden cursor-default group"
             >
               {/* Actual Image */}
               <MediaImage
@@ -124,30 +123,6 @@ export default function SpaceSection() {
                 className="object-cover"
               />
               
-              {/* Zoom Icon - Top Right - Clickable */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleImageClick()
-                }}
-                className="absolute top-3 sm:top-4 right-3 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 z-10"
-                aria-label={t('space.zoom')}
-              >
-                <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5 text-[#404040]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"
-                  />
-                </svg>
-              </button>
-
               {/* Enumeration - Bottom Center */}
               <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs sm:text-sm font-medium">
                 {currentImageIndex + 1} / {totalImages}

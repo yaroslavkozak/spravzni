@@ -160,11 +160,13 @@ export async function updateReportSettings(
   db: D1Database,
   input: UpdateReportSettingsInput
 ): Promise<ReportSettings> {
-  const updatedDate = input.updated_date ?? null;
-  const incomingAmount = input.incoming_amount ?? null;
-  const outgoingAmount = input.outgoing_amount ?? null;
-  const incomingAmountEn = input.incoming_amount_en ?? null;
-  const outgoingAmountEn = input.outgoing_amount_en ?? null;
+  const existing = await getReportSettings(db);
+  const updatedDate = input.updated_date !== undefined ? input.updated_date : existing?.updated_date ?? null;
+  const incomingAmount = input.incoming_amount !== undefined ? input.incoming_amount : existing?.incoming_amount ?? null;
+  const outgoingAmount = input.outgoing_amount !== undefined ? input.outgoing_amount : existing?.outgoing_amount ?? null;
+  // Preserve _en when not provided (translations managed in admin/translations)
+  const incomingAmountEn = input.incoming_amount_en !== undefined ? input.incoming_amount_en : existing?.incoming_amount_en ?? null;
+  const outgoingAmountEn = input.outgoing_amount_en !== undefined ? input.outgoing_amount_en : existing?.outgoing_amount_en ?? null;
 
   const result = await db
     .prepare(

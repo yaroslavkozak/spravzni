@@ -14,9 +14,22 @@ export default function Header() {
   const [isBannerClosed, setIsBannerClosed] = useState(false)
   const { openPopup } = useContactPopup()
   const { isPreloadComplete } = usePreload()
-  const { t } = useI18n()
+  const { t, language } = useI18n()
   const location = useRouterState({ select: (state) => state.location })
   const isHome = location.pathname === '/'
+
+  // Logo: English/Ukrainian variants; white on homepage (dark header), black on inner pages (light header)
+  const logoSrc = !isHome
+    ? language === 'en'
+      ? '/logo-black.svg'
+      : language === 'uk'
+        ? '/logo-black-ua.svg'
+        : '/images/header/logo.svg'
+    : language === 'en'
+      ? '/logo-white.svg'
+      : language === 'uk'
+        ? '/logo-white-ua.svg'
+        : '/images/header/logo.svg'
 
   const navHref = useMemo(() => {
     return (id: string) => (isHome ? `#${id}` : `/?section=${id}`)
@@ -106,7 +119,7 @@ export default function Header() {
                 : 'h-[3.375rem] md:h-[5.5rem] lg:h-[5rem] xl:h-[4.75rem]'
             }`}>
               <Image 
-                src="/images/header/logo.svg"
+                src={logoSrc}
                 alt="Logo" 
                 width={199} 
                 height={88}

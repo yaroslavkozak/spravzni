@@ -83,9 +83,9 @@ export default function ChatButton() {
       }}
       aria-label={t('chat.button.aria')}
     >
-      <span className="font-montserrat text-[16px] font-normal whitespace-nowrap" style={{ color: '#FBFBF9' }}>
+      {/* <span className="font-montserrat text-[16px] font-normal whitespace-nowrap" style={{ color: '#FBFBF9' }}>
         <strong className="font-bold">{t('chat.button.question')}</strong> {t('chat.button.reply')}
-      </span>
+      </span> */}
       <MediaImage
         src="/images/chat/floating-chat.svg"
         alt="Chat"

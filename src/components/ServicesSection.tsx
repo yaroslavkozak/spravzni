@@ -63,8 +63,8 @@ const ServiceItem = ({
     <div className="w-full border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
       {/* Desktop layout */}
       <div className="hidden lg:flex items-stretch gap-0 min-w-0">
-        <div className="w-[clamp(0px,14.93vw,215px)] flex-shrink-0" />
-        <div className="w-[clamp(320px,30.4vw,438px)] flex-shrink-0 flex flex-col h-[clamp(320px,45.83vw,660px)] pt-[clamp(24px,4.44vw,64px)] justify-between">
+        <div className="w-[clamp(0px,14.93vw,215px)] min-[1024px]:max-[1100px]:w-[3.90625%] min-[1100px]:max-[1200px]:w-0 min-[1200px]:max-[1300px]:w-0 min-[1300px]:max-[1440px]:w-0 flex-shrink-0" />
+        <div className="w-[clamp(320px,30.4vw,438px)] min-[1024px]:max-[1100px]:w-[42.96875%] min-[1100px]:max-[1200px]:w-[39.8181%] min-[1100px]:max-[1200px]:pt-10 min-[1100px]:max-[1200px]:pl-10 min-[1200px]:max-[1300px]:w-[39.8181%] min-[1200px]:max-[1300px]:pt-10 min-[1200px]:max-[1300px]:pl-20 min-[1300px]:max-[1440px]:w-[46%] min-[1300px]:max-[1440px]:pt-10 min-[1300px]:max-[1440px]:pl-[160px] flex-shrink-0 flex flex-col h-[clamp(320px,45.83vw,660px)] pt-[clamp(24px,4.44vw,64px)] min-[1024px]:max-[1100px]:pt-10 justify-between">
           <div>
             <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%]">
               {heading}
@@ -87,7 +87,7 @@ const ServiceItem = ({
             </div>
           </div>
           {hasPrimaryButton || hasSecondaryButton ? (
-            <div className="flex flex-col gap-2 w-full pt-[clamp(16px,2.78vw,40px)] pb-[24px]">
+            <div className="flex flex-col gap-2 w-full pt-[clamp(16px,2.78vw,40px)] pb-[24px] min-[1024px]:max-[1100px]:pt-[62px]">
               {hasPrimaryButton && safePrimaryButtonText && (
                 <button
                   onClick={
@@ -117,9 +117,9 @@ const ServiceItem = ({
             </div>
           ) : null}
         </div>
-        <div className="w-[clamp(0px,4.17vw,60px)] flex-shrink-0" />
-        <div className="relative flex-1 h-full min-w-0 flex justify-end">
-          <div className="relative w-[clamp(320px,45.83vw,660px)] aspect-square bg-gray-300 overflow-hidden">
+        <div className="w-[clamp(0px,4.17vw,60px)] min-[1024px]:max-[1100px]:w-0 min-[1100px]:max-[1200px]:w-10 min-[1200px]:max-[1300px]:w-10 min-[1300px]:max-[1440px]:w-10 flex-shrink-0" />
+        <div className="relative flex-1 h-full min-w-0 flex justify-end min-[1024px]:max-[1100px]:min-w-[500px] min-[1100px]:max-[1200px]:min-w-[600px] min-[1200px]:max-[1440px]:min-w-[660px]">
+          <div className="relative w-[clamp(320px,45.83vw,660px)] aspect-square min-[1024px]:max-[1100px]:w-[500px] min-[1024px]:max-[1100px]:aspect-[500/660] min-[1100px]:max-[1200px]:w-[600px] min-[1100px]:max-[1200px]:aspect-[600/660] min-[1200px]:max-[1300px]:w-[660px] min-[1200px]:max-[1300px]:aspect-square min-[1300px]:max-[1440px]:w-[660px] min-[1300px]:max-[1440px]:aspect-square bg-gray-300 overflow-hidden">
             <MediaImage
               src={
                 imageSrc.startsWith('/')
@@ -144,12 +144,12 @@ const ServiceItem = ({
       </div>
 
       {/* Mobile layout */}
-      <div className="lg:hidden grid grid-cols-1 gap-4 pr-5">
-        <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16">
+      <div className="lg:hidden grid grid-cols-1 gap-4 pr-5 min-[375px]:max-[900px]:pr-0 min-[900px]:pr-0">
+        <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[375px]:max-[900px]:!pt-2 min-[375px]:max-[900px]:text-[24px] min-[375px]:max-[900px]:leading-[130%] min-[375px]:max-[900px]:tracking-[0.015em] min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0 min-[900px]:max-[1023px]:!pt-2 min-[900px]:max-[1023px]:text-[24px] min-[900px]:max-[1023px]:leading-[130%] min-[900px]:max-[1023px]:tracking-[0.015em]">
           {heading}
         </h3>
-        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32">
-          <div className="relative w-[clamp(280px,89.33vw,335px)] aspect-square bg-gray-300 overflow-hidden mx-auto">
+        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0">
+          <div className="relative aspect-square bg-gray-300 overflow-hidden mx-auto w-[clamp(280px,89.33vw,335px)] min-[375px]:max-[900px]:!w-full min-[375px]:max-[900px]:!mx-0 min-[900px]:max-[1023px]:!w-full min-[900px]:max-[1023px]:!mx-0">
             <MediaImage
               src={
                 imageSrc.startsWith('/')
@@ -171,8 +171,8 @@ const ServiceItem = ({
             )}
           </div>
         </div>
-        <div className="max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 h-full flex flex-col">
-          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px]">
+        <div className="max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 h-full flex flex-col min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0">
+          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px] min-[375px]:max-[900px]:pb-4 min-[900px]:max-[1023px]:pb-4">
             {paragraphs
               .filter((paragraph) => {
                 if (!paragraph) return false
@@ -189,7 +189,7 @@ const ServiceItem = ({
               ))}
           </div>
           {hasPrimaryButton || hasSecondaryButton ? (
-            <div className="flex flex-col gap-2 w-full mt-4 mt-auto pb-6">
+            <div className="flex flex-col gap-2 w-full mt-4 mt-auto pb-6 min-[375px]:max-[900px]:pb-10 min-[900px]:max-[1023px]:pb-10">
               {hasPrimaryButton && safePrimaryButtonText && (
                 <button
                   onClick={
@@ -422,16 +422,14 @@ export default function ServicesSection() {
 
   return (
     <section id="services" className="bg-white py-16 md:py-20 lg:py-24">
-      <div className="w-full">
-        <div className="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8 lg:pr-16 lg:pl-[clamp(0px,14.93vw,215px)]">
-          <div className="space-y-2 md:space-y-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14">
-            <h2 className="font-alternates text-[#111111] text-[clamp(2rem,_calc(1.34rem+2.817vw),_3.875rem)] font-medium leading-[1.1em] tracking-[-2%]">
+      <div className="w-full px-4 sm:px-6 md:px-8 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0 min-[1024px]:max-[1100px]:!pl-[3.90625%] min-[1100px]:max-[1200px]:!pl-10 min-[1200px]:max-[1300px]:!pl-20 min-[1300px]:max-[1440px]:!pl-[160px] min-[1440px]:!pl-[clamp(0px,14.93vw,215px)] min-[1024px]:!pr-16">
+        <div className="space-y-2 md:space-y-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14">
+            <h2 className="font-alternates text-[#111111] text-[clamp(2rem,_calc(1.34rem+2.817vw),_3.875rem)] font-medium leading-[1.1em] tracking-[-2%] min-[375px]:max-[900px]:text-[62px] min-[375px]:max-[900px]:leading-[110%] min-[375px]:max-[900px]:tracking-[-2%] min-[900px]:max-[1023px]:text-[62px] min-[900px]:max-[1023px]:leading-[110%] min-[900px]:max-[1023px]:tracking-[-2%]">
               {t('services.title')}
             </h2>
-            <p className="font-montserrat text-[#28694D] text-[clamp(1rem,_calc(0.824rem+0.751vw),_1.5rem)] font-medium leading-[1.3em] tracking-[1.5%]">
+            <p className="font-montserrat text-[#28694D] text-[clamp(1rem,_calc(0.824rem+0.751vw),_1.5rem)] font-medium leading-[1.3em] tracking-[1.5%] min-[375px]:max-[900px]:text-[24px] min-[375px]:max-[900px]:leading-[130%] min-[375px]:max-[900px]:tracking-[0.015em] min-[900px]:max-[1023px]:text-[24px] min-[900px]:max-[1023px]:leading-[130%] min-[900px]:max-[1023px]:tracking-[0.015em]">
               {t('services.subtitle')}
             </p>
-          </div>
         </div>
       </div>
 
@@ -447,8 +445,6 @@ export default function ServicesSection() {
                 {...service}
                 showBorder={index > 0}
                 showPrimaryButton={index === 0 ? service.showPrimaryButton !== false : false}
-                // Alternate image position for visual variety (optional)
-                // imagePosition={index % 2 === 0 ? 'left' : 'right'}
               />
             </div>
           ))

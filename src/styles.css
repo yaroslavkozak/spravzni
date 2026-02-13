@@ -232,16 +232,22 @@ code {
 	/* Infinite scroll animation for carousels */
 	@keyframes scroll-left {
 		0% {
-			transform: translateX(0);
+			transform: translate3d(0, 0, 0);
+			-webkit-transform: translate3d(0, 0, 0);
 		}
 		100% {
-			transform: translateX(-50%);
+			transform: translate3d(-50%, 0, 0);
+			-webkit-transform: translate3d(-50%, 0, 0);
 		}
 	}
 
 	.animate-scroll-left {
 		animation: scroll-left 60s linear infinite;
+		-webkit-animation: scroll-left 60s linear infinite;
 		width: fit-content;
+		will-change: transform;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
 	}
 
 	/* Animation Utilities */

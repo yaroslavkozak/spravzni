@@ -1,10 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import Header from '@/src/components/Header'
 import { useI18n } from '@/src/contexts/I18nContext'
 import PageClientShell from '@/src/components/PageClientShell'
 
 const FooterSection = lazy(() => import('@/src/components/FooterSection'))
+
+const REPORT_ROW_SLOTS = 4
 
 const LoadingFallback = () => {
   const { t } = useI18n()
@@ -29,37 +31,47 @@ function ReportPage() {
 
 function ReportPageContent() {
   const { t, language } = useI18n()
-  const [reportRows, setReportRows] = useState<
-    Array<{ period: string; amount: string; category: string }>
-  >([])
   const [updatedDate, setUpdatedDate] = useState<string | null>(null)
   const [incomingAmount, setIncomingAmount] = useState<string>('229 850, 00 ₴')
   const [outgoingAmount, setOutgoingAmount] = useState<string>('160 036, 00 ₴')
 
-  useEffect(() => {
-    const loadReportData = async () => {
-      try {
-        const response = await fetch(`/api/report?lang=${language}`)
-        if (!response.ok) {
-          return
-        }
-        const data = await response.json()
-        if (data.success) {
-          setReportRows(data.items || [])
-          setUpdatedDate(data.updatedDate || null)
-          if (data.incomingAmount) {
-            setIncomingAmount(data.incomingAmount)
-          }
-          if (data.outgoingAmount) {
-            setOutgoingAmount(data.outgoingAmount)
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load report data:', error)
+  // Table rows come from admin/translations (report.rows.1.period, etc.)
+  const reportRows = useMemo(() => {
+    const rows: Array<{ period: string; amount: string; category: string }> = []
+    for (let i = 1; i <= REPORT_ROW_SLOTS; i++) {
+      const period = t(`report.rows.${i}.period`)
+      const amount = t(`report.rows.${i}.amount`)
+      const category = t(`report.rows.${i}.category`)
+      const periodKey = `report.rows.${i}.period`
+      const amountKey = `report.rows.${i}.amount`
+      const categoryKey = `report.rows.${i}.category`
+      const hasContent =
+        (period !== periodKey && period.trim() !== '') ||
+        (amount !== amountKey && amount.trim() !== '') ||
+        (category !== categoryKey && category.trim() !== '')
+      if (hasContent) {
+        rows.push({ period, amount, category })
       }
     }
+    return rows
+  }, [t])
 
-    loadReportData()
+  useEffect(() => {
+    const loadReportSettings = async () => {
+      try {
+        const response = await fetch(`/api/report?lang=${language}`)
+        if (!response.ok) return
+        const data = await response.json()
+        if (data.success) {
+          setUpdatedDate(data.updatedDate || null)
+          if (data.incomingAmount) setIncomingAmount(data.incomingAmount)
+          if (data.outgoingAmount) setOutgoingAmount(data.outgoingAmount)
+        }
+      } catch (error) {
+        console.error('Failed to load report settings:', error)
+      }
+    }
+    loadReportSettings()
   }, [language])
 
   const formatReportDate = (value: string | null) => {

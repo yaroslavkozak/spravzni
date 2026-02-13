@@ -225,9 +225,11 @@ function DonatePageContent() {
                     opacity: 1 !important;
                     transform: translateY(0) !important;
                     pointer-events: auto !important;
-                    background: #11111100 !important;
-                    backdrop-filter: none !important;
-                    -webkit-backdrop-filter: none !important;
+                    position: sticky !important;
+                    top: 0 !important;
+                    background: rgba(242, 242, 241, 0.8) !important;
+                    backdrop-filter: blur(10px) !important;
+                    -webkit-backdrop-filter: blur(10px) !important;
                 }
                 .donate-page header .text-white,
                 .donate-page header svg.text-white,
@@ -257,11 +259,11 @@ function DonatePageContent() {
                     filter: brightness(0) !important;
                 }
                 .donate-page header .backdrop-blur-header {
-                    backdrop-filter: none !important;
-                    -webkit-backdrop-filter: none !important;
+                    backdrop-filter: blur(10px) !important;
+                    -webkit-backdrop-filter: blur(10px) !important;
                 }
                 .donate-page header > div > div[class*="max-w"] {
-                    background: #11111100 !important;
+                    background: transparent !important;
                 }
                 .donate-title-container {
                     margin-left: 0;
@@ -304,7 +306,7 @@ function DonatePageContent() {
             </div>
             
             {/* Breadcrumbs */}
-            <div className="bg-[#fbfbf9] border-b border-[#FBFBF9] pt-[8rem] md:pt-[9rem]" style={{ borderBottom: '1px solid #0000001A' }}>
+            <div className="bg-[#fbfbf9] border-b border-[#FBFBF9]" style={{ borderBottom: '1px solid #0000001A' }}>
                 <div className="max-w-[1200px] mx-auto px-4 py-2 donate-breadcrumbs">
                     <a href="/" className="font-montserrat text-[16px] hover:underline" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(154, 45%, 28%, 1)' }}>
                         &lt; {t('donate.back')}

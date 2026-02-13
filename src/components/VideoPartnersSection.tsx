@@ -3,19 +3,20 @@ import MediaImage from '@/src/components/MediaImage'
 import MediaVideo from '@/src/components/MediaVideo'
 import { useI18n } from '@/src/contexts/I18nContext'
 
-// Partner logos - loading from public/images/brands/new/
-const partners = [
-  { id: 1, src: '/images/brands/new/fond.svg', alt: 'Fond', width: 200, height: 56 },
-  { id: 2, src: '/images/brands/new/Group.svg', alt: 'Group', width: 200, height: 56 },
-  { id: 3, src: '/images/brands/new/habilitationcenter.svg', alt: 'Habilitation Center', width: 200, height: 56 },
-  { id: 4, src: '/images/brands/new/lvivskamiskarada.svg', alt: 'Lvivska Miska Rada', width: 200, height: 56 },
-  { id: 5, src: '/images/brands/new/manivci.svg', alt: 'Manivci', width: 200, height: 56 },
-  // { id: 6, src: '/images/brands/new/par.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 7, src: '/images/brands/new/parr.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 8, src: '/images/brands/new/parrr.svg', alt: 'Partner', width: 200, height: 56 },
-  // { id: 9, src: '/images/brands/new/parrrrr.svg', alt: 'Partner', width: 200, height: 56 },
-  { id: 10, src: '/images/brands/new/parrrrrrr.svg', alt: 'Partner', width: 200, height: 56 },
+// Partner logos - public/images/brand-slider/ ordered by name (1.svg, 2.svg, ... 19.svg, 19.2.svg, 20.svg, ...)
+const brandSliderFiles = [
+  ...Array.from({ length: 19 }, (_, i) => `${i + 1}.svg`),
+  '19.2.svg',
+  ...Array.from({ length: 9 }, (_, i) => `${i + 20}.svg`),
 ]
+
+const partners = brandSliderFiles.map((file, index) => ({
+  id: index + 1,
+  src: `/images/brand-slider/${encodeURIComponent(file)}`,
+  alt: file.replace(/\.svg$/i, '').replace(/\s+/g, ' ').trim(),
+  width: 200,
+  height: 56,
+}))
 
 export default function VideoPartnersSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -209,25 +210,20 @@ export default function VideoPartnersSection() {
             </h2>
           </div>
           
-          {/* Carousel Row */}
-          <div className="relative overflow-hidden w-full">
-            <div className="flex items-center py-[26px] sm:py-4 animate-scroll-left bg-[#FBFBF9] sm:bg-transparent border-y border-[rgba(17,17,17,0.11)]" style={{ width: 'max-content' }}>
+          {/* Carousel Row - translateZ(0) fixes Safari overflow+transform clipping bug */}
+          <div className="relative overflow-hidden w-full" style={{ transform: 'translateZ(0)' }}>
+            <div className="flex items-center gap-[48px] py-[26px] sm:py-4 animate-scroll-left bg-[#FBFBF9] sm:bg-transparent border-y border-[rgba(17,17,17,0.11)]" style={{ width: 'max-content' }}>
               {duplicatedPartners.map((partner, index) => (
                 <div
                   key={`${partner.id}-${index}`}
-                  className="flex-shrink-0 flex items-center justify-center mr-8 sm:mr-12 md:mr-16 lg:mr-20"
-                  style={{
-                    width: `clamp(180px, ${partner.width * 0.9}px, ${partner.width}px)`,
-                    height: `clamp(50px, ${partner.height * 0.9}px, ${partner.height}px)`,
-                  }}
+                  className="flex-shrink-0 flex items-center justify-center"
                 >
                   <img
                     src={partner.src}
                     alt={partner.alt}
                     width={partner.width}
                     height={partner.height}
-                    className="object-contain w-full h-full"
-                    loading="lazy"
+                    className="object-contain max-h-[120px] w-auto"
                   />
                 </div>
               ))}

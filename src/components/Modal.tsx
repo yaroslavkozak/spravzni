@@ -83,12 +83,17 @@ export default function Modal({
         document.documentElement.style.width = '100%'
       }
 
-      // Focus first focusable element after a brief delay to ensure modal is rendered
+      // Focus first form control (input/textarea) if present, otherwise first focusable element (skip close buttons for cleaner open)
       const timer = setTimeout(() => {
-        const firstFocusable = modalRef.current?.querySelector(
+        const modal = modalRef.current
+        if (!modal) return
+        const firstFormControl = modal.querySelector(
+          'input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled])'
+        ) as HTMLElement
+        const firstFocusable = modal.querySelector(
           'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
         ) as HTMLElement
-        firstFocusable?.focus()
+        ;(firstFormControl || firstFocusable)?.focus()
       }, 100)
 
       return () => {

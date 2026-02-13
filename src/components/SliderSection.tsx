@@ -230,7 +230,7 @@ export default function SliderSection() {
 
         {/* Slider Container - desktop only */}
         <div className="hidden min-[756px]:block relative w-full max-w-[1360px] mx-auto min-[756px]:max-w-none min-[756px]:mx-0 bg-white px-4 sm:px-6 md:px-8 lg:px-[40px]">
-          <div className="relative overflow-hidden h-[300px] sm:h-[375px] md:h-[450px] lg:h-[525px] xl:h-[800px] xl:max-h-[800px]">
+          <div className="relative overflow-hidden w-full min-[756px]:aspect-[17/10] min-[756px]:h-auto min-[756px]:w-full min-[1024px]:max-[1440px]:aspect-[4/3] min-[1024px]:max-[1440px]:!h-auto">
             {/* Navigation Arrows - Positioned for all slides */}
             <div className={`absolute top-1/2 left-0 right-0 flex ${showOnlyNext ? 'justify-end' : 'justify-between'} px-2 sm:px-4 md:px-6 lg:px-10 -translate-y-1/2 pointer-events-none z-20`}>
               {showPrevArrow && (

@@ -98,10 +98,10 @@ export default function Hero() {
         <div className="flex flex-col items-center justify-center gap-0 md:gap-[2.5rem] lg:gap-0 xl:gap-[1.875rem] w-full max-w-[45.9375rem] px-0 md:px-[2.03125rem] lg:mt-[1.875rem]">
           {/* Main Heading Text - continuous smooth animation from large centered to final position */}
           <div className="flex flex-col items-center w-full hero-text-animation mt-[7.5rem] md:mt-[9.1875rem] lg:mt-[9.375rem] xl:mt-0 gap-2">
-            <h1 className="font-alternates font-bold leading-[1.1em] tracking-[-2%] text-center drop-shadow-[0_0_25px_rgba(0,0,0,0.25)] whitespace-nowrap hero-text-fade-1 pl-[2.25rem] pr-[2.25rem] md:pl-[10.75rem] md:pr-[10.75rem] lg:pl-[17.8125rem] lg:pr-[17.8125rem] xl:pl-[25.625rem] xl:pr-[25.625rem]" style={{ color: 'rgba(251, 251, 249, 1)', fontSize: 'clamp(2.5rem, 2.5rem + (100vw - 23.4375rem) * 0.0407, 5.125rem)' }}>
+            <h1 className="font-alternates font-bold leading-[1.1em] tracking-[-2%] text-center drop-shadow-[0_0_25px_rgba(0,0,0,0.25)] whitespace-nowrap hero-text-fade-1 pl-[2.25rem] pr-[2.25rem] md:pl-[10.75rem] md:pr-[10.75rem] lg:pl-[17.8125rem] lg:pr-[17.8125rem] xl:pl-[25.625rem] xl:pr-[25.625rem]" style={{ color: 'rgba(251, 251, 249, 1)', fontSize: 'clamp(2rem, calc(2rem + (100vw - 375px) * 0.04), 5.125rem)' }}>
               {t('hero.title.line1')}
             </h1>
-            <h2 className="font-alternates leading-[1.1em] tracking-[-2%] text-center drop-shadow-[0_0_16px_rgba(0,0,0,0.4)] whitespace-nowrap hero-text-fade-2 pl-[2.40625rem] pr-[2.40625rem] md:pl-[10.96875rem] md:pr-[10.96875rem] lg:pl-[18.03125rem] lg:pr-[18.03125rem] xl:pl-[25.9375rem] xl:pr-[25.9375rem]" style={{ color: 'rgba(251, 251, 249, 1)', fontWeight: 275, fontSize: 'clamp(2.5rem, 2.5rem + (100vw - 23.4375rem) * 0.0407, 5.125rem)' }}>
+            <h2 className="font-alternates leading-[1.1em] tracking-[-2%] text-center drop-shadow-[0_0_16px_rgba(0,0,0,0.4)] whitespace-nowrap hero-text-fade-2 pl-[2.40625rem] pr-[2.40625rem] md:pl-[10.96875rem] md:pr-[10.96875rem] lg:pl-[18.03125rem] lg:pr-[18.03125rem] xl:pl-[25.9375rem] xl:pr-[25.9375rem]" style={{ color: 'rgba(251, 251, 249, 1)', fontWeight: 275, fontSize: 'clamp(2rem, calc(2rem + (100vw - 375px) * 0.04), 5.125rem)' }}>
               {t('hero.title.line2')}
             </h2>
           </div>
@@ -110,12 +110,12 @@ export default function Hero() {
           <div className="flex flex-col items-center gap-0 w-full mt-[6.125rem] md:mt-[10.25rem] lg:mt-[7.625rem] xl:mt-[6.125rem]">
             {/* Text Content - appears first */}
             <div className="flex flex-col items-start md:items-center gap-4 hero-content-text w-[43.9375rem] md:w-[43.9375rem] lg:w-[43.9375rem] xl:w-[43.9375rem] 2xl:w-[56.25rem] max-w-full px-[2.5rem] md:mx-[2.03125rem] lg:-mt-[1.875rem]">
-              <p className="text-white font-montserrat font-bold leading-[1.3] tracking-[-0.015em] xl:font-bold xl:text-[24px] xl:leading-[1.3] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
+              <p className="text-white font-montserrat font-bold leading-[1.3] tracking-[-0.015em] xl:font-bold xl:text-[24px] xl:leading-[1.3] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, calc(1rem + (100vw - 375px) * 0.0056), 1.5rem)' }}>
                 {t('hero.subtitle.main')}
               </p>
               
               <div className="flex items-center justify-start md:justify-center gap-2 flex-wrap md:flex-nowrap">
-                <p className="text-white font-montserrat font-normal leading-[1.3] tracking-[-0.015em] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, 1rem + (100vw - 20rem) * 0.00714, 1.5rem)' }}>
+                <p className="text-white font-montserrat font-normal leading-[1.3] tracking-[-0.015em] xl:tracking-[1.5%] text-left md:text-center min-[680px]:whitespace-nowrap drop-shadow-[0_0_20px_rgba(0,0,0,1)]" style={{ fontSize: 'clamp(1rem, calc(1rem + (100vw - 375px) * 0.0056), 1.5rem)' }}>
                   {t('hero.subtitle.donationInfo')}{' '}
                   <a
                     href="/report"

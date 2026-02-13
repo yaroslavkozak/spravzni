@@ -20,20 +20,28 @@ interface I18nProviderProps {
   initialTranslations?: Record<string, string>;
 }
 
+function getBaseTranslations(lang: SupportedLanguage): Record<string, string> {
+  const base = translationsByLanguage[lang] || translationsByLanguage.uk;
+  return (base || {}) as Record<string, string>;
+}
+
 export function I18nProvider({
   children,
   initialLanguage = 'uk',
   initialTranslations = {},
 }: I18nProviderProps) {
   const [language, setLanguageState] = useState<SupportedLanguage>(initialLanguage);
-  const [translations, setTranslations] = useState<Record<string, string>>(initialTranslations);
+  const [translations, setTranslations] = useState<Record<string, string>>(() => {
+    const base = getBaseTranslations(initialLanguage);
+    return Object.keys(initialTranslations).length > 0 ? { ...base, ...initialTranslations } : base;
+  });
   const [loading, setLoading] = useState(false);
   const languageRef = useRef<SupportedLanguage>(initialLanguage);
 
   // Load translations from static files (bundled) + API overrides from admin/translations
   const loadTranslations = useCallback(async (lang: SupportedLanguage) => {
     setLoading(true);
-    const baseTranslations = (translationsByLanguage[lang] || {}) as Record<string, string>;
+    const baseTranslations = getBaseTranslations(lang);
     setTranslations(baseTranslations);
 
     try {
@@ -75,26 +83,27 @@ export function I18nProvider({
     [loadTranslations]
   );
 
+  const supportedLanguages = ['uk', 'en', 'pl'] as const;
+  const normalizeLang = (raw: string | null | undefined): SupportedLanguage | null => {
+    const lower = raw?.toLowerCase().trim();
+    return lower && supportedLanguages.includes(lower as SupportedLanguage) ? (lower as SupportedLanguage) : null;
+  };
+
   // Initialize language from localStorage or cookie
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedLang = localStorage.getItem('lang') as SupportedLanguage | null;
-      const cookieLang = document.cookie
-        .split('; ')
-        .find((row) => row.startsWith('lang='))
-        ?.split('=')[1] as SupportedLanguage | null;
-
-      const lang = storedLang || cookieLang || initialLanguage;
+      const storedLang = normalizeLang(localStorage.getItem('lang'));
+      const cookieLang = normalizeLang(
+        document.cookie.split('; ').find((row) => row.startsWith('lang='))?.split('=')[1]
+      );
+      const lang = storedLang ?? cookieLang ?? initialLanguage;
+      languageRef.current = lang;
       if (lang !== language) {
         setLanguageState(lang);
-        languageRef.current = lang;
-        document.documentElement.lang = lang;
-        void loadTranslations(lang);
-      } else if (Object.keys(translations).length === 0 && Object.keys(initialTranslations).length === 0) {
-        // Load initial translations if not provided
-        document.documentElement.lang = lang;
-        void loadTranslations(lang);
       }
+      document.documentElement.lang = lang;
+      // Always load to get base + API overrides (server render only has base)
+      void loadTranslations(lang);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
