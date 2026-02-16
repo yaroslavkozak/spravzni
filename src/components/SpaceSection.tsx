@@ -87,22 +87,22 @@ export default function SpaceSection() {
 
   return (
     <section className="bg-[#FBFBF9] pt-0 pb-16 md:py-20 lg:pt-20 lg:pb-24">
-      {/* Title Section - Desktop only, above border */}
-      <div className="hidden lg:block max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-[215px] mb-8">
-        <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2">
+      {/* Title Section - Desktop only, above border. 1024-1200: pl-10 (40px), 1200-1440: pl-20 (80px) */}
+      <div className="hidden lg:block max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-[215px] min-[1024px]:max-[1199px]:!pl-10 min-[1200px]:max-[1439px]:!pl-20 mb-8">
+        <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2 min-[1200px]:max-[1439px]:!text-[62px] min-[1200px]:max-[1439px]:leading-[1.1] min-[1200px]:max-[1439px]:tracking-[-0.02em]">
           {t('space.title')}
         </h2>
-        <p className="font-montserrat text-[#28694D] text-[1rem] sm:text-[1.125rem] md:text-[1.25rem] lg:text-[1.5rem] font-medium leading-[1.3em] tracking-[1.5%]">
+        <p className="font-montserrat text-[#28694D] text-[1rem] sm:text-[1.125rem] md:text-[1.25rem] lg:text-[1.5rem] font-medium leading-[1.3em] tracking-[1.5%] min-[1200px]:max-[1439px]:!text-2xl min-[1200px]:max-[1439px]:leading-[1.3] min-[1200px]:max-[1439px]:tracking-[0.015]">
           {t('space.subtitle')}
         </p>
       </div>
       
       {/* Full-width wrapper with borders */}
       <div className="w-full border-t lg:border-b border-[#1111111C]">
-        <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-stretch">
-            {/* Title Section - Mobile only */}
-            <div className="mb-8 sm:mb-10 md:mb-12 lg:hidden order-2 px-0 sm:px-0">
+        <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16 min-[900px]:max-[1023px]:!pl-[160px] min-[900px]:max-[1023px]:!pr-20 min-[1024px]:max-[1199px]:!pr-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-stretch min-[1024px]:max-[1199px]:gap-10">
+            {/* Title Section - Mobile/Tablet only. At 900–1024px: on top of image, mt-6 mb-6 */}
+            <div className="mb-8 sm:mb-10 md:mb-12 lg:hidden order-2 min-[900px]:max-[1023px]:order-1 min-[900px]:max-[1023px]:mt-6 min-[900px]:max-[1023px]:!mb-6 px-0 sm:px-0">
               <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2">
                 {t('space.title')}
               </h2>
@@ -110,8 +110,8 @@ export default function SpaceSection() {
                 {t('space.subtitle')}
               </p>
             </div>
-            {/* Image Gallery - Mobile only (no modal on click; zoom shown from 1024px+ only) */}
-            <div className="relative h-[18.75rem] sm:h-[25rem] md:h-[31.25rem] lg:hidden w-screen left-1/2 -translate-x-1/2 sm:w-auto sm:left-0 sm:translate-x-0 sm:-ml-6 md:-ml-8 order-1">
+            {/* Image Gallery - Mobile/Tablet only. w-full to match features block. 900–1024px: fixed 660×660 */}
+            <div className="relative h-[18.75rem] sm:h-[25rem] md:max-[899px]:h-[31.25rem] lg:hidden w-full order-1 min-[900px]:max-[1023px]:order-2 min-[900px]:max-[1023px]:!w-[660px] min-[900px]:max-[1023px]:!h-[660px] min-[900px]:max-[1023px]:!ml-0 min-[900px]:max-[1023px]:!mr-0 min-[900px]:max-[1023px]:justify-self-start">
             <div 
               className="relative w-full h-full bg-gray-300 overflow-hidden cursor-default group"
             >
@@ -170,10 +170,10 @@ export default function SpaceSection() {
             </div>
           </div>
 
-            {/* Desktop Left Column: Image Gallery - 700x621px, sticks to left edge */}
+            {/* Desktop Left Column: Image Gallery. 1024-1200: 600×600px, 1200+: 700×621px */}
             <div className="hidden lg:block order-1 lg:order-1 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:-ml-16">
               {/* Image Gallery - Desktop only */}
-              <div className="relative lg:w-[700px] lg:h-[621px]">
+              <div className="relative lg:w-[700px] lg:h-[621px] min-[1024px]:max-[1199px]:!w-[600px] min-[1024px]:max-[1199px]:!h-[600px] min-[1200px]:max-[1439px]:!w-[647px] min-[1200px]:max-[1439px]:!h-[547px]">
                 <div 
                   className="relative w-full h-full bg-gray-300 overflow-hidden cursor-pointer group"
                   onClick={handleImageClick}
@@ -259,7 +259,7 @@ export default function SpaceSection() {
             </div>
 
             {/* Right Side: Features List */}
-            <div className="flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-7 h-full ml-0 sm:ml-6 md:ml-8 lg:ml-12 xl:ml-16 pt-0 pb-8 lg:py-8 order-3 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+            <div className="flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-7 h-full ml-0 sm:ml-6 md:ml-8 lg:ml-12 xl:ml-16 pt-0 pb-8 lg:py-8 order-3 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 min-[900px]:max-[1023px]:!ml-0 min-[1024px]:max-[1199px]:w-[344px] min-[1024px]:max-[1199px]:!ml-[88px] min-[1024px]:max-[1199px]:!py-0 min-[1024px]:max-[1199px]:!gap-[8px] min-[1024px]:max-[1199px]:justify-center min-[1200px]:max-[1439px]:!py-0 min-[1200px]:max-[1439px]:!pt-2.5 min-[1200px]:max-[1439px]:!gap-5">
             {features.map((feature) => (
               <div key={feature.id} className="flex items-start gap-2 sm:gap-3 md:gap-4">
                 {/* Icon */}
@@ -275,7 +275,7 @@ export default function SpaceSection() {
                 </div>
                 
                 {/* Text */}
-                <p className="font-montserrat text-[#111111] text-[0.875rem] sm:text-[0.9375rem] md:text-[1rem] lg:text-[1.0625rem] leading-[1.5em] tracking-[0.5%] flex-1 pt-0.5 sm:pt-1">
+                <p className="font-montserrat text-[#111111] text-[0.875rem] sm:text-[0.9375rem] md:text-[1rem] lg:text-[1.0625rem] leading-[1.5em] tracking-[0.5%] flex-1 pt-0.5 sm:pt-1 min-[1024px]:max-[1199px]:!text-[16px] min-[1024px]:max-[1199px]:font-normal min-[1024px]:max-[1199px]:leading-[1.5]">
                   {feature.text}
                 </p>
               </div>

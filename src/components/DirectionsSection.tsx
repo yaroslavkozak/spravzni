@@ -8,7 +8,8 @@ const detailTextClass =
   'font-montserrat text-[0.875rem] sm:text-[0.9375rem] md:text-[1rem] lg:text-[1.0625rem] text-[#111111] leading-[1.6] tracking-[0.45%]'
 
 export default function DirectionsSection() {
-  const { t } = useI18n()
+  const { t, language } = useI18n()
+  const mapSrc = language === 'en' ? '/images/map/map-eng.webp' : '/images/map/map-ua.png'
 
   return (
     <section id="location" className="bg-[#FBFBF9]">
@@ -68,7 +69,7 @@ export default function DirectionsSection() {
         <div className="relative order-2 lg:order-2 h-full hidden sm:block lg:w-full">
           <div className="relative w-full aspect-square overflow-hidden bg-[#f8f8f5] sm:aspect-[4/3] lg:aspect-square xl:w-[700px] xl:h-[700px] xl:mx-auto">
             <MediaImage
-              src="/images/map/map.webp"
+              src={mapSrc}
               alt="Map near the center"
               fill
               className="object-cover"

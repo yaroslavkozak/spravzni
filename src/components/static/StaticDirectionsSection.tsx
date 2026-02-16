@@ -4,7 +4,8 @@ import type { SupportedLanguage } from '@/src/lib/i18n'
 const detailTextClass =
   'font-montserrat text-[16px] font-normal text-[#111111] leading-[150%] tracking-[0.5%]'
 
-const ENGLISH_MAP = '/eng/map%20EN.webp'
+const ENGLISH_MAP = '/images/map/map-eng.webp'
+const UKRAINIAN_MAP = '/images/map/map-ua.png'
 
 interface StaticDirectionsSectionProps {
   t: StaticTranslator
@@ -12,14 +13,14 @@ interface StaticDirectionsSectionProps {
 }
 
 export default function StaticDirectionsSection({ t, language }: StaticDirectionsSectionProps) {
-  const mapSrc = language === 'en' ? ENGLISH_MAP : undefined
+  const mapSrc = language === 'en' ? ENGLISH_MAP : UKRAINIAN_MAP
   return (
     <section id="location" className="bg-[#FBFBF9]">
-      <div className="w-full border-y-0 lg:border-y border-[#1111111C] min-[1200px]:max-[1300px]:!border-t-0 mt-0 lg:mt-16 pt-2 lg:pt-0 bg-[#FBFBF9]">
+      <div className="w-full border-y-0 lg:border-y border-[#1111111C] min-[1024px]:max-[1199px]:!border-t-0 min-[1200px]:max-[1300px]:!border-t-0 mt-0 lg:mt-16 pt-2 lg:pt-0 bg-[#FBFBF9]">
         {/* Desktop layout aligned with ServiceItem */}
-        <div className="hidden lg:flex items-stretch gap-0 min-w-0">
+        <div className="hidden lg:flex items-stretch min-[1024px]:max-[1199px]:items-center gap-0 min-w-0 min-[1024px]:max-[1199px]:justify-between">
           <div className="w-[clamp(0px,14.93vw,215px)] min-[1024px]:max-[1350px]:w-0 flex-shrink-0" />
-          <div className="w-[485px] min-[1200px]:max-[1300px]:!w-[455px] min-[1200px]:max-[1300px]:!min-w-[455px] flex-shrink-0 flex flex-col pt-[clamp(24px,4.44vw,64px)] min-[1200px]:max-[1300px]:!pt-0 pb-0 min-[1024px]:max-[1350px]:pl-[40px] min-[1200px]:max-[1300px]:pl-[80px]">
+          <div className="w-[485px] min-[1024px]:max-[1199px]:!w-[384px] min-[1024px]:max-[1199px]:!min-w-[384px] min-[1200px]:max-[1300px]:!w-[455px] min-[1200px]:max-[1300px]:!min-w-[455px] flex-shrink-0 flex flex-col pt-[clamp(24px,4.44vw,64px)] min-[1200px]:max-[1300px]:!pt-0 pb-0 min-[1024px]:max-[1350px]:pl-[40px] min-[1200px]:max-[1300px]:pl-[80px]">
             <h3 className="font-alternates text-[#111111] text-[2rem] sm:text-[2.375rem] md:text-[2.75rem] lg:text-[3.25rem] xl:text-[3.75rem] font-medium leading-[1.1] tracking-[-0.02em] mb-[40px]">
               {t('directions.title')}
             </h3>
@@ -64,13 +65,9 @@ export default function StaticDirectionsSection({ t, language }: StaticDirection
             </div>
           </div>
           <div className="w-0 flex-shrink-0" />
-          <div className="relative flex-1 h-full min-w-0 flex justify-end">
-            <div className="relative w-[700px] h-[700px] overflow-hidden bg-[#f8f8f5]">
-              <img
-                src={mapSrc ?? '/images/map/map.webp'}
-                alt="Map near the center"
-                className="w-full h-full object-cover"
-              />
+          <div className="relative flex-1 h-full min-w-0 flex justify-end min-[1024px]:max-[1199px]:w-[640px] min-[1024px]:max-[1199px]:flex-none min-[1024px]:max-[1199px]:h-auto min-[1024px]:max-[1199px]:justify-end min-[1024px]:max-[1199px]:self-start min-[1024px]:max-[1199px]:mt-[calc(clamp(24px,4.44vw,64px)+3.575rem+40px)]">
+            <div className="relative w-[700px] h-[700px] min-[1024px]:max-[1199px]:w-[600px] min-[1024px]:max-[1199px]:h-[600px] min-[1024px]:max-[1199px]:aspect-square min-[1024px]:max-[1199px]:max-w-full overflow-hidden bg-[#f8f8f5]">
+              <img src={mapSrc} alt="Map near the center" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -121,11 +118,7 @@ export default function StaticDirectionsSection({ t, language }: StaticDirection
             </div>
           </div>
           <div className="relative w-screen aspect-square overflow-hidden bg-[#f8f8f5] ml-[calc(50%-50vw)]">
-            <img
-              src={mapSrc ?? '/map-mobile.jpg'}
-              alt="Map near the center"
-              className="w-full h-full object-cover"
-            />
+            <img src={mapSrc} alt="Map near the center" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>

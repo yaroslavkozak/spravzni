@@ -290,6 +290,16 @@ function DonatePageContent() {
                         font-size: 24px !important;
                     }
                 }
+                @media (min-width: 1024px) and (max-width: 1199px) {
+                    .donate-title-container {
+                        padding-left: 40px;
+                    }
+                }
+                @media (min-width: 1200px) and (max-width: 1439px) {
+                    .donate-title-container {
+                        padding-left: 80px;
+                    }
+                }
                 @media (min-width: 1440px) {
                     .donate-title-container {
                         padding-left: 215px;
@@ -326,11 +336,11 @@ function DonatePageContent() {
                 </div>
 
                 {/* Donation Section */}
-                <div className="w-full border-y border-[#1111111C] mt-6 pt-2 lg:pt-0">
+                <div className="w-full border-y border-[#1111111C] mt-6 pt-2 lg:pt-0 min-[1024px]:max-[1200px]:pl-[40px] min-[1200px]:max-[1439px]:pl-[80px]">
                     {/* Desktop layout */}
                     <div className="hidden lg:flex items-stretch gap-0 min-w-0">
-                        <div className="w-[clamp(0px,14.93vw,215px)] flex-shrink-0" />
-                        <div className="w-[485px] flex-shrink-0 flex flex-col pt-[clamp(24px,4.44vw,64px)] pb-[clamp(9px,calc(4.44vw-15px),49px)]">
+                        <div className="w-[clamp(0px,14.93vw,215px)] min-[1024px]:max-[1200px]:w-0 min-[1200px]:max-[1439px]:w-0 flex-shrink-0" />
+                        <div className="w-[485px] min-[1024px]:max-[1200px]:w-[375px] min-[1200px]:max-[1439px]:w-[375px] flex-shrink-0 flex flex-col pt-[clamp(24px,4.44vw,64px)] min-[1024px]:max-[1200px]:pt-[64px] min-[1200px]:max-[1439px]:pt-[64px] pb-[clamp(9px,calc(4.44vw-15px),49px)]">
                             {/* First Block - Info Paragraph */}
                             <div className="mb-8">
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
@@ -370,51 +380,61 @@ function DonatePageContent() {
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UA24 3003 3500 0000 0260 0323 9362 5', 'iban')}>
                                         <CopyIcon isCopied={copiedItem === 'iban'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                            <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span> UA24 3003 3500 0000 0260 0323 9362 5
+                                            <span style={{ fontWeight: 700 }}>{t('donate.ibanLabel')}</span>
+                                            <span className="block min-[1201px]:inline">UA24 3003 3500 0000 0260 0323 9362 5</span>
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.bankNameValue'), 'bank')}>
                                         <CopyIcon isCopied={copiedItem === 'bank'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                            <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span> {t('donate.bankNameValue')}
+                                            <span style={{ fontWeight: 700 }}>{t('donate.bankNameLabel')}</span>
+                                            <span className="block min-[1201px]:inline">{t('donate.bankNameValue')}</span>
                                         </div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard(t('donate.recipientValue'), 'recipient')} className="cursor-pointer group flex items-start relative">
                                         <CopyIcon isCopied={copiedItem === 'recipient'} className="mr-2" />
-                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span> {t('donate.recipientValue')}</div>
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.recipientLabel')}</span>
+                                            <span className="block min-[1201px]:inline">{t('donate.recipientValue')}</span>
+                                        </div>
                                     </div>
 
                                     <div onClick={() => copyToClipboard('45793627', 'edrpou')} className="cursor-pointer group flex items-start relative">
                                         <CopyIcon isCopied={copiedItem === 'edrpou'} className="mr-2" />
-                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}><span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span> 45793627</div>
+                                        <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
+                                            <span style={{ fontWeight: 700 }}>{t('donate.edrpouLabel')}</span>
+                                            <span className="block min-[1201px]:inline">45793627</span>
+                                        </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard(t('donate.purposeValue'), 'purpose')}>
                                         <CopyIcon isCopied={copiedItem === 'purpose'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                            <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span> {t('donate.purposeValue')}
+                                            <span style={{ fontWeight: 700 }}>{t('donate.purposeLabel')}</span>
+                                            <span className="block min-[1201px]:inline">{t('donate.purposeValue')}</span>
                                         </div>
                                     </div>
 
                                     <div className="flex items-start group cursor-pointer relative" onClick={() => copyToClipboard('UAH', 'currency')}>
                                         <CopyIcon isCopied={copiedItem === 'currency'} className="mr-2" />
                                         <div style={{ fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#111' }}>
-                                            <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span> UAH
+                                            <span style={{ fontWeight: 700 }}>{t('donate.currencyLabel')}</span>
+                                            <span className="block min-[1201px]:inline">UAH</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[clamp(0px,4.17vw,60px)] flex-shrink-0" />
+                        <div className="w-[clamp(0px,4.17vw,60px)] min-[1024px]:max-[1200px]:w-0 min-[1200px]:max-[1439px]:w-0 flex-shrink-0" />
                         <div className="relative flex-1 h-full min-w-0 flex justify-end">
-                            <div className="relative w-[clamp(320px,45.83vw,660px)] aspect-square bg-gray-300 overflow-hidden">
+                            <div className="relative w-[clamp(320px,45.83vw,660px)] aspect-square min-[1024px]:max-[1200px]:w-[568px] min-[1024px]:max-[1200px]:aspect-[568/850] min-[1200px]:max-[1439px]:w-[660px] min-[1200px]:max-[1439px]:aspect-[660/838] bg-gray-300 overflow-hidden">
                                 <MediaImage
                                     src="/donate.png"
                                     alt="Donate"
                                     fill
-                                    className="object-cover object-right"
+                                    className="object-cover object-right min-[1024px]:max-[1200px]:object-center min-[1200px]:max-[1439px]:object-center"
                                 />
                             </div>
                         </div>
@@ -431,13 +451,15 @@ function DonatePageContent() {
                             </div>
 
                             {/* Image */}
-                            <div className="w-full h-[400px] relative -mx-5" style={{ width: 'calc(100% + 40px)', marginLeft: '-20px', marginRight: '-20px' }}>
-                                <MediaImage
-                                    src="/donate.png"
-                                    alt="Donate"
-                                    fill
-                                    className="object-cover"
-                                />
+                            <div className="px-5">
+                                <div className="w-full aspect-square relative">
+                                    <MediaImage
+                                        src="/donate.png"
+                                        alt="Donate"
+                                        fill
+                                        className="object-cover object-top"
+                                    />
+                                </div>
                             </div>
 
                             {/* Second Block - Title, Button, Terms */}
