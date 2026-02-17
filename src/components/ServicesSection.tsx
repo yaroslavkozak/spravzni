@@ -145,11 +145,11 @@ const ServiceItem = ({
 
       {/* Mobile layout */}
       <div className="lg:hidden grid grid-cols-1 gap-4 pr-5 min-[375px]:max-[900px]:pr-0 min-[900px]:pr-0">
-        <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[375px]:max-[900px]:!pt-2 min-[375px]:max-[900px]:text-[24px] min-[375px]:max-[900px]:leading-[130%] min-[375px]:max-[900px]:tracking-[0.015em] min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0 min-[900px]:max-[1023px]:!pt-2 min-[900px]:max-[1023px]:text-[24px] min-[900px]:max-[1023px]:leading-[130%] min-[900px]:max-[1023px]:tracking-[0.015em]">
+        <h3 className="font-montserrat text-[#111111] text-[clamp(18px,_calc(15.887px+0.563vw),_24px)] font-bold leading-[1.3em] tracking-[-1.5%] mb-2 max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 sm:pt-16 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[375px]:max-[900px]:!pt-2 min-[375px]:max-[900px]:text-[24px] min-[375px]:max-[900px]:leading-[130%] min-[375px]:max-[900px]:tracking-[0.015em] min-[900px]:!ml-[17.78%] min-[900px]:!mr-[8.89%] min-[900px]:!pl-0 min-[900px]:!pr-0 min-[900px]:!pt-2 min-[900px]:text-[24px] min-[900px]:leading-[130%] min-[900px]:tracking-[0.015em]">
           {heading}
         </h3>
-        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0">
-          <div className="relative aspect-square bg-gray-300 overflow-hidden mx-auto w-[clamp(280px,89.33vw,335px)] min-[375px]:max-[900px]:!w-full min-[375px]:max-[900px]:!mx-0 min-[900px]:max-[1023px]:!w-full min-[900px]:max-[1023px]:!mx-0">
+        <div className="relative h-full min-h-[335px] max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 sm:pr-12 md:pr-16 lg:pr-24 xl:pr-32 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:!ml-[17.78%] min-[900px]:!mr-[8.89%] min-[900px]:!pl-0 min-[900px]:!pr-0">
+          <div className="relative aspect-square bg-gray-300 overflow-hidden mx-auto w-[clamp(280px,89.33vw,335px)] min-[375px]:max-[900px]:!w-full min-[375px]:max-[900px]:!mx-0 min-[900px]:!w-full min-[900px]:!mx-0">
             <MediaImage
               src={
                 imageSrc.startsWith('/')
@@ -171,8 +171,8 @@ const ServiceItem = ({
             )}
           </div>
         </div>
-        <div className="max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 h-full flex flex-col min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0">
-          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px] min-[375px]:max-[900px]:pb-4 min-[900px]:max-[1023px]:pb-4">
+        <div className="max-w-[90rem] mx-auto px-0 sm:px-6 md:px-8 lg:px-16 pl-5 sm:pl-12 md:pl-16 lg:pl-24 xl:pl-32 ml-0 sm:ml-6 md:ml-8 lg:ml-16 pt-0 h-full flex flex-col min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:!ml-[17.78%] min-[900px]:!mr-[8.89%] min-[900px]:!pl-0 min-[900px]:!pr-0">
+          <div className="space-y-3 sm:space-y-4 md:space-y-5 pb-[38px] min-[375px]:max-[900px]:pb-4 min-[900px]:pb-4">
             {paragraphs
               .filter((paragraph) => {
                 if (!paragraph) return false
@@ -189,7 +189,7 @@ const ServiceItem = ({
               ))}
           </div>
           {hasPrimaryButton || hasSecondaryButton ? (
-            <div className="flex flex-col gap-2 w-full mt-4 mt-auto pb-6 min-[375px]:max-[900px]:pb-10 min-[900px]:max-[1023px]:pb-10">
+            <div className="flex flex-col gap-2 w-full mt-4 mt-auto pb-6 min-[375px]:max-[900px]:pb-10 min-[900px]:pb-10">
               {hasPrimaryButton && safePrimaryButtonText && (
                 <button
                   onClick={
@@ -422,9 +422,9 @@ export default function ServicesSection() {
 
   return (
     <section id="services" className="bg-white py-16 md:py-20 lg:py-24">
-      <div className="w-full px-4 sm:px-6 md:px-8 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023px]:!ml-[17.78%] min-[900px]:max-[1023px]:!mr-[8.89%] min-[900px]:max-[1023px]:!pl-0 min-[900px]:max-[1023px]:!pr-0 min-[1024px]:max-[1100px]:!pl-[3.90625%] min-[1100px]:max-[1200px]:!pl-10 min-[1200px]:max-[1300px]:!pl-20 min-[1300px]:max-[1440px]:!pl-[160px] min-[1440px]:!pl-[clamp(0px,14.93vw,215px)] min-[1024px]:!pr-16">
+      <div className="w-full px-4 sm:px-6 md:px-8 min-[375px]:max-[900px]:!ml-[8.89%] min-[375px]:max-[900px]:!mr-[8.89%] min-[375px]:max-[900px]:!pl-0 min-[375px]:max-[900px]:!pr-0 min-[900px]:max-[1023.99px]:!ml-[17.78%] min-[900px]:max-[1023.99px]:!mr-[8.89%] min-[900px]:max-[1023.99px]:!pl-0 min-[900px]:max-[1023.99px]:!pr-0 min-[1024px]:max-[1100px]:!pl-[3.90625%] min-[1100px]:max-[1200px]:!pl-10 min-[1200px]:max-[1300px]:!pl-20 min-[1300px]:max-[1440px]:!pl-[160px] min-[1440px]:!pl-[clamp(0px,14.93vw,215px)] min-[1024px]:!pr-16">
         <div className="space-y-2 md:space-y-3 mb-8 sm:mb-10 md:mb-12 lg:mb-14">
-            <h2 className="font-alternates text-[#111111] text-[clamp(2rem,_calc(1.34rem+2.817vw),_3.875rem)] font-medium leading-[1.1em] tracking-[-2%] min-[375px]:max-[900px]:text-[62px] min-[375px]:max-[900px]:leading-[110%] min-[375px]:max-[900px]:tracking-[-2%] min-[900px]:max-[1023px]:text-[62px] min-[900px]:max-[1023px]:leading-[110%] min-[900px]:max-[1023px]:tracking-[-2%]">
+            <h2 className="font-alternates text-[#111111] text-[clamp(2rem,_calc(1.34rem+2.817vw),_3.875rem)] font-medium leading-[1.1em] tracking-[-2%] min-[375px]:max-[900px]:text-[62px] min-[375px]:max-[900px]:leading-[110%] min-[375px]:max-[900px]:tracking-[-2%] min-[900px]:max-[1023.99px]:text-[62px] min-[900px]:max-[1023.99px]:leading-[110%] min-[900px]:max-[1023.99px]:tracking-[-2%]">
               {t('services.title')}
             </h2>
             <p className="font-montserrat text-[#28694D] text-[clamp(1rem,_calc(0.824rem+0.751vw),_1.5rem)] font-medium leading-[1.3em] tracking-[1.5%] min-[375px]:max-[900px]:text-[24px] min-[375px]:max-[900px]:leading-[130%] min-[375px]:max-[900px]:tracking-[0.015em] min-[900px]:max-[1023px]:text-[24px] min-[900px]:max-[1023px]:leading-[130%] min-[900px]:max-[1023px]:tracking-[0.015em]">

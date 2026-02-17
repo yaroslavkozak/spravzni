@@ -101,8 +101,8 @@ export default function SpaceSection() {
       <div className="w-full border-t lg:border-b border-[#1111111C]">
         <div className="max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-16 min-[900px]:max-[1023px]:!pl-[160px] min-[900px]:max-[1023px]:!pr-20 min-[1024px]:max-[1199px]:!pr-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-stretch min-[1024px]:max-[1199px]:gap-10">
-            {/* Title Section - Mobile/Tablet only. At 900–1024px: on top of image, mt-6 mb-6 */}
-            <div className="mb-8 sm:mb-10 md:mb-12 lg:hidden order-2 min-[900px]:max-[1023px]:order-1 min-[900px]:max-[1023px]:mt-6 min-[900px]:max-[1023px]:!mb-6 px-0 sm:px-0">
+            {/* Title Section - Mobile/Tablet only. 576–900px & 900–1024px: on top of image, mt-6 mb-6 */}
+            <div className="mb-8 sm:mb-10 md:mb-12 lg:hidden order-2 min-[576px]:max-[899px]:order-1 min-[576px]:max-[899px]:mt-6 min-[576px]:max-[899px]:!mb-6 min-[900px]:max-[1023px]:order-1 min-[900px]:max-[1023px]:mt-6 min-[900px]:max-[1023px]:!mb-6 px-0 sm:px-0">
               <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2">
                 {t('space.title')}
               </h2>
@@ -110,8 +110,8 @@ export default function SpaceSection() {
                 {t('space.subtitle')}
               </p>
             </div>
-            {/* Image Gallery - Mobile/Tablet only. w-full to match features block. 900–1024px: fixed 660×660 */}
-            <div className="relative h-[18.75rem] sm:h-[25rem] md:max-[899px]:h-[31.25rem] lg:hidden w-full order-1 min-[900px]:max-[1023px]:order-2 min-[900px]:max-[1023px]:!w-[660px] min-[900px]:max-[1023px]:!h-[660px] min-[900px]:max-[1023px]:!ml-0 min-[900px]:max-[1023px]:!mr-0 min-[900px]:max-[1023px]:justify-self-start">
+            {/* Image Gallery - Mobile/Tablet only. w-full to match features block. 576–900px & 900–1024px: below title, 900–1024px: fixed 660×660 */}
+            <div className="relative h-[18.75rem] sm:h-[25rem] md:max-[899px]:h-[31.25rem] lg:hidden w-full order-1 min-[576px]:max-[899px]:order-2 min-[900px]:max-[1023px]:order-2 min-[900px]:max-[1023px]:!w-[660px] min-[900px]:max-[1023px]:!h-[660px] min-[900px]:max-[1023px]:!ml-0 min-[900px]:max-[1023px]:!mr-0 min-[900px]:max-[1023px]:justify-self-start">
             <div 
               className="relative w-full h-full bg-gray-300 overflow-hidden cursor-default group"
             >
@@ -259,7 +259,7 @@ export default function SpaceSection() {
             </div>
 
             {/* Right Side: Features List */}
-            <div className="flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-7 h-full ml-0 sm:ml-6 md:ml-8 lg:ml-12 xl:ml-16 pt-0 pb-8 lg:py-8 order-3 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 min-[900px]:max-[1023px]:!ml-0 min-[1024px]:max-[1199px]:w-[344px] min-[1024px]:max-[1199px]:!ml-[88px] min-[1024px]:max-[1199px]:!py-0 min-[1024px]:max-[1199px]:!gap-[8px] min-[1024px]:max-[1199px]:justify-center min-[1200px]:max-[1439px]:!py-0 min-[1200px]:max-[1439px]:!pt-2.5 min-[1200px]:max-[1439px]:!gap-5">
+            <div className="flex flex-col gap-4 sm:gap-5 md:gap-6 lg:gap-7 h-full ml-0 sm:ml-6 md:ml-8 lg:ml-12 xl:ml-16 pt-0 pb-8 lg:py-8 order-3 lg:order-2 lg:col-start-2 lg:row-start-1 lg:row-span-2 min-[576px]:max-[899px]:!ml-0 min-[900px]:max-[1023px]:!ml-0 min-[1024px]:max-[1199px]:w-[344px] min-[1024px]:max-[1199px]:!ml-[88px] min-[1024px]:max-[1199px]:!py-0 min-[1024px]:max-[1199px]:!gap-[8px] min-[1024px]:max-[1199px]:justify-center min-[1200px]:max-[1439px]:!py-0 min-[1200px]:max-[1439px]:!pt-2.5 min-[1200px]:max-[1439px]:!gap-5">
             {features.map((feature) => (
               <div key={feature.id} className="flex items-start gap-2 sm:gap-3 md:gap-4">
                 {/* Icon */}

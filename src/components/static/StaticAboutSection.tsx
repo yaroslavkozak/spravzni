@@ -1,10 +1,23 @@
 import type { StaticTranslator } from '@/src/lib/i18n-static'
+import { useSlider } from '@/src/contexts/SliderContext'
 
 interface StaticAboutSectionProps {
   t: StaticTranslator
 }
 
 export default function StaticAboutSection({ t }: StaticAboutSectionProps) {
+  const { navigateToSlide } = useSlider()
+
+  const handleReadMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    // Go to second slide (index 1) in the shared slider
+    navigateToSlide(1)
+    // Smooth scroll to the slider section
+    const sliderSection = document.getElementById('mi')
+    if (sliderSection) {
+      sliderSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
   return (
     <section id="about" className="bg-white overflow-x-clip">
       <div className="max-w-[1440px] mx-auto px-5 md:px-8 min-[756px]:px-16 xl:px-20 pb-10 border-b border-[rgba(17,17,17,0.11)]">
@@ -35,7 +48,7 @@ export default function StaticAboutSection({ t }: StaticAboutSectionProps) {
               </p>
             </div>
 
-            <p className="relative z-10 font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] ml-0 min-[756px]:ml-[calc(7rem+0.75rem)]">
+            <p className="relative z-10 font-montserrat font-normal text-[#111111] text-[16px] leading-[1.5em] tracking-[0.5%] ml-0 min-[1024px]:ml-[calc(7rem+0.75rem)]">
               {t('about.p2')}
             </p>
 
@@ -61,6 +74,7 @@ export default function StaticAboutSection({ t }: StaticAboutSectionProps) {
             <div className="hidden min-[756px]:flex mt-auto justify-end min-[756px]:justify-start">
               <a
                 href="#mi"
+                onClick={handleReadMoreClick}
                 className="text-[#28694D] text-[14px] sm:text-[15px] md:text-[16px] min-[756px]:text-[17px] xl:text-[18px] font-medium hover:opacity-80 transition-opacity inline-block underline"
               >
                 {t('about.readMore')}
