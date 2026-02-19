@@ -1,16 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import MediaImage from '@/src/components/MediaImage'
 import { useI18n } from '@/src/contexts/I18nContext'
+import { useHomepageComponent } from '@/src/hooks/useHomepageComponent'
 
 export default function SpaceSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [hasCycled, setHasCycled] = useState(false) // Track if we've cycled from last to first
-  const totalImages = 8
-  const { t } = useI18n()
+  const { t, language } = useI18n()
+  const { getText, getImageUrl } = useHomepageComponent('space', language)
 
   const features = [
     { id: 1, icon: 'sparks', text: t('space.feature1') },
@@ -23,17 +23,14 @@ export default function SpaceSection() {
     { id: 8, icon: 'rotate', text: t('space.feature8') },
   ]
 
-  // Image sources - gallery images from prostir folder
-  const imageSources = [
-    '/images/prostir/1.webp',
-    '/images/prostir/2.webp',
-    '/images/prostir/3.webp',
-    '/images/prostir/4.webp',
-    '/images/prostir/5.webp',
-    '/images/prostir/6.webp',
-    '/images/prostir/7.webp',
-    '/images/prostir/8.webp',
-  ]
+  const title = getText('space.title') || t('space.title')
+  const subtitle = getText('space.subtitle') || t('space.subtitle')
+
+  // Image sources - use CMS first, fallback to local public images
+  const imageSources = Array.from({ length: 8 }, (_, i) => i + 1).map(
+    (index) => getImageUrl(`space.gallery${index}`) || `/images/prostir/${index}.webp`
+  )
+  const totalImages = imageSources.length
 
   const handleImageClick = () => {
     setIsModalOpen(true)
@@ -90,10 +87,10 @@ export default function SpaceSection() {
       {/* Title Section - Desktop only, above border. 1024-1200: pl-10 (40px), 1200-1440: pl-20 (80px) */}
       <div className="hidden lg:block max-w-[90rem] mx-auto px-5 sm:px-6 md:px-8 lg:px-[215px] min-[1024px]:max-[1199px]:!pl-10 min-[1200px]:max-[1439px]:!pl-20 mb-8">
         <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2 min-[1200px]:max-[1439px]:!text-[62px] min-[1200px]:max-[1439px]:leading-[1.1] min-[1200px]:max-[1439px]:tracking-[-0.02em]">
-          {t('space.title')}
+          {title}
         </h2>
         <p className="font-montserrat text-[#28694D] text-[1rem] sm:text-[1.125rem] md:text-[1.25rem] lg:text-[1.5rem] font-medium leading-[1.3em] tracking-[1.5%] min-[1200px]:max-[1439px]:!text-2xl min-[1200px]:max-[1439px]:leading-[1.3] min-[1200px]:max-[1439px]:tracking-[0.015]">
-          {t('space.subtitle')}
+          {subtitle}
         </p>
       </div>
       
@@ -104,10 +101,10 @@ export default function SpaceSection() {
             {/* Title Section - Mobile/Tablet only. 576–900px & 900–1024px: on top of image, mt-6 mb-6 */}
             <div className="mb-8 sm:mb-10 md:mb-12 lg:hidden order-2 min-[576px]:max-[899px]:order-1 min-[576px]:max-[899px]:mt-6 min-[576px]:max-[899px]:!mb-6 min-[900px]:max-[1023px]:order-1 min-[900px]:max-[1023px]:mt-6 min-[900px]:max-[1023px]:!mb-6 px-0 sm:px-0">
               <h2 className="font-alternates text-[#111111] text-[2.25rem] sm:text-[2.625rem] md:text-[3rem] lg:text-[3.5rem] xl:text-[4rem] font-medium leading-[1.1em] tracking-[-2%] mb-2">
-                {t('space.title')}
+                {title}
               </h2>
-              <p className="font-montserrat text-[#28694D] text-[1rem] sm:text-[1.125rem] md:text-[1.25rem] lg:text-[1.5rem] font-medium leading-[1.3em] tracking-[1.5%]">
-                {t('space.subtitle')}
+              <p className="font-montserrat text-[#28694D] text-[16px] min-[375px]:max-[900px]:!text-[16px] min-[375px]:max-[900px]:md:!text-[16px] min-[900px]:max-[1023px]:!text-[1.125rem] md:text-[1.25rem] lg:text-[1.5rem] font-normal leading-[130%] tracking-[1.5%]">
+                {subtitle}
               </p>
             </div>
             {/* Image Gallery - Mobile/Tablet only. w-full to match features block. 576–900px & 900–1024px: below title, 900–1024px: fixed 660×660 */}
@@ -264,19 +261,18 @@ export default function SpaceSection() {
               <div key={feature.id} className="flex items-start gap-2 sm:gap-3 md:gap-4">
                 {/* Icon */}
                 <div className="flex-shrink-0 flex items-center justify-center">
-                  <Image
-                    src={`/images/space/icons/${feature.icon}.svg`}
+                  <MediaImage
+                    src={getImageUrl(`space.feature${feature.id}.icon`) || `/images/space/icons/${feature.icon}.svg`}
                     alt=""
                     width={32}
                     height={32}
                     className="object-contain w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9"
-                    unoptimized={true}
                   />
                 </div>
                 
                 {/* Text */}
-                <p className="font-montserrat text-[#111111] text-[0.875rem] sm:text-[0.9375rem] md:text-[1rem] lg:text-[1.0625rem] leading-[1.5em] tracking-[0.5%] flex-1 pt-0.5 sm:pt-1 min-[1024px]:max-[1199px]:!text-[16px] min-[1024px]:max-[1199px]:font-normal min-[1024px]:max-[1199px]:leading-[1.5]">
-                  {feature.text}
+                <p className="font-montserrat text-[#111111] text-[16px] font-normal leading-[150%] tracking-[0.5%] flex-1 pt-0.5 sm:pt-1">
+                  {getText(`space.feature${feature.id}`) || feature.text}
                 </p>
               </div>
             ))}

@@ -32,7 +32,7 @@ function DonatePage() {
 }
 
 function DonatePageContent() {
-    const { t } = useI18n()
+    const { t, language } = useI18n()
     const [amount, setAmount] = useState<string>('100')
     const [isRecurring, setIsRecurring] = useState(false)
     const [recurringInterval, setRecurringInterval] = useState<string>('1m')
@@ -44,6 +44,7 @@ function DonatePageContent() {
         count?: string
     }>({})
     const [copiedItem, setCopiedItem] = useState<string | null>(null)
+    const [updatedDate, setUpdatedDate] = useState<string | null>(null)
 
     // Amounts for quick selection
     const presets = [100, 300, 500, 1000, 2000]
@@ -62,6 +63,41 @@ function DonatePageContent() {
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
         }
     }, [])
+
+    useEffect(() => {
+        const loadReportSettings = async () => {
+            try {
+                const response = await fetch(`/api/report?lang=${language}`)
+                if (!response.ok) return
+                const data = await response.json()
+                if (data.success) {
+                    setUpdatedDate(data.updatedDate || null)
+                }
+            } catch (error) {
+                console.error('Failed to load report settings:', error)
+            }
+        }
+
+        loadReportSettings()
+    }, [language])
+
+    const formatReportDate = (value: string | null) => {
+        if (!value) return t('report.updatedDate')
+        const parts = value.split('-')
+        if (parts.length === 3) {
+            const [year, month, day] = parts
+            const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))
+            const locale = language === 'en' ? 'en-GB' : 'uk-UA'
+            return date.toLocaleDateString(locale, {
+                day: 'numeric',
+                month: language === 'en' ? 'short' : 'numeric',
+                year: 'numeric',
+            })
+        }
+        return value
+    }
+
+    const reportLinkLabel = t('donate.reportLink', { date: formatReportDate(updatedDate) })
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
@@ -347,7 +383,7 @@ function DonatePageContent() {
                                     {t('donate.infoParagraph')}
                                 </p>
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)] lg:mt-4" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ color: '#000000E5' }}>{t('donate.reportLink')}</a>
+                                    {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ color: '#000000E5' }}>{reportLinkLabel}</a>
                                 </p>
                             </div>
 
@@ -446,7 +482,7 @@ function DonatePageContent() {
                             {/* First Block - Info Paragraph */}
                             <div className="px-5">
                                 <p className="font-montserrat text-[hsla(0,0%,7%,1)]" style={{ fontSize: '16px', fontWeight: 400, lineHeight: '150%', letterSpacing: '0.5%' }}>
-                                    {t('donate.infoParagraph')} {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ fontWeight: 400, fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#000000E5' }}>{t('donate.reportLink')}</a>
+                                    {t('donate.infoParagraph')} {t('donate.reportMonthly')} <a href="/report" className="underline underline-offset-4" style={{ fontWeight: 400, fontSize: '16px', lineHeight: '150%', letterSpacing: '0.5%', color: '#000000E5' }}>{reportLinkLabel}</a>
                                 </p>
                             </div>
 

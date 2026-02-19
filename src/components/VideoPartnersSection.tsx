@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import MediaImage from '@/src/components/MediaImage'
 import MediaVideo from '@/src/components/MediaVideo'
 import { useI18n } from '@/src/contexts/I18nContext'
+import { useHomepageComponent } from '@/src/hooks/useHomepageComponent'
 
 // Partner logos - public/images/brand-slider/ ordered by name (1.svg, 2.svg, ... 19.svg, 19.2.svg, 20.svg, ...)
 const brandSliderFiles = [
@@ -25,10 +26,30 @@ export default function VideoPartnersSection() {
   const [hasUserClicked, setHasUserClicked] = useState(false)
   const [volume, setVolume] = useState(1)
   const [showVolumeControl, setShowVolumeControl] = useState(false)
-  const { t } = useI18n()
+  const { t, language } = useI18n()
+  const { getImageUrl } = useHomepageComponent('videoPartners', language)
+
+  const cmsPartners = Array.from({ length: 30 }, (_, i) => i + 1)
+    .map((index) => {
+      const src = getImageUrl(`videoPartners.partner${index}`)
+      if (!src) {
+        return null
+      }
+
+      return {
+        id: index,
+        src,
+        alt: `Partner logo ${index}`,
+        width: 200,
+        height: 56,
+      }
+    })
+    .filter((partner): partner is NonNullable<typeof partner> => partner !== null)
+
+  const carouselPartners = cmsPartners.length > 0 ? cmsPartners : partners
 
   // Duplicate partners for seamless infinite scroll
-  const duplicatedPartners = [...partners, ...partners]
+  const duplicatedPartners = [...carouselPartners, ...carouselPartners]
 
   const togglePlayPause = () => {
     setHasUserClicked(true)

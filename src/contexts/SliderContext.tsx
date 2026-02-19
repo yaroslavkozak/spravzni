@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode, useCallback, useEffect } from 'react'
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react'
 
 interface SliderContextType {
   currentSlide: number
@@ -11,14 +11,6 @@ const SliderContext = createContext<SliderContextType | undefined>(undefined)
 
 export function SliderProvider({ children }: { children: ReactNode }) {
   const [currentSlide, setCurrentSlide] = useState(0)
-
-  // On mobile, start from slide 2 (index 1)
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 1023px)')
-    if (mq.matches) {
-      setCurrentSlide(1)
-    }
-  }, [])
 
   const navigateToSlide = useCallback((slideIndex: number) => {
     setCurrentSlide(slideIndex)

@@ -235,6 +235,34 @@ function AdminHomepage() {
     }
   }
 
+  const handleImageDelete = async (fieldKey: string) => {
+    setUploadingImages((prev) => new Set(prev).add(fieldKey))
+    setError(null)
+
+    try {
+      const response = await fetch(`/api/admin/media/upload?key=${encodeURIComponent(fieldKey)}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+
+      const data = await response.json()
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to delete image')
+      }
+
+      await loadComponentData()
+    } catch (err) {
+      console.error('Delete image error:', err)
+      setError('Не вдалося видалити зображення')
+    } finally {
+      setUploadingImages((prev) => {
+        const next = new Set(prev)
+        next.delete(fieldKey)
+        return next
+      })
+    }
+  }
+
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/logout', {
@@ -404,6 +432,16 @@ function AdminHomepage() {
                           disabled={isUploading}
                           className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-gray-500 focus:outline-none disabled:opacity-50"
                         />
+                        {media && (
+                          <button
+                            type="button"
+                            onClick={() => handleImageDelete(field.key)}
+                            disabled={isUploading}
+                            className="mt-2 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
+                          >
+                            Видалити медіа
+                          </button>
+                        )}
                         {isUploading && (
                           <p className="mt-1 text-xs text-gray-500">Завантаження...</p>
                         )}

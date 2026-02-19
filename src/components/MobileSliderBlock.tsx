@@ -36,7 +36,6 @@ const renderSlideWithQuote = (slide: Slide, slideNumber: number, totalSlides: nu
 export default function MobileSliderBlock() {
   const { currentSlide, navigateToSlide } = useSlider()
   const { t } = useI18n()
-  const [hasCycled, setHasCycled] = useState(false)
   const [disableTransition, setDisableTransition] = useState(false)
 
   const allSlides: Slide[] = [
@@ -51,24 +50,24 @@ export default function MobileSliderBlock() {
     { id: 10, imageOnly: false, image: 'gallery.image10', text: { quote: 'icons.lapki', heading: t('slider.slide9.heading'), body: t('slider.slide9.body') } },
     { id: 11, imageOnly: false, image: 'gallery.image11', text: { quote: 'icons.lapki', heading: t('slider.slide10.heading'), body: t('slider.slide10.body') } },
   ]
-  // Mobile: slides 2-10 only (exclude slide 1)
+  // Mobile excludes slide 1 because it is displayed separately in the About section.
   const mobileSlides = allSlides.slice(1)
   const mobileTotalSlides = mobileSlides.length
-  const mobileIndex = currentSlide === 0 ? 0 : currentSlide - 1
+  const mobileStateIndex = currentSlide === 0 ? 1 : currentSlide
+  const mobileIndex = mobileStateIndex - 1
 
   const nextSlide = useCallback(() => {
-    const nextIndex = currentSlide === 9 ? 1 : currentSlide + 1
-    if (currentSlide === 9) {
-      setHasCycled(true)
+    const nextIndex = mobileStateIndex === 9 ? 1 : mobileStateIndex + 1
+    if (mobileStateIndex === 9 && nextIndex === 1) {
       setDisableTransition(true)
     }
     navigateToSlide(nextIndex)
-  }, [currentSlide, navigateToSlide])
+  }, [mobileStateIndex, navigateToSlide])
 
   const prevSlide = useCallback(() => {
-    const prevIndex = currentSlide === 1 ? 9 : currentSlide - 1
+    const prevIndex = mobileStateIndex === 1 ? 9 : mobileStateIndex - 1
     navigateToSlide(prevIndex)
-  }, [currentSlide, navigateToSlide])
+  }, [mobileStateIndex, navigateToSlide])
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -85,7 +84,6 @@ export default function MobileSliderBlock() {
     return () => cancelAnimationFrame(frame)
   }, [disableTransition])
 
-  // Mobile always shows both arrows (no slide 1)
   const showOnlyNext = false
 
   return (
@@ -109,7 +107,7 @@ export default function MobileSliderBlock() {
           </div>
         </div>
       </div>
-      {allSlides[currentSlide]?.text && (
+      {allSlides[mobileStateIndex]?.text && (
         <div className="pl-5 pr-4 py-6 border-t border-[rgba(17,17,17,0.11)] max-w-[1440px] mx-auto h-[225px] overflow-y-auto">
           <div className="flex flex-col gap-3 max-w-[526px]">
             <div className="flex items-start gap-2 sm:gap-3">
@@ -118,10 +116,10 @@ export default function MobileSliderBlock() {
               </span>
               <div className="flex flex-col gap-1 min-w-0 flex-1">
                 <h3 className="font-alternates text-[#111111] text-[16px] font-medium leading-[1.1em] tracking-[-2%]">
-                  {allSlides[currentSlide].text!.heading}
+                  {allSlides[mobileStateIndex].text!.heading}
                 </h3>
                 <p className="font-montserrat text-[#111111] text-[16px] font-normal leading-[1.5em] tracking-[0.5%]">
-                  {allSlides[currentSlide].text!.body}
+                  {allSlides[mobileStateIndex].text!.body}
                 </p>
               </div>
             </div>

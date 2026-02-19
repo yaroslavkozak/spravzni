@@ -63,13 +63,13 @@ export default function StaticContributionSectionFullImage({
               <h3 className="contribute-title-1024-1200 font-alternates text-[#111111] font-medium leading-[1.1] tracking-[-0.02em] mb-10" style={{ fontSize: 'clamp(1.5rem, 1.25rem + 1.25vw, 3.75rem)' }}>
                 {t('contribution.title')}
               </h3>
-              <p className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4" style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}>
+              <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4">
                 {t('contribution.p1')}
               </p>
-              <p className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4" style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}>
+              <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4">
                 {t('contribution.p2')}
               </p>
-              <p className="font-montserrat leading-[1.6] tracking-[0.45%] mb-8" style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}>
+              <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-8">
                 {t('contribution.p3')}{' '}
                 <a href="/report" className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                   {t('hero.subtitle.report')}
@@ -99,22 +99,13 @@ export default function StaticContributionSectionFullImage({
           />
 
           <div className="flex flex-col items-start justify-start text-[#111111] w-full px-0 min-[1024.01px]:hidden order-3 min-[900px]:max-[1023.99px]:pb-[40px]">
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4 sm:mb-5 md:mb-6"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4 sm:mb-5 md:mb-6">
               {t('contribution.p1')}
             </p>
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4 sm:mb-5 md:mb-6"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4 sm:mb-5 md:mb-6">
               {t('contribution.p2')}
             </p>
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-8 sm:mb-9 md:mb-10"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-8 sm:mb-9 md:mb-10">
               {t('contribution.p3')}{' '}
               <a href="/report" className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                 {t('hero.subtitle.report')}
@@ -136,22 +127,13 @@ export default function StaticContributionSectionFullImage({
             >
               {t('contribution.title')}
             </h3>
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4">
               {t('contribution.p1')}
             </p>
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-4"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-4">
               {t('contribution.p2')}
             </p>
-            <p
-              className="font-montserrat leading-[1.6] tracking-[0.45%] mb-8"
-              style={{ fontSize: 'clamp(0.875rem, 0.8125rem + 0.25vw, 1.0625rem)' }}
-            >
+            <p className="font-montserrat text-[16px] font-normal leading-[1.6] tracking-[0.45%] mb-8">
               {t('contribution.p3')}{' '}
               <a href="/report" className="underline underline-offset-4 hover:opacity-80 transition-opacity">
                 {t('hero.subtitle.report')}
