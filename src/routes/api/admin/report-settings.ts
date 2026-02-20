@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import type { Env } from '@/types/cloudflare'
 import { getAdminUserFromSession } from '@/src/lib/database/admin-auth'
 import { getReportSettings, updateReportSettings } from '@/src/lib/database/report'
+import { createText } from '@/src/lib/database'
 import type { UpdateReportSettingsInput } from '@/types/database'
 
 function getSessionId(request: Request): string | null {
@@ -16,6 +17,18 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncReportSettingsToTranslations(db: Env['DB'], settings: {
+  updated_date: string | null
+  incoming_amount: string | null
+  outgoing_amount: string | null
+}): Promise<void> {
+  await Promise.all([
+    createText(db, { key: 'report.updatedDate', language: 'uk', value: settings.updated_date || '' }),
+    createText(db, { key: 'report.incoming.amount', language: 'uk', value: settings.incoming_amount || '' }),
+    createText(db, { key: 'report.outgoing.amount', language: 'uk', value: settings.outgoing_amount || '' }),
+  ])
 }
 
 export const Route = createFileRoute('/api/admin/report-settings')({
@@ -96,6 +109,7 @@ export const Route = createFileRoute('/api/admin/report-settings')({
 
           const body = (await request.json()) as UpdateReportSettingsInput
           const settings = await updateReportSettings(db, body)
+          await syncReportSettingsToTranslations(db, settings)
 
           return new Response(
             JSON.stringify({ success: true, settings }),

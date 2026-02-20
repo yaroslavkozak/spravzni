@@ -6,16 +6,86 @@
 import type { D1Database } from '../../types/cloudflare';
 import type {
   Text,
+  Translation,
   Media,
+  HomepageMediaItem,
+  HomepageMediaItemWithMedia,
   CreateTextInput,
   UpdateTextInput,
   CreateMediaInput,
   UpdateMediaInput,
+  CreateHomepageMediaItemInput,
 } from '../../types/database';
 
 // ============================================================================
 // TEXT FUNCTIONS
 // ============================================================================
+
+type TranslationLanguage = 'uk' | 'en' | 'pl' | 'ua';
+type TranslationColumn = 'ua' | 'en' | 'pl';
+
+interface TranslationRow {
+  id: number;
+  key: string;
+  ua: string | null;
+  en: string | null;
+  pl: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+const LANGUAGE_TO_COLUMN: Record<TranslationLanguage, TranslationColumn> = {
+  uk: 'ua',
+  ua: 'ua',
+  en: 'en',
+  pl: 'pl',
+};
+
+function normalizeTranslationLanguage(language: string): TranslationLanguage {
+  const normalized = language.toLowerCase();
+  if (normalized === 'en' || normalized === 'pl' || normalized === 'ua' || normalized === 'uk') {
+    return normalized;
+  }
+  return 'uk';
+}
+
+function getLanguageColumn(language: string): TranslationColumn {
+  return LANGUAGE_TO_COLUMN[normalizeTranslationLanguage(language)];
+}
+
+function mapColumnToLanguage(column: TranslationColumn): TranslationLanguage {
+  if (column === 'ua') return 'uk';
+  return column;
+}
+
+function mapRowToText(row: TranslationRow, column: TranslationColumn): Text | null {
+  const value = row[column];
+  if (value === null) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    key: row.key,
+    language: mapColumnToLanguage(column),
+    value,
+    description: null,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  };
+}
+
+function mapRowToTranslation(row: TranslationRow): Translation {
+  return {
+    id: row.id,
+    key: row.key,
+    ua: row.ua,
+    en: row.en,
+    pl: row.pl,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  };
+}
 
 /**
  * Get a text by key and language
@@ -25,11 +95,15 @@ export async function getText(
   key: string,
   language: string = 'uk'
 ): Promise<Text | null> {
+  const languageColumn = getLanguageColumn(language);
   const result = await db
-    .prepare('SELECT * FROM texts WHERE key = ? AND language = ?')
-    .bind(key, language)
-    .first<Text>();
-  return result || null;
+    .prepare('SELECT * FROM translations WHERE key = ?')
+    .bind(key)
+    .first<TranslationRow>();
+  if (!result) {
+    return null;
+  }
+  return mapRowToText(result, languageColumn);
 }
 
 /**
@@ -39,11 +113,13 @@ export async function getTextsByLanguage(
   db: D1Database,
   language: string = 'uk'
 ): Promise<Text[]> {
+  const languageColumn = getLanguageColumn(language);
   const result = await db
-    .prepare('SELECT * FROM texts WHERE language = ? ORDER BY key')
-    .bind(language)
-    .all<Text>();
-  return result.results;
+    .prepare(`SELECT * FROM translations WHERE ${languageColumn} IS NOT NULL ORDER BY key`)
+    .all<TranslationRow>();
+  return result.results
+    .map((row) => mapRowToText(row, languageColumn))
+    .filter((entry): entry is Text => entry !== null);
 }
 
 /**
@@ -54,10 +130,21 @@ export async function getTextsByKey(
   key: string
 ): Promise<Text[]> {
   const result = await db
-    .prepare('SELECT * FROM texts WHERE key = ? ORDER BY language')
+    .prepare('SELECT * FROM translations WHERE key = ?')
     .bind(key)
-    .all<Text>();
-  return result.results;
+    .first<TranslationRow>();
+  if (!result) {
+    return [];
+  }
+
+  const entries: Text[] = [];
+  for (const languageColumn of ['ua', 'en', 'pl'] as const) {
+    const mapped = mapRowToText(result, languageColumn);
+    if (mapped) {
+      entries.push(mapped);
+    }
+  }
+  return entries;
 }
 
 /**
@@ -65,9 +152,29 @@ export async function getTextsByKey(
  */
 export async function getAllTexts(db: D1Database): Promise<Text[]> {
   const result = await db
-    .prepare('SELECT * FROM texts ORDER BY key, language')
-    .all<Text>();
-  return result.results;
+    .prepare('SELECT * FROM translations ORDER BY key')
+    .all<TranslationRow>();
+
+  const entries: Text[] = [];
+  for (const row of result.results) {
+    for (const languageColumn of ['ua', 'en', 'pl'] as const) {
+      const mapped = mapRowToText(row, languageColumn);
+      if (mapped) {
+        entries.push(mapped);
+      }
+    }
+  }
+  return entries;
+}
+
+/**
+ * Get translation rows (key + ua/en/pl columns)
+ */
+export async function getAllTranslationRows(db: D1Database): Promise<Translation[]> {
+  const result = await db
+    .prepare('SELECT * FROM translations ORDER BY key')
+    .all<TranslationRow>();
+  return result.results.map(mapRowToTranslation);
 }
 
 /**
@@ -78,18 +185,29 @@ export async function createText(
   input: CreateTextInput
 ): Promise<Text> {
   const language = input.language || 'uk';
+  const languageColumn = getLanguageColumn(language);
   const result = await db
     .prepare(
-      'INSERT INTO texts (key, language, value, description) VALUES (?, ?, ?, ?) RETURNING *'
+      `INSERT INTO translations (key, ${languageColumn})
+       VALUES (?, ?)
+       ON CONFLICT(key) DO UPDATE SET
+         ${languageColumn} = excluded.${languageColumn},
+         updated_at = CURRENT_TIMESTAMP
+       RETURNING *`
     )
-    .bind(input.key, language, input.value, input.description || null)
-    .first<Text>();
+    .bind(input.key, input.value)
+    .first<TranslationRow>();
 
   if (!result) {
     throw new Error('Failed to create text');
   }
 
-  return result;
+  const mapped = mapRowToText(result, languageColumn);
+  if (!mapped) {
+    throw new Error('Failed to map created text');
+  }
+
+  return mapped;
 }
 
 /**
@@ -101,33 +219,27 @@ export async function updateText(
   language: string,
   input: UpdateTextInput
 ): Promise<Text | null> {
-  const updates: string[] = [];
-  const values: unknown[] = [];
-
-  if (input.value !== undefined) {
-    updates.push('value = ?');
-    values.push(input.value);
-  }
-  if (input.description !== undefined) {
-    updates.push('description = ?');
-    values.push(input.description);
-  }
-
-  if (updates.length === 0) {
+  if (input.value === undefined) {
     return getText(db, key, language);
   }
 
-  updates.push('updated_at = CURRENT_TIMESTAMP');
-  values.push(key, language);
+  const languageColumn = getLanguageColumn(language);
 
   const result = await db
     .prepare(
-      `UPDATE texts SET ${updates.join(', ')} WHERE key = ? AND language = ? RETURNING *`
+      `UPDATE translations
+       SET ${languageColumn} = ?, updated_at = CURRENT_TIMESTAMP
+       WHERE key = ?
+       RETURNING *`
     )
-    .bind(...values)
-    .first<Text>();
+    .bind(input.value, key)
+    .first<TranslationRow>();
 
-  return result || null;
+  if (!result) {
+    return null;
+  }
+
+  return mapRowToText(result, languageColumn);
 }
 
 /**
@@ -138,12 +250,26 @@ export async function deleteText(
   key: string,
   language: string
 ): Promise<boolean> {
+  const languageColumn = getLanguageColumn(language);
   const result = await db
-    .prepare('DELETE FROM texts WHERE key = ? AND language = ?')
-    .bind(key, language)
+    .prepare(
+      `UPDATE translations
+       SET ${languageColumn} = NULL, updated_at = CURRENT_TIMESTAMP
+       WHERE key = ?`
+    )
+    .bind(key)
     .run();
 
-  return result.success && result.meta.changes > 0;
+  if (!(result.success && result.meta.changes > 0)) {
+    return false;
+  }
+
+  await db
+    .prepare('DELETE FROM translations WHERE key = ? AND ua IS NULL AND en IS NULL AND pl IS NULL')
+    .bind(key)
+    .run();
+
+  return true;
 }
 
 /**
@@ -350,6 +476,96 @@ export function parseMediaMetadata(media: Media): Record<string, unknown> | null
     return JSON.parse(media.metadata) as Record<string, unknown>;
   } catch {
     return null;
+  }
+}
+
+// ============================================================================
+// HOMEPAGE MEDIA COLLECTION FUNCTIONS
+// ============================================================================
+
+/**
+ * Get ordered homepage media items for a section with joined media metadata
+ */
+export async function getHomepageMediaItems(
+  db: D1Database,
+  section: string
+): Promise<HomepageMediaItemWithMedia[]> {
+  const result = await db
+    .prepare(
+      `SELECT hmi.*, m.type as media_type, m.r2_key as media_r2_key, m.alt_text as media_alt_text
+       FROM homepage_media_items hmi
+       INNER JOIN media m ON m.key = hmi.media_key
+       WHERE hmi.section = ?
+       ORDER BY hmi.sort_order ASC, hmi.id ASC`
+    )
+    .bind(section)
+    .all<HomepageMediaItemWithMedia>();
+
+  return result.results;
+}
+
+/**
+ * Create homepage media item
+ */
+export async function createHomepageMediaItem(
+  db: D1Database,
+  input: CreateHomepageMediaItemInput
+): Promise<HomepageMediaItem> {
+  const sortOrder =
+    input.sort_order ??
+    ((await db
+      .prepare('SELECT COALESCE(MAX(sort_order), -1) as max_order FROM homepage_media_items WHERE section = ?')
+      .bind(input.section)
+      .first<{ max_order: number | null }>())?.max_order ?? -1) + 1;
+
+  const result = await db
+    .prepare(
+      `INSERT INTO homepage_media_items (section, media_key, sort_order)
+       VALUES (?, ?, ?)
+       RETURNING *`
+    )
+    .bind(input.section, input.media_key, sortOrder)
+    .first<HomepageMediaItem>();
+
+  if (!result) {
+    throw new Error('Failed to create homepage media item');
+  }
+
+  return result;
+}
+
+/**
+ * Delete homepage media item by id
+ */
+export async function deleteHomepageMediaItem(
+  db: D1Database,
+  id: number
+): Promise<boolean> {
+  const result = await db
+    .prepare('DELETE FROM homepage_media_items WHERE id = ?')
+    .bind(id)
+    .run();
+
+  return result.success && result.meta.changes > 0;
+}
+
+/**
+ * Replace section order by ordered list of IDs
+ */
+export async function reorderHomepageMediaItems(
+  db: D1Database,
+  section: string,
+  orderedIds: number[]
+): Promise<void> {
+  for (let index = 0; index < orderedIds.length; index += 1) {
+    await db
+      .prepare(
+        `UPDATE homepage_media_items
+         SET sort_order = ?, updated_at = CURRENT_TIMESTAMP
+         WHERE section = ? AND id = ?`
+      )
+      .bind(index, section, orderedIds[index])
+      .run();
   }
 }
 

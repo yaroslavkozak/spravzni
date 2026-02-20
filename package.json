@@ -20,11 +20,13 @@
     "db:query": "wrangler d1 execute spravzni-db",
     "db:query:local": "wrangler d1 execute spravzni-db --local",
     "db:seed:local": "wrangler d1 execute spravzni-db --local --file=./scripts/seed-services-local.sql",
+    "db:seed:translations": "bun scripts/seed-translations-from-static.ts --remote",
+    "db:seed:translations:local": "bun scripts/seed-translations-from-static.ts",
     "r2:create": "wrangler r2 bucket create spravzni-storage",
     "deploy:setup": "bun run db:create && bun run r2:create && bun run db:migrate",
     "media:upload": "bun scripts/upload-media.js",
     "video:upload": "bash scripts/upload-video.sh",
-    "i18n:init": "echo 'Initialize translations by adding them to D1 texts table'"
+    "i18n:init": "echo 'Initialize translations by adding them to D1 translations table'"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "1.13.19",

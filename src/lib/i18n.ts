@@ -104,9 +104,9 @@ export class I18n {
         // This would require loading fallback translations
         // For now, return key
         console.warn(`Translation missing for key: ${key} (language: ${this.language})`);
-        return key;
+        return '';
       }
-      return key;
+      return '';
     }
 
     // Replace parameters
@@ -214,7 +214,7 @@ export async function getTranslation(
     const text = await getText(env.DB, key, language);
     
     if (!text) {
-      return key;
+      return '';
     }
 
     let translation = text.value;
@@ -230,7 +230,7 @@ export async function getTranslation(
     return translation;
   } catch (error) {
     console.error(`Error getting translation for ${key}:`, error);
-    return key;
+    return '';
   }
 }
 

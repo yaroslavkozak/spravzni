@@ -9,6 +9,7 @@ import {
   deleteService,
   parseServiceParagraphs,
 } from '@/src/lib/database/services'
+import { createText, deleteText } from '@/src/lib/database'
 import type {
   CreateServiceInput,
   UpdateServiceInput,
@@ -26,6 +27,58 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncServiceToTranslations(
+  db: Env['DB'],
+  serviceId: number,
+  payload: {
+    heading_uk: string
+    paragraphs_uk: string[]
+    primary_button_text_uk: string
+    secondary_button_text_uk: string
+    overlay_text_uk?: string | null
+  }
+): Promise<void> {
+  await createText(db, {
+    key: `services.service${serviceId}.title`,
+    language: 'uk',
+    value: payload.heading_uk,
+  })
+
+  for (let i = 0; i < payload.paragraphs_uk.length; i += 1) {
+    await createText(db, {
+      key: `services.service${serviceId}.p${i + 1}`,
+      language: 'uk',
+      value: payload.paragraphs_uk[i],
+    })
+  }
+
+  for (let i = payload.paragraphs_uk.length + 1; i <= 20; i += 1) {
+    await Promise.all([
+      deleteText(db, `services.service${serviceId}.p${i}`, 'uk'),
+      deleteText(db, `services.service${serviceId}.p${i}`, 'en'),
+      deleteText(db, `services.service${serviceId}.p${i}`, 'pl'),
+    ])
+  }
+
+  await createText(db, {
+    key: `services.service${serviceId}.primaryButton`,
+    language: 'uk',
+    value: payload.primary_button_text_uk || '',
+  })
+
+  await createText(db, {
+    key: `services.service${serviceId}.secondaryButton`,
+    language: 'uk',
+    value: payload.secondary_button_text_uk || '',
+  })
+
+  await createText(db, {
+    key: `services.service${serviceId}.overlay`,
+    language: 'uk',
+    value: payload.overlay_text_uk || '',
+  })
 }
 
 export const Route = createFileRoute('/api/admin/services')({
@@ -151,6 +204,14 @@ export const Route = createFileRoute('/api/admin/services')({
             primary_button_text_en: primaryButtonTextEn || undefined,
             primary_action: shouldShowPrimary ? body.primary_action : 'none',
             show_primary_button: shouldShowPrimary,
+          })
+
+          await syncServiceToTranslations(db, service.id, {
+            heading_uk: service.heading_uk,
+            paragraphs_uk: parseServiceParagraphs(service.paragraphs_uk),
+            primary_button_text_uk: service.primary_button_text_uk,
+            secondary_button_text_uk: service.secondary_button_text_uk,
+            overlay_text_uk: service.overlay_text_uk,
           })
 
           // Parse paragraphs for response

@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import type { SupportedLanguage } from '@/src/lib/i18n';
-import { translationsByLanguage } from '@/src/i18n/translations';
 
 interface I18nContextType {
   language: SupportedLanguage;
@@ -20,29 +19,19 @@ interface I18nProviderProps {
   initialTranslations?: Record<string, string>;
 }
 
-function getBaseTranslations(lang: SupportedLanguage): Record<string, string> {
-  const base = translationsByLanguage[lang] || translationsByLanguage.uk;
-  return (base || {}) as Record<string, string>;
-}
-
 export function I18nProvider({
   children,
   initialLanguage = 'uk',
   initialTranslations = {},
 }: I18nProviderProps) {
   const [language, setLanguageState] = useState<SupportedLanguage>(initialLanguage);
-  const [translations, setTranslations] = useState<Record<string, string>>(() => {
-    const base = getBaseTranslations(initialLanguage);
-    return Object.keys(initialTranslations).length > 0 ? { ...base, ...initialTranslations } : base;
-  });
+  const [translations, setTranslations] = useState<Record<string, string>>(initialTranslations);
   const [loading, setLoading] = useState(false);
   const languageRef = useRef<SupportedLanguage>(initialLanguage);
 
-  // Load translations from static files (bundled) + API overrides from admin/translations
+  // Load translations from DB-backed API
   const loadTranslations = useCallback(async (lang: SupportedLanguage) => {
     setLoading(true);
-    const baseTranslations = getBaseTranslations(lang);
-    setTranslations(baseTranslations);
 
     try {
       // Cache-bust to avoid stale responses after admin edits
@@ -54,11 +43,11 @@ export function I18nProvider({
           ? data.translations
           : {};
         if (languageRef.current === lang) {
-          setTranslations({ ...baseTranslations, ...overrides });
+          setTranslations(overrides);
         }
       }
     } catch (error) {
-      console.warn('Failed to load translation overrides:', error);
+      console.warn('Failed to load translations:', error);
     } finally {
       if (languageRef.current === lang) {
         setLoading(false);
@@ -123,7 +112,7 @@ export function I18nProvider({
   // Translation function
   const t = useCallback(
     (key: string, params?: Record<string, string | number>): string => {
-      let translation = translations[key] || key;
+      let translation = translations[key] || '';
 
       // Replace parameters
       if (params) {

@@ -7,6 +7,7 @@ import {
   deleteService,
   parseServiceParagraphs,
 } from '@/src/lib/database/services'
+import { createText, deleteText } from '@/src/lib/database'
 import type { UpdateServiceInput } from '@/types/database'
 
 function getSessionId(request: Request): string | null {
@@ -21,6 +22,79 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncServiceToTranslations(
+  db: Env['DB'],
+  serviceId: number,
+  payload: {
+    heading_uk: string
+    paragraphs_uk: string[]
+    primary_button_text_uk: string
+    secondary_button_text_uk: string
+    overlay_text_uk?: string | null
+  }
+): Promise<void> {
+  await createText(db, {
+    key: `services.service${serviceId}.title`,
+    language: 'uk',
+    value: payload.heading_uk,
+  })
+
+  for (let i = 0; i < payload.paragraphs_uk.length; i += 1) {
+    await createText(db, {
+      key: `services.service${serviceId}.p${i + 1}`,
+      language: 'uk',
+      value: payload.paragraphs_uk[i],
+    })
+  }
+
+  for (let i = payload.paragraphs_uk.length + 1; i <= 20; i += 1) {
+    await Promise.all([
+      deleteText(db, `services.service${serviceId}.p${i}`, 'uk'),
+      deleteText(db, `services.service${serviceId}.p${i}`, 'en'),
+      deleteText(db, `services.service${serviceId}.p${i}`, 'pl'),
+    ])
+  }
+
+  await createText(db, {
+    key: `services.service${serviceId}.primaryButton`,
+    language: 'uk',
+    value: payload.primary_button_text_uk || '',
+  })
+
+  await createText(db, {
+    key: `services.service${serviceId}.secondaryButton`,
+    language: 'uk',
+    value: payload.secondary_button_text_uk || '',
+  })
+
+  await createText(db, {
+    key: `services.service${serviceId}.overlay`,
+    language: 'uk',
+    value: payload.overlay_text_uk || '',
+  })
+}
+
+async function deleteServiceFromTranslations(db: Env['DB'], serviceId: number): Promise<void> {
+  const keys: string[] = [
+    `services.service${serviceId}.title`,
+    `services.service${serviceId}.primaryButton`,
+    `services.service${serviceId}.secondaryButton`,
+    `services.service${serviceId}.overlay`,
+  ]
+
+  for (let i = 1; i <= 20; i += 1) {
+    keys.push(`services.service${serviceId}.p${i}`)
+  }
+
+  for (const key of keys) {
+    await Promise.all([
+      deleteText(db, key, 'uk'),
+      deleteText(db, key, 'en'),
+      deleteText(db, key, 'pl'),
+    ])
+  }
 }
 
 export const Route = createFileRoute('/api/admin/services/$id')({
@@ -178,6 +252,14 @@ export const Route = createFileRoute('/api/admin/services/$id')({
             )
           }
 
+          await syncServiceToTranslations(db, serviceId, {
+            heading_uk: updated.heading_uk,
+            paragraphs_uk: parseServiceParagraphs(updated.paragraphs_uk),
+            primary_button_text_uk: updated.primary_button_text_uk,
+            secondary_button_text_uk: updated.secondary_button_text_uk,
+            overlay_text_uk: updated.overlay_text_uk,
+          })
+
           // Parse paragraphs for response
           const serviceWithParsedParagraphs = {
             ...updated,
@@ -249,6 +331,9 @@ export const Route = createFileRoute('/api/admin/services/$id')({
           }
 
           const deleted = await deleteService(db, serviceId)
+          if (deleted) {
+            await deleteServiceFromTranslations(db, serviceId)
+          }
           return new Response(
             JSON.stringify({ success: true, deleted }),
             {

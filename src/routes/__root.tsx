@@ -5,31 +5,10 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import '../styles.css'
-import { getStaticTranslator } from '@/src/lib/i18n-static'
-import type { SupportedLanguage } from '@/src/lib/i18n'
+import NotFoundPage from '@/src/components/NotFoundPage'
 
 function NotFound() {
-  const language: SupportedLanguage = 'uk'
-  const t = getStaticTranslator(language)
-
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#FBFBF9] px-4">
-      <div className="text-center">
-        <h1 className="font-alternates text-[#111111] text-[48px] md:text-[64px] lg:text-[80px] font-medium leading-[1.1em] tracking-[-2%] mb-4">
-          {t('404.title')}
-        </h1>
-        <p className="font-montserrat text-[#404040] text-[18px] md:text-[20px] lg:text-[24px] leading-[1.5em] tracking-[0.5%] mb-8">
-          {t('404.description')}
-        </p>
-        <a
-          href="/"
-          className="inline-block font-montserrat text-[#28694D] text-[16px] md:text-[18px] font-medium hover:underline transition-colors"
-        >
-          {t('404.backToHome')}
-        </a>
-      </div>
-    </div>
-  )
+  return <NotFoundPage />
 }
 
 export const Route = createRootRoute({

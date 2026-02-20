@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import MediaImage from '@/src/components/MediaImage'
 import { useI18n } from '@/src/contexts/I18nContext'
 import { useHomepageComponent } from '@/src/hooks/useHomepageComponent'
+import { useHomepageMediaCollection } from '@/src/hooks/useHomepageMediaCollection'
 
 export default function SpaceSection() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -11,6 +12,7 @@ export default function SpaceSection() {
   const [hasCycled, setHasCycled] = useState(false) // Track if we've cycled from last to first
   const { t, language } = useI18n()
   const { getText, getImageUrl } = useHomepageComponent('space', language)
+  const { getImageUrls: getGalleryImageUrls } = useHomepageMediaCollection('space_gallery')
 
   const features = [
     { id: 1, icon: 'sparks', text: t('space.feature1') },
@@ -26,11 +28,20 @@ export default function SpaceSection() {
   const title = getText('space.title') || t('space.title')
   const subtitle = getText('space.subtitle') || t('space.subtitle')
 
-  // Image sources - use CMS first, fallback to local public images
-  const imageSources = Array.from({ length: 8 }, (_, i) => i + 1).map(
-    (index) => getImageUrl(`space.gallery${index}`) || `/images/prostir/${index}.webp`
-  )
+  // Image sources - use ordered gallery from admin table, fallback to local images
+  const managedGallery = getGalleryImageUrls()
+  const imageSources =
+    managedGallery.length > 0
+      ? managedGallery
+      : Array.from({ length: 8 }, (_, i) => `/images/prostir/${i + 1}.webp`)
   const totalImages = imageSources.length
+
+  useEffect(() => {
+    if (currentImageIndex >= totalImages) {
+      setCurrentImageIndex(0)
+      setHasCycled(false)
+    }
+  }, [currentImageIndex, totalImages])
 
   const handleImageClick = () => {
     setIsModalOpen(true)

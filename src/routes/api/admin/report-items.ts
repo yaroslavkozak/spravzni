@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import type { Env } from '@/types/cloudflare'
 import { getAdminUserFromSession } from '@/src/lib/database/admin-auth'
 import { getReportItems, createReportItem } from '@/src/lib/database/report'
+import { createText } from '@/src/lib/database'
 import type { CreateReportItemInput } from '@/types/database'
 
 function getSessionId(request: Request): string | null {
@@ -16,6 +17,18 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncReportRowToTranslations(
+  db: Env['DB'],
+  rowId: number,
+  values: { period: string; amount: string; category: string }
+): Promise<void> {
+  await Promise.all([
+    createText(db, { key: `report.rows.${rowId}.period`, language: 'uk', value: values.period }),
+    createText(db, { key: `report.rows.${rowId}.amount`, language: 'uk', value: values.amount }),
+    createText(db, { key: `report.rows.${rowId}.category`, language: 'uk', value: values.category }),
+  ])
 }
 
 export const Route = createFileRoute('/api/admin/report-items')({
@@ -109,6 +122,11 @@ export const Route = createFileRoute('/api/admin/report-items')({
           }
 
           const item = await createReportItem(db, body)
+          await syncReportRowToTranslations(db, item.id, {
+            period: item.period,
+            amount: item.amount,
+            category: item.category,
+          })
           return new Response(
             JSON.stringify({ success: true, item }),
             {

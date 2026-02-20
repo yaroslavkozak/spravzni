@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
 import type { SupportedLanguage } from '@/src/lib/i18n'
-import { translationsByLanguage, type TranslationKey } from '@/src/i18n/translations'
+import AdminShell from '@/src/components/admin/AdminShell'
 
 export const Route = createFileRoute('/admin/translations')({
   component: AdminTranslations,
@@ -10,22 +10,23 @@ export const Route = createFileRoute('/admin/translations')({
 function AdminTranslations() {
   const navigate = useNavigate()
   const [user, setUser] = useState<{ email: string; name: string | null; role: string } | null>(null)
-  const [overrides, setOverrides] = useState<Record<string, string>>({})
+  const [entries, setEntries] = useState<Array<{ key: string; uk: string; en: string; pl: string }>>([])
   const [drafts, setDrafts] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
-  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>('en')
+  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>('uk')
   const [savingKeys, setSavingKeys] = useState<Set<string>>(new Set())
   const [saveErrors, setSaveErrors] = useState<Record<string, string>>({})
-
-  const baseUk = translationsByLanguage.uk || {}
-  const baseSelected = translationsByLanguage[selectedLanguage] || {}
+  const languageToField: Record<SupportedLanguage, 'uk' | 'en' | 'pl'> = {
+    uk: 'uk',
+    en: 'en',
+    pl: 'pl',
+  }
 
   const allKeys = useMemo(() => {
-    const keys = Object.keys(baseUk) as TranslationKey[]
-    return keys.sort((a, b) => a.localeCompare(b))
-  }, [baseUk])
+    return entries.map((entry) => entry.key).sort((a, b) => a.localeCompare(b))
+  }, [entries])
 
   const filteredKeys = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -33,17 +34,18 @@ function AdminTranslations() {
       return allKeys
     }
     return allKeys.filter((key) => {
-      const ukValue = String((baseUk as Record<TranslationKey, string | undefined>)[key] || '').toLowerCase()
-      const selectedValue = String((baseSelected as Record<TranslationKey, string | undefined>)[key] || '').toLowerCase()
-      const overrideValue = String(overrides[key] || '').toLowerCase()
+      const entry = entries.find((item) => item.key === key)
+      const ukValue = String(entry?.uk || '').toLowerCase()
+      const selectedValue = String(entry?.[languageToField[selectedLanguage]] || '').toLowerCase()
+      const draftValue = String(drafts[`${key}:${selectedLanguage}`] || '').toLowerCase()
       return (
         key.toLowerCase().includes(query) ||
         ukValue.includes(query) ||
         selectedValue.includes(query) ||
-        overrideValue.includes(query)
+        draftValue.includes(query)
       )
     })
-  }, [allKeys, baseUk, baseSelected, overrides, search])
+  }, [allKeys, drafts, entries, languageToField, search, selectedLanguage])
 
   useEffect(() => {
     checkAuth()
@@ -51,9 +53,9 @@ function AdminTranslations() {
 
   useEffect(() => {
     if (user) {
-      loadOverrides()
+      loadEntries()
     }
-  }, [user, selectedLanguage])
+  }, [user])
 
   const checkAuth = async () => {
     try {
@@ -73,16 +75,16 @@ function AdminTranslations() {
         navigate({ to: '/admin/login' })
       }
     } catch (err) {
-      console.error('Auth check error:', err)
+      console.error('Помилка перевірки авторизації:', err)
       navigate({ to: '/admin/login' })
     }
   }
 
-  const loadOverrides = async () => {
+  const loadEntries = async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`/api/admin/translations?lang=${selectedLanguage}`, {
+      const response = await fetch('/api/admin/translations', {
         credentials: 'include',
       })
 
@@ -91,37 +93,37 @@ function AdminTranslations() {
           navigate({ to: '/admin/login' })
           return
         }
-        throw new Error('Failed to load translations')
+        throw new Error('Не вдалося завантажити переклади з бази даних')
       }
 
       const data = await response.json()
-      if (data.success && data.translations) {
-        setOverrides(data.translations)
+      if (data.success && Array.isArray(data.entries)) {
+        setEntries(data.entries)
       }
     } catch (err) {
-      console.error('Load translations error:', err)
+      console.error('Помилка завантаження перекладів:', err)
       setError('Не вдалося завантажити переклади')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const updateDraft = (key: TranslationKey, value: string) => {
-    setDrafts((prev) => ({ ...prev, [key]: value }))
+  const updateDraft = (key: string, language: SupportedLanguage, value: string) => {
+    setDrafts((prev) => ({ ...prev, [`${key}:${language}`]: value }))
   }
 
-  const getCurrentValue = (key: TranslationKey) => {
-    if (drafts[key] !== undefined) {
-      return drafts[key]
+  const getCurrentValue = (key: string, language: SupportedLanguage) => {
+    const draftKey = `${key}:${language}`
+    const languageField = languageToField[language]
+    if (drafts[draftKey] !== undefined) {
+      return drafts[draftKey]
     }
-    if (overrides[key] !== undefined) {
-      return overrides[key]
-    }
-    return (baseSelected as Record<TranslationKey, string | undefined>)[key] || ''
+    const entry = entries.find((item) => item.key === key)
+    return entry?.[languageField] || ''
   }
 
-  const handleSave = async (key: TranslationKey) => {
-    const value = getCurrentValue(key)
+  const handleSave = async (key: string) => {
+    const value = getCurrentValue(key, selectedLanguage)
     setSavingKeys((prev) => new Set(prev).add(key))
     setSaveErrors((prev) => {
       const next = { ...prev }
@@ -142,12 +144,22 @@ function AdminTranslations() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to save translation')
+        throw new Error('Не вдалося зберегти переклад')
       }
 
-      setOverrides((prev) => ({ ...prev, [key]: value }))
+      const languageField = languageToField[selectedLanguage]
+      setEntries((prev) =>
+        prev.map((entry) =>
+          entry.key === key
+            ? {
+              ...entry,
+              [languageField]: value,
+            }
+            : entry
+        )
+      )
     } catch (err) {
-      console.error('Save translation error:', err)
+      console.error('Помилка збереження перекладу:', err)
       setSaveErrors((prev) => ({
         ...prev,
         [key]: 'Не вдалося зберегти переклад',
@@ -161,7 +173,7 @@ function AdminTranslations() {
     }
   }
 
-  const handleReset = async (key: TranslationKey) => {
+  const handleReset = async (key: string) => {
     setSavingKeys((prev) => new Set(prev).add(key))
     setSaveErrors((prev) => {
       const next = { ...prev }
@@ -177,21 +189,27 @@ function AdminTranslations() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to delete translation')
+        throw new Error('Не вдалося видалити переклад')
       }
 
-      setOverrides((prev) => {
-        const next = { ...prev }
-        delete next[key]
-        return next
-      })
+      const languageField = languageToField[selectedLanguage]
+      setEntries((prev) =>
+        prev.map((entry) =>
+          entry.key === key
+            ? {
+              ...entry,
+              [languageField]: '',
+            }
+            : entry
+        )
+      )
       setDrafts((prev) => {
         const next = { ...prev }
-        delete next[key]
+        delete next[`${key}:${selectedLanguage}`]
         return next
       })
     } catch (err) {
-      console.error('Reset translation error:', err)
+      console.error('Помилка скидання перекладу:', err)
       setSaveErrors((prev) => ({
         ...prev,
         [key]: 'Не вдалося скинути переклад',
@@ -213,37 +231,18 @@ function AdminTranslations() {
       })
       navigate({ to: '/admin/login' })
     } catch (err) {
-      console.error('Logout error:', err)
+      console.error('Помилка виходу:', err)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <AdminShell
+      title={`Переклади (${selectedLanguage.toUpperCase()})`}
+      subtitle="Редагування перекладів із таблиці `translations`"
+      userEmail={user?.email}
+      onLogout={handleLogout}
+    >
       <div className="mx-auto max-w-6xl space-y-6">
-        <header className="flex flex-col gap-4 rounded-lg bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Переклади ({selectedLanguage.toUpperCase()})
-            </h1>
-            <p className="text-sm text-gray-500">
-              Тут можна редагувати переклади поверх значень із файлів
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => navigate({ to: '/admin/dashboard' })}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              До панелі
-            </button>
-            <button
-              onClick={handleLogout}
-              className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-            >
-              Вийти
-            </button>
-          </div>
-        </header>
 
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -255,14 +254,12 @@ function AdminTranslations() {
                 value={selectedLanguage}
                 onChange={(event) => {
                   setSelectedLanguage(event.target.value as SupportedLanguage)
-                  setDrafts({})
-                  setOverrides({})
                 }}
                 className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
               >
-                <option value="en">English (EN)</option>
+                <option value="en">Англійська (EN)</option>
                 <option value="uk">Українська (UK)</option>
-                <option value="pl">Polski (PL)</option>
+                <option value="pl">Польська (PL)</option>
               </select>
               <div className="w-full sm:w-80">
               <input
@@ -290,12 +287,13 @@ function AdminTranslations() {
         ) : (
           <div className="space-y-4">
             {filteredKeys.map((key) => {
-              const ukValue = (baseUk as Record<TranslationKey, string | undefined>)[key] || ''
-              const selectedValue = (baseSelected as Record<TranslationKey, string | undefined>)[key] || ''
-              const overrideValue = overrides[key]
+              const entry = entries.find((item) => item.key === key)
+              const ukValue = entry?.uk || ''
+              const selectedField = languageToField[selectedLanguage]
+              const selectedValue = entry?.[selectedField] || ''
               const isSaving = savingKeys.has(key)
               const errorMessage = saveErrors[key]
-              const currentValue = getCurrentValue(key)
+              const currentValue = getCurrentValue(key, selectedLanguage)
 
               return (
                 <div key={key} className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
@@ -305,12 +303,12 @@ function AdminTranslations() {
                         {key}
                       </div>
                       <div>
-                        <div className="text-xs font-semibold text-gray-400">UA (з файлу)</div>
+                        <div className="text-xs font-semibold text-gray-400">UK (з БД)</div>
                         <div className="text-sm text-gray-800">{ukValue}</div>
                       </div>
                       <div>
                         <div className="text-xs font-semibold text-gray-400">
-                          {selectedLanguage.toUpperCase()} (з файлу)
+                          {selectedLanguage.toUpperCase()} (з БД)
                         </div>
                         <div className="text-sm text-gray-800">{selectedValue}</div>
                       </div>
@@ -318,11 +316,11 @@ function AdminTranslations() {
 
                     <div className="flex-1 space-y-3">
                       <div className="text-xs font-semibold text-gray-400">
-                        {selectedLanguage.toUpperCase()} (override)
+                        {selectedLanguage.toUpperCase()} (внесене значення)
                       </div>
                       <textarea
                         value={currentValue}
-                        onChange={(event) => updateDraft(key, event.target.value)}
+                        onChange={(event) => updateDraft(key, selectedLanguage, event.target.value)}
                         rows={3}
                         className="w-full rounded-lg border border-gray-300 p-3 text-sm focus:border-gray-500 focus:outline-none"
                       />
@@ -336,13 +334,13 @@ function AdminTranslations() {
                         </button>
                         <button
                           onClick={() => handleReset(key)}
-                          disabled={isSaving || !overrideValue}
+                          disabled={isSaving || !selectedValue}
                           className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          Скинути override
+                          Очистити
                         </button>
-                        {overrideValue && (
-                          <span className="text-xs text-[#28694D]">Override активний</span>
+                        {selectedValue && (
+                          <span className="text-xs text-[#28694D]">Значення збережене</span>
                         )}
                       </div>
                       {errorMessage && (
@@ -356,6 +354,6 @@ function AdminTranslations() {
           </div>
         )}
       </div>
-    </div>
+    </AdminShell>
   )
 }

@@ -6,6 +6,7 @@ import {
   updateReportItem,
   deleteReportItem,
 } from '@/src/lib/database/report'
+import { createText, deleteText } from '@/src/lib/database'
 import type { UpdateReportItemInput } from '@/types/database'
 
 function getSessionId(request: Request): string | null {
@@ -20,6 +21,34 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncReportRowToTranslations(
+  db: Env['DB'],
+  rowId: number,
+  values: { period: string; amount: string; category: string }
+): Promise<void> {
+  await Promise.all([
+    createText(db, { key: `report.rows.${rowId}.period`, language: 'uk', value: values.period }),
+    createText(db, { key: `report.rows.${rowId}.amount`, language: 'uk', value: values.amount }),
+    createText(db, { key: `report.rows.${rowId}.category`, language: 'uk', value: values.category }),
+  ])
+}
+
+async function deleteReportRowFromTranslations(db: Env['DB'], rowId: number): Promise<void> {
+  const keys = [
+    `report.rows.${rowId}.period`,
+    `report.rows.${rowId}.amount`,
+    `report.rows.${rowId}.category`,
+  ]
+
+  for (const key of keys) {
+    await Promise.all([
+      deleteText(db, key, 'uk'),
+      deleteText(db, key, 'en'),
+      deleteText(db, key, 'pl'),
+    ])
+  }
 }
 
 export const Route = createFileRoute('/api/admin/report-items/$id')({
@@ -142,6 +171,12 @@ export const Route = createFileRoute('/api/admin/report-items/$id')({
             )
           }
 
+          await syncReportRowToTranslations(db, itemId, {
+            period: updated.period,
+            amount: updated.amount,
+            category: updated.category,
+          })
+
           return new Response(
             JSON.stringify({ success: true, item: updated }),
             {
@@ -201,6 +236,9 @@ export const Route = createFileRoute('/api/admin/report-items/$id')({
           }
 
           const deleted = await deleteReportItem(db, itemId)
+          if (deleted) {
+            await deleteReportRowFromTranslations(db, itemId)
+          }
           return new Response(
             JSON.stringify({ success: true, deleted }),
             {

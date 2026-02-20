@@ -50,7 +50,7 @@ function AdminLogin() {
       const data = await response.json()
 
       if (!response.ok || !data.success) {
-        setError(data.error || 'Невірний email або пароль')
+        setError(data.error || 'Невірна електронна пошта або пароль')
         setIsLoading(false)
         return
       }
@@ -58,14 +58,14 @@ function AdminLogin() {
       // Redirect to dashboard on success
       navigate({ to: '/admin/dashboard' })
     } catch (err) {
-      console.error('Login error:', err)
+      console.error('Помилка входу:', err)
       setError('Сталася помилка. Спробуйте ще раз.')
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-[#FBFBF9] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#FBFBF9] flex items-center justify-center px-4 font-montserrat">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
@@ -82,7 +82,7 @@ function AdminLogin() {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
+                Електронна пошта
               </label>
               <input
                 id="email"
@@ -92,7 +92,7 @@ function AdminLogin() {
                 required
                 disabled={isLoading}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#28694D] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                placeholder="admin@example.com"
+                placeholder="Введіть електронну пошту"
               />
             </div>
 

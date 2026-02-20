@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import MediaImage from '@/src/components/MediaImage'
 import MediaVideo from '@/src/components/MediaVideo'
 import { useI18n } from '@/src/contexts/I18nContext'
-import { useHomepageComponent } from '@/src/hooks/useHomepageComponent'
+import { useHomepageMediaCollection } from '@/src/hooks/useHomepageMediaCollection'
+import { getR2Url } from '@/src/lib/r2-media'
 
 // Partner logos - public/images/brand-slider/ ordered by name (1.svg, 2.svg, ... 19.svg, 19.2.svg, 20.svg, ...)
 const brandSliderFiles = [
@@ -26,27 +27,19 @@ export default function VideoPartnersSection() {
   const [hasUserClicked, setHasUserClicked] = useState(false)
   const [volume, setVolume] = useState(1)
   const [showVolumeControl, setShowVolumeControl] = useState(false)
-  const { t, language } = useI18n()
-  const { getImageUrl } = useHomepageComponent('videoPartners', language)
+  const { t } = useI18n()
+  const { items: brandLogoItems } = useHomepageMediaCollection('brand_logos')
+  const managedPartners = brandLogoItems
+    .filter((item) => item.media_type === 'image')
+    .map((item, index) => ({
+      id: item.id,
+      src: getR2Url(item.media_r2_key),
+      alt: item.media_alt_text || '',
+      width: 200,
+      height: 56,
+    }))
 
-  const cmsPartners = Array.from({ length: 30 }, (_, i) => i + 1)
-    .map((index) => {
-      const src = getImageUrl(`videoPartners.partner${index}`)
-      if (!src) {
-        return null
-      }
-
-      return {
-        id: index,
-        src,
-        alt: `Partner logo ${index}`,
-        width: 200,
-        height: 56,
-      }
-    })
-    .filter((partner): partner is NonNullable<typeof partner> => partner !== null)
-
-  const carouselPartners = cmsPartners.length > 0 ? cmsPartners : partners
+  const carouselPartners = managedPartners.length > 0 ? managedPartners : partners
 
   // Duplicate partners for seamless infinite scroll
   const duplicatedPartners = [...carouselPartners, ...carouselPartners]

@@ -239,9 +239,7 @@ const MediaVideo = forwardRef<HTMLVideoElement, MediaVideoProps>(({
   if (loading || !videoUrl) {
     return (
       <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-        <div className="text-white" suppressHydrationWarning>
-          {loading ? 'Loading video...' : 'Video unavailable'}
-        </div>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/30 border-t-white" />
       </div>
     );
   }
@@ -251,7 +249,7 @@ const MediaVideo = forwardRef<HTMLVideoElement, MediaVideoProps>(({
     console.error(`[MediaVideo] Invalid video URL format: ${videoUrl}. Must be HTTPS R2 URL.`);
     return (
       <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-sm">Video unavailable</div>
+        <div className="h-8 w-8 rounded-full border-2 border-white/30" />
       </div>
     );
   }

@@ -1,8 +1,8 @@
-import type { StaticTranslator } from '@/src/lib/i18n-static'
+import type { Translator } from '@/src/lib/translator'
 import { useSlider } from '@/src/contexts/SliderContext'
 
 interface StaticAboutSectionProps {
-  t: StaticTranslator
+  t: Translator
 }
 
 export default function StaticAboutSection({ t }: StaticAboutSectionProps) {

@@ -95,7 +95,7 @@ export default function InstagramCarouselSection() {
           className="text-[#404040] text-[0.875rem] sm:text-[0.9375rem] md:text-[1.0625rem] mb-[40px] flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
         >
           <span className="inline-flex w-6 h-6 sm:w-7 sm:h-7 relative">
-            <MediaImage src="/images/instagram/instb.svg" alt="Instagram icon" fill className="object-contain" />
+            <MediaImage src="/images/instagram/instb.svg" alt="" fill className="object-contain" />
           </span>
           <span className="font-montserrat font-extrabold text-[16px] leading-[150%] tracking-[0.5%] text-[#404040] sm:font-semibold sm:text-[0.9375rem] md:text-[1.0625rem]">
             spravzhni.lviv

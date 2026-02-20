@@ -21,8 +21,10 @@ import { Route as ApiServiceOptionsRouteImport } from './routes/api/service-opti
 import { Route as ApiReportRouteImport } from './routes/api/report'
 import { Route as ApiContactRouteImport } from './routes/api/contact'
 import { Route as AdminTranslationsRouteImport } from './routes/admin/translations'
+import { Route as AdminSpaceRouteImport } from './routes/admin/space'
 import { Route as AdminServicesRouteImport } from './routes/admin/services'
 import { Route as AdminReportRouteImport } from './routes/admin/report'
+import { Route as AdminPartnersRouteImport } from './routes/admin/partners'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminHomepageRouteImport } from './routes/admin/homepage'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
@@ -30,6 +32,7 @@ import { Route as ApiTelegramWebhookRouteImport } from './routes/api/telegram/we
 import { Route as ApiMediaBatchRouteImport } from './routes/api/media/batch'
 import { Route as ApiMediaKeyRouteImport } from './routes/api/media/$key'
 import { Route as ApiInstagramPostsRouteImport } from './routes/api/instagram/posts'
+import { Route as ApiHomepageMediaCollectionsRouteImport } from './routes/api/homepage/media-collections'
 import { Route as ApiHomepageComponentsRouteImport } from './routes/api/homepage/components'
 import { Route as ApiDonationsCreateRouteImport } from './routes/api/donations/create'
 import { Route as ApiDonationsOrderIdRouteImport } from './routes/api/donations/$orderId'
@@ -60,6 +63,7 @@ import { Route as ApiAdminServicesIdRouteImport } from './routes/api/admin/servi
 import { Route as ApiAdminServiceOptionsIdRouteImport } from './routes/api/admin/service-options/$id'
 import { Route as ApiAdminReportItemsIdRouteImport } from './routes/api/admin/report-items/$id'
 import { Route as ApiAdminMediaUploadRouteImport } from './routes/api/admin/media/upload'
+import { Route as ApiAdminHomepageMediaCollectionsRouteImport } from './routes/api/admin/homepage/media-collections'
 import { Route as ApiAdminHomepageComponentsRouteImport } from './routes/api/admin/homepage/components'
 import { Route as AdminServicesIdEditRouteImport } from './routes/admin/services/$id/edit'
 
@@ -123,6 +127,11 @@ const AdminTranslationsRoute = AdminTranslationsRouteImport.update({
   path: '/admin/translations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSpaceRoute = AdminSpaceRouteImport.update({
+  id: '/admin/space',
+  path: '/admin/space',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminServicesRoute = AdminServicesRouteImport.update({
   id: '/admin/services',
   path: '/admin/services',
@@ -131,6 +140,11 @@ const AdminServicesRoute = AdminServicesRouteImport.update({
 const AdminReportRoute = AdminReportRouteImport.update({
   id: '/admin/report',
   path: '/admin/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPartnersRoute = AdminPartnersRouteImport.update({
+  id: '/admin/partners',
+  path: '/admin/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
@@ -168,6 +182,12 @@ const ApiInstagramPostsRoute = ApiInstagramPostsRouteImport.update({
   path: '/api/instagram/posts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHomepageMediaCollectionsRoute =
+  ApiHomepageMediaCollectionsRouteImport.update({
+    id: '/api/homepage/media-collections',
+    path: '/api/homepage/media-collections',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiHomepageComponentsRoute = ApiHomepageComponentsRouteImport.update({
   id: '/api/homepage/components',
   path: '/api/homepage/components',
@@ -322,6 +342,12 @@ const ApiAdminMediaUploadRoute = ApiAdminMediaUploadRouteImport.update({
   path: '/api/admin/media/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminHomepageMediaCollectionsRoute =
+  ApiAdminHomepageMediaCollectionsRouteImport.update({
+    id: '/api/admin/homepage/media-collections',
+    path: '/api/admin/homepage/media-collections',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAdminHomepageComponentsRoute =
   ApiAdminHomepageComponentsRouteImport.update({
     id: '/api/admin/homepage/components',
@@ -343,8 +369,10 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/partners': typeof AdminPartnersRoute
   '/admin/report': typeof AdminReportRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
+  '/admin/space': typeof AdminSpaceRoute
   '/admin/translations': typeof AdminTranslationsRoute
   '/api/contact': typeof ApiContactRoute
   '/api/report': typeof ApiReportRoute
@@ -373,12 +401,14 @@ export interface FileRoutesByFullPath {
   '/api/donations/$orderId': typeof ApiDonationsOrderIdRoute
   '/api/donations/create': typeof ApiDonationsCreateRoute
   '/api/homepage/components': typeof ApiHomepageComponentsRoute
+  '/api/homepage/media-collections': typeof ApiHomepageMediaCollectionsRoute
   '/api/instagram/posts': typeof ApiInstagramPostsRoute
   '/api/media/$key': typeof ApiMediaKeyRoute
   '/api/media/batch': typeof ApiMediaBatchRoute
   '/api/telegram/webhook': typeof ApiTelegramWebhookRoute
   '/admin/services/$id/edit': typeof AdminServicesIdEditRoute
   '/api/admin/homepage/components': typeof ApiAdminHomepageComponentsRoute
+  '/api/admin/homepage/media-collections': typeof ApiAdminHomepageMediaCollectionsRoute
   '/api/admin/media/upload': typeof ApiAdminMediaUploadRoute
   '/api/admin/report-items/$id': typeof ApiAdminReportItemsIdRoute
   '/api/admin/service-options/$id': typeof ApiAdminServiceOptionsIdRoute
@@ -398,8 +428,10 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/partners': typeof AdminPartnersRoute
   '/admin/report': typeof AdminReportRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
+  '/admin/space': typeof AdminSpaceRoute
   '/admin/translations': typeof AdminTranslationsRoute
   '/api/contact': typeof ApiContactRoute
   '/api/report': typeof ApiReportRoute
@@ -428,12 +460,14 @@ export interface FileRoutesByTo {
   '/api/donations/$orderId': typeof ApiDonationsOrderIdRoute
   '/api/donations/create': typeof ApiDonationsCreateRoute
   '/api/homepage/components': typeof ApiHomepageComponentsRoute
+  '/api/homepage/media-collections': typeof ApiHomepageMediaCollectionsRoute
   '/api/instagram/posts': typeof ApiInstagramPostsRoute
   '/api/media/$key': typeof ApiMediaKeyRoute
   '/api/media/batch': typeof ApiMediaBatchRoute
   '/api/telegram/webhook': typeof ApiTelegramWebhookRoute
   '/admin/services/$id/edit': typeof AdminServicesIdEditRoute
   '/api/admin/homepage/components': typeof ApiAdminHomepageComponentsRoute
+  '/api/admin/homepage/media-collections': typeof ApiAdminHomepageMediaCollectionsRoute
   '/api/admin/media/upload': typeof ApiAdminMediaUploadRoute
   '/api/admin/report-items/$id': typeof ApiAdminReportItemsIdRoute
   '/api/admin/service-options/$id': typeof ApiAdminServiceOptionsIdRoute
@@ -454,8 +488,10 @@ export interface FileRoutesById {
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/homepage': typeof AdminHomepageRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/partners': typeof AdminPartnersRoute
   '/admin/report': typeof AdminReportRoute
   '/admin/services': typeof AdminServicesRouteWithChildren
+  '/admin/space': typeof AdminSpaceRoute
   '/admin/translations': typeof AdminTranslationsRoute
   '/api/contact': typeof ApiContactRoute
   '/api/report': typeof ApiReportRoute
@@ -484,12 +520,14 @@ export interface FileRoutesById {
   '/api/donations/$orderId': typeof ApiDonationsOrderIdRoute
   '/api/donations/create': typeof ApiDonationsCreateRoute
   '/api/homepage/components': typeof ApiHomepageComponentsRoute
+  '/api/homepage/media-collections': typeof ApiHomepageMediaCollectionsRoute
   '/api/instagram/posts': typeof ApiInstagramPostsRoute
   '/api/media/$key': typeof ApiMediaKeyRoute
   '/api/media/batch': typeof ApiMediaBatchRoute
   '/api/telegram/webhook': typeof ApiTelegramWebhookRoute
   '/admin/services/$id/edit': typeof AdminServicesIdEditRoute
   '/api/admin/homepage/components': typeof ApiAdminHomepageComponentsRoute
+  '/api/admin/homepage/media-collections': typeof ApiAdminHomepageMediaCollectionsRoute
   '/api/admin/media/upload': typeof ApiAdminMediaUploadRoute
   '/api/admin/report-items/$id': typeof ApiAdminReportItemsIdRoute
   '/api/admin/service-options/$id': typeof ApiAdminServiceOptionsIdRoute
@@ -511,8 +549,10 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/partners'
     | '/admin/report'
     | '/admin/services'
+    | '/admin/space'
     | '/admin/translations'
     | '/api/contact'
     | '/api/report'
@@ -541,12 +581,14 @@ export interface FileRouteTypes {
     | '/api/donations/$orderId'
     | '/api/donations/create'
     | '/api/homepage/components'
+    | '/api/homepage/media-collections'
     | '/api/instagram/posts'
     | '/api/media/$key'
     | '/api/media/batch'
     | '/api/telegram/webhook'
     | '/admin/services/$id/edit'
     | '/api/admin/homepage/components'
+    | '/api/admin/homepage/media-collections'
     | '/api/admin/media/upload'
     | '/api/admin/report-items/$id'
     | '/api/admin/service-options/$id'
@@ -566,8 +608,10 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/partners'
     | '/admin/report'
     | '/admin/services'
+    | '/admin/space'
     | '/admin/translations'
     | '/api/contact'
     | '/api/report'
@@ -596,12 +640,14 @@ export interface FileRouteTypes {
     | '/api/donations/$orderId'
     | '/api/donations/create'
     | '/api/homepage/components'
+    | '/api/homepage/media-collections'
     | '/api/instagram/posts'
     | '/api/media/$key'
     | '/api/media/batch'
     | '/api/telegram/webhook'
     | '/admin/services/$id/edit'
     | '/api/admin/homepage/components'
+    | '/api/admin/homepage/media-collections'
     | '/api/admin/media/upload'
     | '/api/admin/report-items/$id'
     | '/api/admin/service-options/$id'
@@ -621,8 +667,10 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/homepage'
     | '/admin/login'
+    | '/admin/partners'
     | '/admin/report'
     | '/admin/services'
+    | '/admin/space'
     | '/admin/translations'
     | '/api/contact'
     | '/api/report'
@@ -651,12 +699,14 @@ export interface FileRouteTypes {
     | '/api/donations/$orderId'
     | '/api/donations/create'
     | '/api/homepage/components'
+    | '/api/homepage/media-collections'
     | '/api/instagram/posts'
     | '/api/media/$key'
     | '/api/media/batch'
     | '/api/telegram/webhook'
     | '/admin/services/$id/edit'
     | '/api/admin/homepage/components'
+    | '/api/admin/homepage/media-collections'
     | '/api/admin/media/upload'
     | '/api/admin/report-items/$id'
     | '/api/admin/service-options/$id'
@@ -677,8 +727,10 @@ export interface RootRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminHomepageRoute: typeof AdminHomepageRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminPartnersRoute: typeof AdminPartnersRoute
   AdminReportRoute: typeof AdminReportRoute
   AdminServicesRoute: typeof AdminServicesRouteWithChildren
+  AdminSpaceRoute: typeof AdminSpaceRoute
   AdminTranslationsRoute: typeof AdminTranslationsRoute
   ApiContactRoute: typeof ApiContactRoute
   ApiReportRoute: typeof ApiReportRoute
@@ -705,11 +757,13 @@ export interface RootRouteChildren {
   ApiDonationsOrderIdRoute: typeof ApiDonationsOrderIdRoute
   ApiDonationsCreateRoute: typeof ApiDonationsCreateRoute
   ApiHomepageComponentsRoute: typeof ApiHomepageComponentsRoute
+  ApiHomepageMediaCollectionsRoute: typeof ApiHomepageMediaCollectionsRoute
   ApiInstagramPostsRoute: typeof ApiInstagramPostsRoute
   ApiMediaKeyRoute: typeof ApiMediaKeyRoute
   ApiMediaBatchRoute: typeof ApiMediaBatchRoute
   ApiTelegramWebhookRoute: typeof ApiTelegramWebhookRoute
   ApiAdminHomepageComponentsRoute: typeof ApiAdminHomepageComponentsRoute
+  ApiAdminHomepageMediaCollectionsRoute: typeof ApiAdminHomepageMediaCollectionsRoute
   ApiAdminMediaUploadRoute: typeof ApiAdminMediaUploadRoute
   ApiDonationsCallbackLiqpayRoute: typeof ApiDonationsCallbackLiqpayRoute
   ApiDonationsCallbackMonobankRoute: typeof ApiDonationsCallbackMonobankRoute
@@ -803,6 +857,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTranslationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/space': {
+      id: '/admin/space'
+      path: '/admin/space'
+      fullPath: '/admin/space'
+      preLoaderRoute: typeof AdminSpaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/services': {
       id: '/admin/services'
       path: '/admin/services'
@@ -815,6 +876,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/report'
       fullPath: '/admin/report'
       preLoaderRoute: typeof AdminReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/partners': {
+      id: '/admin/partners'
+      path: '/admin/partners'
+      fullPath: '/admin/partners'
+      preLoaderRoute: typeof AdminPartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
@@ -864,6 +932,13 @@ declare module '@tanstack/react-router' {
       path: '/api/instagram/posts'
       fullPath: '/api/instagram/posts'
       preLoaderRoute: typeof ApiInstagramPostsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/homepage/media-collections': {
+      id: '/api/homepage/media-collections'
+      path: '/api/homepage/media-collections'
+      fullPath: '/api/homepage/media-collections'
+      preLoaderRoute: typeof ApiHomepageMediaCollectionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/homepage/components': {
@@ -1076,6 +1151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAdminMediaUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/homepage/media-collections': {
+      id: '/api/admin/homepage/media-collections'
+      path: '/api/admin/homepage/media-collections'
+      fullPath: '/api/admin/homepage/media-collections'
+      preLoaderRoute: typeof ApiAdminHomepageMediaCollectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/admin/homepage/components': {
       id: '/api/admin/homepage/components'
       path: '/api/admin/homepage/components'
@@ -1165,8 +1247,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminHomepageRoute: AdminHomepageRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminPartnersRoute: AdminPartnersRoute,
   AdminReportRoute: AdminReportRoute,
   AdminServicesRoute: AdminServicesRouteWithChildren,
+  AdminSpaceRoute: AdminSpaceRoute,
   AdminTranslationsRoute: AdminTranslationsRoute,
   ApiContactRoute: ApiContactRoute,
   ApiReportRoute: ApiReportRoute,
@@ -1193,11 +1277,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiDonationsOrderIdRoute: ApiDonationsOrderIdRoute,
   ApiDonationsCreateRoute: ApiDonationsCreateRoute,
   ApiHomepageComponentsRoute: ApiHomepageComponentsRoute,
+  ApiHomepageMediaCollectionsRoute: ApiHomepageMediaCollectionsRoute,
   ApiInstagramPostsRoute: ApiInstagramPostsRoute,
   ApiMediaKeyRoute: ApiMediaKeyRoute,
   ApiMediaBatchRoute: ApiMediaBatchRoute,
   ApiTelegramWebhookRoute: ApiTelegramWebhookRoute,
   ApiAdminHomepageComponentsRoute: ApiAdminHomepageComponentsRoute,
+  ApiAdminHomepageMediaCollectionsRoute: ApiAdminHomepageMediaCollectionsRoute,
   ApiAdminMediaUploadRoute: ApiAdminMediaUploadRoute,
   ApiDonationsCallbackLiqpayRoute: ApiDonationsCallbackLiqpayRoute,
   ApiDonationsCallbackMonobankRoute: ApiDonationsCallbackMonobankRoute,

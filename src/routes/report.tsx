@@ -1,12 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import Header from '@/src/components/Header'
 import { useI18n } from '@/src/contexts/I18nContext'
 import PageClientShell from '@/src/components/PageClientShell'
 
 const FooterSection = lazy(() => import('@/src/components/FooterSection'))
-
-const REPORT_ROW_SLOTS = 4
 
 const LoadingFallback = () => {
   const { t } = useI18n()
@@ -30,25 +28,31 @@ function ReportPage() {
 }
 
 function ReportPageContent() {
-  const { t, language } = useI18n()
-  const [updatedDate, setUpdatedDate] = useState<string | null>(null)
-  const [incomingAmount, setIncomingAmount] = useState<string>('229 850, 00 ₴')
-  const [outgoingAmount, setOutgoingAmount] = useState<string>('160 036, 00 ₴')
+  const { t, language, translations } = useI18n()
 
-  // Table rows come from admin/translations (report.rows.1.period, etc.)
+  const rowIndexes = useMemo(() => {
+    const indexes = new Set<number>()
+    for (const key of Object.keys(translations)) {
+      const match = key.match(/^report\.rows\.(\d+)\.(period|amount|category)$/)
+      if (match) {
+        indexes.add(Number(match[1]))
+      }
+    }
+    return Array.from(indexes).sort((a, b) => a - b)
+  }, [translations])
+
+  // Table rows come from admin/translations (report.rows.<id>.period, etc.)
   const reportRows = useMemo(() => {
     const rows: Array<{ period: string; amount: string; category: string }> = []
-    for (let i = 1; i <= REPORT_ROW_SLOTS; i++) {
+    const indexes = rowIndexes.length > 0 ? rowIndexes : [1, 2, 3, 4]
+    for (const i of indexes) {
       const period = t(`report.rows.${i}.period`)
       const amount = t(`report.rows.${i}.amount`)
       const category = t(`report.rows.${i}.category`)
-      const periodKey = `report.rows.${i}.period`
-      const amountKey = `report.rows.${i}.amount`
-      const categoryKey = `report.rows.${i}.category`
       const hasContent =
-        (period !== periodKey && period.trim() !== '') ||
-        (amount !== amountKey && amount.trim() !== '') ||
-        (category !== categoryKey && category.trim() !== '')
+        period.trim() !== '' ||
+        amount.trim() !== '' ||
+        category.trim() !== ''
       if (hasContent) {
         rows.push({ period, amount, category })
       }
@@ -56,37 +60,27 @@ function ReportPageContent() {
     return rows
   }, [t])
 
-  useEffect(() => {
-    const loadReportSettings = async () => {
-      try {
-        const response = await fetch(`/api/report?lang=${language}`)
-        if (!response.ok) return
-        const data = await response.json()
-        if (data.success) {
-          setUpdatedDate(data.updatedDate || null)
-          if (data.incomingAmount) setIncomingAmount(data.incomingAmount)
-          if (data.outgoingAmount) setOutgoingAmount(data.outgoingAmount)
-        }
-      } catch (error) {
-        console.error('Failed to load report settings:', error)
-      }
-    }
-    loadReportSettings()
-  }, [language])
-
   const formatReportDate = (value: string | null) => {
-    if (!value) return t('report.updatedDate')
-    const parts = value.split('-')
-    if (parts.length === 3) {
-      const [year, month, day] = parts
-      const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))
-      const locale = language === 'en' ? 'en-GB' : 'uk-UA'
-      return date.toLocaleDateString(locale, {
-        day: 'numeric',
-        month: language === 'en' ? 'short' : 'numeric',
-        year: 'numeric',
-      })
+    if (!value) return ''
+
+    const ymd = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+    if (ymd) {
+      return `${ymd[3]}.${ymd[2]}.${ymd[1]}`
     }
+
+    const dmy = value.match(/^(\d{2})\.(\d{2})\.(\d{4})$/)
+    if (dmy) {
+      return value
+    }
+
+    const parsed = new Date(value)
+    if (!Number.isNaN(parsed.getTime())) {
+      const day = String(parsed.getDate()).padStart(2, '0')
+      const month = String(parsed.getMonth() + 1).padStart(2, '0')
+      const year = String(parsed.getFullYear())
+      return `${day}.${month}.${year}`
+    }
+
     return value
   }
 
@@ -200,8 +194,9 @@ function ReportPageContent() {
             <div className="max-w-5xl mx-auto">
               <div className="flex flex-col md:flex-row gap-y-6 md:gap-6 xl:gap-x-[80px] xl:items-end">
                 <div className="bg-white rounded-xl px-0 py-0 md:pl-0 md:pr-6 md:pt-6 md:pb-0 flex flex-col items-start gap-1 xl:w-[246px] xl:h-[103px] xl:pl-0 xl:pr-0 xl:pt-6 xl:pb-0 xl:justify-end relative">
-                  <div className="text-[#666] text-[14px] font-montserrat absolute top-0 right-0 md:hidden">
-                    {t('report.updatedLabel')} {formatReportDate(updatedDate)}
+                  <div className="text-[#666] text-[14px] font-montserrat absolute top-0 right-0 md:hidden text-right">
+                    <div>{t('report.updatedLabel')}</div>
+                    <div>{formatReportDate(t('report.updatedDate'))}</div>
                   </div>
                   <div className="text-[#28694D] pr-5 pl-0 md:px-0 xl:px-0">
                     <img
@@ -213,7 +208,7 @@ function ReportPageContent() {
                     />
                   </div>
                   <div className="text-[#111111] text-[18px] md:text-[28px] font-bold font-montserrat leading-[1.2] pr-5 pl-0 md:px-0 xl:px-0">
-                    {incomingAmount}
+                    {t('report.incoming.amount')}
                   </div>
                   <div className="text-[#111111] text-[16px] md:text-[18px] font-normal font-montserrat pr-5 pl-0 md:px-0 xl:px-0">
                     {t('report.incoming.label')}
@@ -230,14 +225,17 @@ function ReportPageContent() {
                     />
                   </div>
                   <div className="text-[#28694D] text-[18px] md:text-[28px] font-bold font-montserrat leading-[1.2] pr-5 pl-0 md:px-0 xl:px-0">
-                    {outgoingAmount}
+                    {t('report.outgoing.amount')}
                   </div>
                   <div className="text-[#111111] text-[16px] md:text-[18px] font-normal font-montserrat pr-5 pl-0 md:px-0 xl:px-0">
                     {t('report.outgoing.label')}
                   </div>
                 </div>
                 <div className="text-[#666] text-[14px] font-montserrat pr-0 pl-0 hidden md:flex md:flex-1 md:items-end md:justify-end md:text-right">
-                  {t('report.updatedLabel')} {formatReportDate(updatedDate)}
+                  <div>
+                    <div>{t('report.updatedLabel')}</div>
+                    <div>{formatReportDate(t('report.updatedDate'))}</div>
+                  </div>
                 </div>
               </div>
             </div>

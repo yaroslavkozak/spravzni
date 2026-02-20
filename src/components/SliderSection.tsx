@@ -21,7 +21,7 @@ const renderSlideWithQuote = (slide: Slide, slideNumber: number, totalSlides: nu
   <div key={slide.id} className="relative w-full h-full flex-shrink-0">
     <Image
       src={`/images/slider/${slide.image.replace('gallery.image', '')}.png`}
-      alt={`Slide ${slide.id}`}
+      alt=""
       fill
       className="object-cover"
       unoptimized={true}
@@ -276,7 +276,7 @@ export default function SliderSection() {
               <div className="relative w-full h-full flex-shrink-0">
                 <Image
                   src={`/images/slider/${slides[0].image.replace('gallery.image', '')}.png`}
-                  alt={`Slide ${slides[0].id}`}
+                  alt=""
                   fill
                   className="object-cover"
                   unoptimized={true}
@@ -294,7 +294,7 @@ export default function SliderSection() {
               <div className="relative w-full h-full flex-shrink-0">
                     <Image
                       src={`/images/slider/${slides[1].image.replace('gallery.image', '')}.png`}
-                      alt={`Slide ${slides[1].id}`}
+                      alt=""
                       fill
                   className="object-cover"
                       unoptimized={true}

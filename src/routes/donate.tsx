@@ -44,7 +44,6 @@ function DonatePageContent() {
         count?: string
     }>({})
     const [copiedItem, setCopiedItem] = useState<string | null>(null)
-    const [updatedDate, setUpdatedDate] = useState<string | null>(null)
 
     // Amounts for quick selection
     const presets = [100, 300, 500, 1000, 2000]
@@ -64,40 +63,31 @@ function DonatePageContent() {
         }
     }, [])
 
-    useEffect(() => {
-        const loadReportSettings = async () => {
-            try {
-                const response = await fetch(`/api/report?lang=${language}`)
-                if (!response.ok) return
-                const data = await response.json()
-                if (data.success) {
-                    setUpdatedDate(data.updatedDate || null)
-                }
-            } catch (error) {
-                console.error('Failed to load report settings:', error)
-            }
-        }
-
-        loadReportSettings()
-    }, [language])
-
     const formatReportDate = (value: string | null) => {
         if (!value) return t('report.updatedDate')
-        const parts = value.split('-')
-        if (parts.length === 3) {
-            const [year, month, day] = parts
-            const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))
-            const locale = language === 'en' ? 'en-GB' : 'uk-UA'
-            return date.toLocaleDateString(locale, {
-                day: 'numeric',
-                month: language === 'en' ? 'short' : 'numeric',
-                year: 'numeric',
-            })
+
+        const ymd = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+        if (ymd) {
+            return `${ymd[3]}.${ymd[2]}.${ymd[1]}`
         }
+
+        const dmy = value.match(/^(\d{2})\.(\d{2})\.(\d{4})$/)
+        if (dmy) {
+            return value
+        }
+
+        const parsed = new Date(value)
+        if (!Number.isNaN(parsed.getTime())) {
+            const day = String(parsed.getDate()).padStart(2, '0')
+            const month = String(parsed.getMonth() + 1).padStart(2, '0')
+            const year = String(parsed.getFullYear())
+            return `${day}.${month}.${year}`
+        }
+
         return value
     }
 
-    const reportLinkLabel = t('donate.reportLink', { date: formatReportDate(updatedDate) })
+    const reportLinkLabel = t('donate.reportLink', { date: formatReportDate(t('report.updatedDate')) })
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
@@ -354,7 +344,7 @@ function DonatePageContent() {
             {/* Breadcrumbs */}
             <div className="bg-[#fbfbf9] border-b border-[#FBFBF9]" style={{ borderBottom: '1px solid #0000001A' }}>
                 <div className="max-w-[1200px] mx-auto px-4 py-2 donate-breadcrumbs">
-                    <a href="/" className="font-montserrat text-[16px] hover:underline" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(154, 45%, 28%, 1)' }}>
+                    <a href="/?section=contribute" className="font-montserrat text-[16px] hover:underline" style={{ fontWeight: 400, fontSize: '16px', color: 'hsla(154, 45%, 28%, 1)' }}>
                         &lt; {t('donate.back')}
                     </a>
                 </div>

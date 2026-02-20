@@ -38,13 +38,21 @@ export const Route = createFileRoute('/api/translations')({
             )
           }
 
-          // Fetch translations from D1
+          // Fetch language translations from D1
           const texts = await getTextsByLanguage(db, language)
-
-          // Convert to key-value object
           const translations: Record<string, string> = {}
           for (const text of texts) {
             translations[text.key] = text.value
+          }
+
+          // Fallback to Ukrainian when selected language value is missing.
+          if (language !== 'uk') {
+            const fallbackTexts = await getTextsByLanguage(db, 'uk')
+            for (const text of fallbackTexts) {
+              if (translations[text.key] === undefined) {
+                translations[text.key] = text.value
+              }
+            }
           }
 
           return new Response(

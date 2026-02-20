@@ -48,7 +48,7 @@ export default function FooterSection() {
             <div className="flex items-center gap-3">
               <MediaImage
                 src={logoSrc}
-                alt="Logo"
+                alt=""
                 width={172}
                 height={76}
                 className="object-contain w-[132px] h-[58px] sm:w-[152px] sm:h-[67px] md:w-[172px] md:h-[76px]"
@@ -75,7 +75,7 @@ export default function FooterSection() {
               <p className="font-montserrat text-[#FBFBF9]">{t('footer.hours')}</p>
               <a href="https://maps.app.goo.gl/ezZ6YNghBLqv97D89" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FBFBF9] transition-colors">
                 <span className="w-[30px] h-[30px] relative hover:opacity-80 transition-opacity">
-                  <MediaImage src="/images/footer/contact-map.svg" alt="Location" fill className="object-contain" />
+                  <MediaImage src="/images/footer/contact-map.svg" alt="" fill className="object-contain" />
                 </span>
                 <span className="hover-bold-no-shift font-montserrat font-normal underline underline-offset-2 text-[16px] leading-[1.5] tracking-[0.005em] whitespace-nowrap text-[#FBFBF9] transition-colors" data-text={t('directions.address.value')}>
                   <span>{t('directions.address.value')}</span>
@@ -148,7 +148,7 @@ export default function FooterSection() {
                   rel="noopener noreferrer"
                   className="w-[26px] h-[26px] relative hover:opacity-80 transition-opacity"
                 >
-                  <MediaImage src="/images/footer/instw.svg" alt="Instagram" fill className="object-contain" />
+                  <MediaImage src="/images/footer/instw.svg" alt="" fill className="object-contain" />
                 </a>
                 <a 
                   href="https://www.facebook.com/people/%D0%A1%D0%BF%D1%80%D0%B0%D0%B2%D0%B6%D0%BD%D1%96-%D1%86%D0%B5%D0%BD%D1%82%D1%80-%D0%B2%D1%96%D0%B4%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%BD%D1%8F-%D0%B9-%D0%B2%D1%96%D0%B4%D0%BF%D0%BE%D1%87%D0%B8%D0%BD%D0%BA%D1%83-%D1%83-%D1%81%D0%A1%D1%82%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B5/61580954819286/" 
@@ -156,7 +156,7 @@ export default function FooterSection() {
                   rel="noopener noreferrer"
                   className="w-[26px] h-[26px] relative hover:opacity-80 transition-opacity"
                 >
-                  <MediaImage src="/images/footer/fbw.svg" alt="Facebook" fill className="object-contain" />
+                  <MediaImage src="/images/footer/fbw.svg" alt="" fill className="object-contain" />
                 </a>
                 <a 
                   href="https://www.youtube.com/@spravzhni.tsentr" 
@@ -164,7 +164,7 @@ export default function FooterSection() {
                   rel="noopener noreferrer"
                   className="w-[30px] h-[30px] relative hover:opacity-80 transition-opacity"
                 >
-                  <MediaImage src="/images/footer/youtube.svg" alt="YouTube" fill className="object-contain" />
+                  <MediaImage src="/images/footer/youtube.svg" alt="" fill className="object-contain" />
                 </a>
               </div>
             </div>

@@ -5,6 +5,7 @@ import {
   getServiceOptions,
   createServiceOption,
 } from '@/src/lib/database/services'
+import { createText, getText } from '@/src/lib/database'
 import type { CreateServiceOptionInput } from '@/types/database'
 
 function getSessionId(request: Request): string | null {
@@ -19,6 +20,30 @@ async function getDatabaseFromContext(context: unknown): Promise<Env['DB']> {
     throw new Error('Database not available')
   }
   return env.DB
+}
+
+async function syncServiceOptionToTranslations(
+  db: Env['DB'],
+  optionId: number,
+  payload: { title_uk: string; description_uk: string; overlay_text_uk: string }
+): Promise<void> {
+  await Promise.all([
+    createText(db, {
+      key: `vacationOptions.option${optionId}.title`,
+      language: 'uk',
+      value: payload.title_uk,
+    }),
+    createText(db, {
+      key: `vacationOptions.option${optionId}.desc`,
+      language: 'uk',
+      value: payload.description_uk,
+    }),
+    createText(db, {
+      key: `vacationOptions.option${optionId}.overlay`,
+      language: 'uk',
+      value: payload.overlay_text_uk,
+    }),
+  ])
 }
 
 export const Route = createFileRoute('/api/admin/service-options')({
@@ -83,11 +108,20 @@ export const Route = createFileRoute('/api/admin/service-options')({
           const options = await getServiceOptions(db, serviceIdNum, {
             activeOnly,
           })
+          const optionsWithOverlay = await Promise.all(
+            options.map(async (option) => {
+              const overlay = await getText(db, `vacationOptions.option${option.id}.overlay`, 'uk')
+              return {
+                ...option,
+                overlay_text_uk: overlay?.value || '',
+              }
+            })
+          )
 
           return new Response(
             JSON.stringify({
               success: true,
-              options,
+              options: optionsWithOverlay,
             }),
             {
               status: 200,
@@ -134,7 +168,9 @@ export const Route = createFileRoute('/api/admin/service-options')({
             )
           }
 
-          const body = (await request.json()) as CreateServiceOptionInput
+          const body = (await request.json()) as CreateServiceOptionInput & {
+            overlay_text_uk?: string
+          }
 
           if (
             !body.service_id ||
@@ -155,6 +191,11 @@ export const Route = createFileRoute('/api/admin/service-options')({
           }
 
           const option = await createServiceOption(db, body)
+          await syncServiceOptionToTranslations(db, option.id, {
+            title_uk: option.title_uk,
+            description_uk: option.description_uk,
+            overlay_text_uk: body.overlay_text_uk?.trim() || '',
+          })
 
           return new Response(
             JSON.stringify({

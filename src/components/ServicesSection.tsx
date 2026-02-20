@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import MediaImage from '@/src/components/MediaImage'
-import ServicesHighlightSection from '@/src/components/ServicesHighlightSection'
 import { useContactPopup } from '@/src/contexts/ContactPopupContext'
 import { useVacationOptionsPopup } from '@/src/contexts/VacationOptionsPopupContext'
 import { useI18n } from '@/src/contexts/I18nContext'
@@ -225,12 +224,9 @@ const ServiceItem = ({
 }
 
 export default function ServicesSection() {
-  const { t, language } = useI18n()
-  const [servicesData, setServicesData] = useState<ServiceItemProps[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const { t } = useI18n()
 
-  // Fallback services data from translations (for backward compatibility)
-  const fallbackServices: ServiceItemProps[] = useMemo(() => [
+  const servicesData: ServiceItemProps[] = useMemo(() => [
     {
       id: 1,
       heading: t('services.service1.title'),
@@ -309,30 +305,6 @@ export default function ServicesSection() {
       overlayText: t('services.overlay.june'),
     },
   ], [t])
-
-  // Load services from API
-  useEffect(() => {
-    const loadServices = async () => {
-      try {
-        const response = await fetch(`/api/services?lang=${language}`)
-        if (response.ok) {
-          const data = await response.json()
-          if (Array.isArray(data.services)) {
-            setServicesData(data.services)
-            setIsLoading(false)
-            return
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to load services from API, using fallback:', error)
-      }
-      // Fallback to translations if API fails
-      setServicesData(fallbackServices)
-      setIsLoading(false)
-    }
-
-    loadServices()
-  }, [language, fallbackServices])
 
   useEffect(() => {
     const handleScrollToService = () => {
@@ -436,9 +408,7 @@ export default function ServicesSection() {
       {/* <ServicesHighlightSection /> */}
 
       <div className="w-full">
-        {isLoading ? (
-          <div className="text-center py-12 text-gray-500">Завантаження послуг...</div>
-        ) : servicesData.length > 0 ? (
+        {servicesData.length > 0 ? (
           servicesData.map((service, index) => (
             <div key={service.id} id={`service-${service.id}`}>
               <ServiceItem
@@ -449,7 +419,7 @@ export default function ServicesSection() {
             </div>
           ))
         ) : (
-          <div className="text-center py-12 text-gray-500">Немає доступних послуг</div>
+          <div className="py-12" />
         )}
       </div>
     </section>

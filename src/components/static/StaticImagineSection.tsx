@@ -1,7 +1,7 @@
-import type { StaticTranslator } from '@/src/lib/i18n-static'
+import type { Translator } from '@/src/lib/translator'
 
 interface StaticImagineSectionProps {
-  t: StaticTranslator
+  t: Translator
 }
 
 export default function StaticImagineSection({ t }: StaticImagineSectionProps) {

@@ -13,6 +13,16 @@ export interface Text {
   updated_at: string;
 }
 
+export interface Translation {
+  id: number;
+  key: string;
+  ua?: string | null;
+  en?: string | null;
+  pl?: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Media {
   id: number;
   key: string;
@@ -72,6 +82,27 @@ export interface UpdateMediaInput {
 
 export interface MediaMetadata {
   [key: string]: unknown;
+}
+
+export interface HomepageMediaItem {
+  id: number;
+  section: string;
+  media_key: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HomepageMediaItemWithMedia extends HomepageMediaItem {
+  media_type: 'image' | 'video';
+  media_r2_key: string;
+  media_alt_text?: string | null;
+}
+
+export interface CreateHomepageMediaItemInput {
+  section: string;
+  media_key: string;
+  sort_order?: number;
 }
 
 

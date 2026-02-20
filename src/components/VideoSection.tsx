@@ -6,7 +6,7 @@ import { useI18n } from '@/src/contexts/I18nContext'
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const { language } = useI18n()
+  const { language, t } = useI18n()
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)')
@@ -34,7 +34,7 @@ export default function VideoSection() {
             <iframe
               className="w-full h-full bg-[#FBFBF9]"
               src="https://www.youtube.com/embed/yecz6zovLO8?autoplay=1&rel=0"
-              title="Spravzhni video"
+              title={t('videoPartners.play')}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             />
@@ -43,11 +43,11 @@ export default function VideoSection() {
               type="button"
               onClick={() => setIsPlaying(true)}
               className="absolute inset-0 w-full h-full"
-              aria-label="Play video"
+              aria-label={t('videoPartners.play')}
             >
               <img
                 src={videoPreviewSrc}
-                alt="Spravzhni video preview"
+                alt=""
                 className="absolute inset-0 h-full w-full object-cover object-center"
               />
               <div className="absolute inset-0 bg-black/20" />

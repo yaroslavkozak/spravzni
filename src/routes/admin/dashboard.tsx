@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, redirect } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import type { FormSubmission, FormType, FormStatus } from '@/src/lib/database/form-submissions'
+import AdminShell from '@/src/components/admin/AdminShell'
 
 export const Route = createFileRoute('/admin/dashboard')({
   beforeLoad: async ({ context }) => {
@@ -31,7 +32,6 @@ function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedSubmissions, setExpandedSubmissions] = useState<Set<number>>(new Set())
 
   // Interest labels mapping
@@ -72,7 +72,7 @@ function AdminDashboard() {
         navigate({ to: '/admin/login' })
       }
     } catch (err) {
-      console.error('Auth check error:', err)
+      console.error('Помилка перевірки авторизації:', err)
       navigate({ to: '/admin/login' })
     }
   }
@@ -105,7 +105,7 @@ function AdminDashboard() {
           navigate({ to: '/admin/login' })
           return
         }
-        throw new Error('Failed to load submissions')
+        throw new Error('Не вдалося завантажити звернення')
       }
 
       const data = await response.json()
@@ -128,7 +128,7 @@ function AdminDashboard() {
         setCounts(data.counts)
       }
     } catch (err) {
-      console.error('Load submissions error:', err)
+      console.error('Помилка завантаження звернень:', err)
       setError('Не вдалося завантажити форми')
     } finally {
       setIsLoading(false)
@@ -148,7 +148,7 @@ function AdminDashboard() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to update status')
+        throw new Error('Не вдалося оновити статус')
       }
 
       // Update local state
@@ -161,7 +161,7 @@ function AdminDashboard() {
       // Reload counts
       await loadSubmissions()
     } catch (err) {
-      console.error('Update status error:', err)
+      console.error('Помилка оновлення статусу:', err)
       alert('Не вдалося оновити статус. Спробуйте ще раз.')
     } finally {
       setUpdatingStatus(null)
@@ -176,7 +176,7 @@ function AdminDashboard() {
       })
       navigate({ to: '/admin/login' })
     } catch (err) {
-      console.error('Logout error:', err)
+      console.error('Помилка виходу:', err)
     }
   }
 
@@ -253,7 +253,7 @@ function AdminDashboard() {
         const preferenceLabels: Record<string, string> = {
           phone: 'Телефон',
           whatsapp: 'WhatsApp',
-          email: 'Email',
+          email: 'Електронна пошта',
         }
         details.push(
           <div key="preference" className="mb-2">
@@ -303,7 +303,7 @@ function AdminDashboard() {
         const methodLabels: Record<string, string> = {
           phone: 'Телефон',
           whatsapp: 'WhatsApp',
-          email: 'Email',
+          email: 'Електронна пошта',
         }
         details.push(
           <div key="responseMethod" className="mb-2">
@@ -344,135 +344,13 @@ function AdminDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#FBFBF9]">
-      {/* Header - Mobile Responsive with Burger Menu */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
-            <div className="flex items-center justify-between w-full sm:w-auto">
-              <div className="flex-1 min-w-0">
-                <h1 className="text-xl sm:text-2xl font-bold text-[#28694D] truncate">
-                  Адмін панель
-                </h1>
-                {user && (
-                  <p className="text-xs sm:text-sm text-gray-600 mt-1 truncate">
-                    {user.name || user.email}
-                  </p>
-                )}
-              </div>
-              {/* Mobile Burger Menu Button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="sm:hidden ml-3 p-2 text-gray-600 hover:text-gray-900"
-                aria-label="Меню"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {mobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-            </div>
-            {/* Desktop Actions */}
-            <div className="hidden sm:flex items-center gap-2">
-              <button
-                onClick={() => navigate({ to: '/admin/services' })}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
-              >
-                Послуги
-              </button>
-              <button
-                onClick={() => navigate({ to: '/admin/report' })}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
-              >
-                Звіт
-              </button>
-              <button
-                onClick={() => navigate({ to: '/admin/translations' })}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
-              >
-                Переклади
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors whitespace-nowrap"
-              >
-                Вийти
-              </button>
-            </div>
-          </div>
-          
-          {/* Mobile Menu - Form Types and Logout */}
-          {mobileMenuOpen && (
-            <div className="sm:hidden mt-3 pt-3 border-t border-gray-200">
-              <div className="flex flex-col gap-2">
-                {formTypes.map((type) => (
-                  <button
-                    key={type.value}
-                    onClick={() => {
-                      setSelectedFormType(type.value)
-                      setSelectedStatus('all')
-                      setMobileMenuOpen(false)
-                    }}
-                    className={`
-                      px-4 py-2 text-sm font-medium text-left rounded-lg transition-colors
-                      ${
-                        selectedFormType === type.value
-                          ? 'bg-[#28694D] text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }
-                    `}
-                  >
-                    {type.label}
-                  </button>
-                ))}
-                <button
-                  onClick={() => {
-                    navigate({ to: '/admin/services' })
-                    setMobileMenuOpen(false)
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-left rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                >
-                  Послуги
-                </button>
-                <button
-                  onClick={() => {
-                    navigate({ to: '/admin/report' })
-                    setMobileMenuOpen(false)
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-left rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                >
-                  Звіт
-                </button>
-                <button
-                  onClick={() => {
-                    navigate({ to: '/admin/translations' })
-                    setMobileMenuOpen(false)
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-left rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                >
-                  Переклади
-                </button>
-                {/* Logout Button in Mobile Menu */}
-                <button
-                  onClick={() => {
-                    handleLogout()
-                    setMobileMenuOpen(false)
-                  }}
-                  className="px-4 py-2 text-sm font-medium text-left rounded-lg bg-red-50 text-red-700 hover:bg-red-100 transition-colors mt-2"
-                >
-                  Вийти
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 lg:py-8">
+    <AdminShell
+      title="Запити"
+      subtitle="Контактні форми та звернення з чату"
+      userEmail={user?.email}
+      onLogout={handleLogout}
+    >
+      <main className="max-w-7xl mx-auto px-0 py-1 sm:py-2 lg:py-3">
         {/* Stats Cards - Clickable */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-4 mb-4 sm:mb-6 lg:mb-8">
           {Object.entries(counts).map(([status, count]) => (
@@ -496,10 +374,30 @@ function AdminDashboard() {
           ))}
         </div>
 
+        {/* Form Type Tabs - Mobile */}
+        <div className="sm:hidden mb-4 flex gap-2">
+          {formTypes.map((type) => (
+            <button
+              key={type.value}
+              onClick={() => {
+                setSelectedFormType(type.value)
+                setSelectedStatus('all')
+              }}
+              className={`flex-1 rounded-lg px-3 py-2 text-xs font-medium ${
+                selectedFormType === type.value
+                  ? 'bg-[#28694D] text-white'
+                  : 'bg-white text-gray-700 shadow'
+              }`}
+            >
+              {type.label}
+            </button>
+          ))}
+        </div>
+
         {/* Form Type Tabs - Desktop Only */}
         <div className="hidden sm:block bg-white rounded-lg shadow mb-4 sm:mb-6 overflow-hidden">
           <div className="border-b border-gray-200">
-            <nav className="flex overflow-x-auto -mb-px" aria-label="Tabs">
+            <nav className="flex overflow-x-auto -mb-px" aria-label="Вкладки">
               {formTypes.map((type) => (
                 <button
                   key={type.value}
@@ -642,7 +540,7 @@ function AdminDashboard() {
                           {submission.email && (
                             <div>
                               <div className="text-xs font-medium text-gray-500 uppercase mb-1">
-                                Email
+                                Електронна пошта
                               </div>
                               <div className="text-sm text-gray-900 break-all">
                                 <a
@@ -693,6 +591,6 @@ function AdminDashboard() {
           )}
         </div>
       </main>
-    </div>
+    </AdminShell>
   )
 }

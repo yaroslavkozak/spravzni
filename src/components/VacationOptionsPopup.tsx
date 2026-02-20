@@ -15,6 +15,7 @@ interface ServiceOption {
   title: string
   description: string
   image: string
+  overlayText?: string
 }
 
 export default function VacationOptionsPopup({
@@ -27,10 +28,44 @@ export default function VacationOptionsPopup({
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
   const [desktopCardWidth, setDesktopCardWidth] = useState<number | null>(null)
-  const { t, language } = useI18n()
   const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([])
+  const { t, language } = useI18n()
   const loopCopies = 3
   const loopResetDelayMs = 420
+
+  useEffect(() => {
+    if (!isOpen || !serviceId) {
+      setServiceOptions([])
+      return
+    }
+
+    let cancelled = false
+    const loadOptions = async () => {
+      try {
+        const response = await fetch(
+          `/api/service-options?serviceId=${serviceId}&lang=${encodeURIComponent(language)}`
+        )
+        if (!response.ok) {
+          throw new Error('Failed to load service options')
+        }
+        const data = await response.json()
+        if (!cancelled) {
+          setServiceOptions((data.options || []) as ServiceOption[])
+        }
+      } catch (error) {
+        console.error('Failed to load vacation options:', error)
+        if (!cancelled) {
+          setServiceOptions([])
+        }
+      }
+    }
+
+    void loadOptions()
+
+    return () => {
+      cancelled = true
+    }
+  }, [isOpen, serviceId, language])
 
   const isDesktopCarousel = () => {
     if (typeof window === 'undefined') return false
@@ -48,32 +83,6 @@ export default function VacationOptionsPopup({
     container.scrollLeft = left
     container.style.scrollBehavior = previousBehavior
   }
-
-  // Load service options from API
-  useEffect(() => {
-    if (!isOpen || !serviceId) return
-
-    const loadOptions = async () => {
-      try {
-        setServiceOptions([])
-        const response = await fetch(
-          `/api/service-options?serviceId=${serviceId}&lang=${language}`
-        )
-        if (response.ok) {
-          const data = await response.json()
-          if (Array.isArray(data.options)) {
-            setServiceOptions(data.options)
-            return
-          }
-        }
-      } catch (error) {
-        console.warn('Failed to load service options from API:', error)
-      }
-      setServiceOptions([])
-    }
-
-    loadOptions()
-  }, [isOpen, language, serviceId])
 
   const getLoopSegmentWidth = () => {
     const container = scrollRef.current
@@ -253,7 +262,7 @@ export default function VacationOptionsPopup({
                   <div className="absolute top-0 left-0 right-0 w-full text-white px-6 z-20 h-[68px] md:h-[80px] xl:h-[80px]" style={{ backgroundColor: 'rgba(17, 17, 17, 0.6)' }}>
                     <div className="flex items-center justify-center h-full w-full">
                       <p className="font-montserrat text-[15px] md:text-[16px] font-medium text-center">
-                        {t('vacationOptions.overlay')}
+                        {option.overlayText || t('vacationOptions.overlay')}
                       </p>
                     </div>
                   </div>

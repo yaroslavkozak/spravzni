@@ -420,7 +420,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               <button
                 onClick={handleClose}
                 className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10 outline-none focus:outline-none focus:ring-0"
-                aria-label="Close modal"
+                aria-label={t('chatWindow.closePopup')}
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -440,7 +440,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
             <button
               onClick={handleClose}
               className="absolute top-3 sm:top-4 right-3 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors z-10 outline-none focus:outline-none focus:ring-0"
-              aria-label="Close modal"
+              aria-label={t('chatWindow.closePopup')}
             >
               <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -548,7 +548,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
               const data = await response.json()
               
               if (!response.ok) {
-                throw new Error(data.error || 'Помилка при відправці форми')
+                throw new Error(data.error || t('contact.error.submitDefault'))
               }
               
               // Success
@@ -597,7 +597,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                 />
                 {nameError && (
                   <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
-                    Будь ласка, вкажіть ваше ім&#39;я
+                    {t('chatQuestionnaire.error.nameRequired')}
                   </p>
                 )}
               </div>
@@ -640,7 +640,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                 )}
                 {phoneError && !phonePartialError && (
                   <p className="mt-1.5 text-xs sm:text-sm text-red-500 font-montserrat">
-                    Будь ласка, введіть свій номер
+                    {t('chatWindow.error.phoneRequired')}
                   </p>
                 )}
               </div>
@@ -772,7 +772,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                           ? '/images/contact/contact chanels states/phone-hover.svg'
                           : '/images/contact/contact chanels states/phone-normal.svg'
                       }
-                      alt="Phone"
+                      alt=""
                       width={28}
                       height={26}
                       className="w-7 h-6"
@@ -800,7 +800,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                           ? '/images/contact/contact chanels states/whatsapp-hover.svg'
                           : '/images/contact/contact chanels states/whatsapp-normal.svg'
                       }
-                      alt="WhatsApp"
+                      alt=""
                       width={28}
                       height={26}
                       className="w-7 h-6"
@@ -833,7 +833,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                           ? '/images/contact/contact chanels states/mail-hover.svg'
                           : '/images/contact/contact chanels states/mail-normal.svg'
                       }
-                      alt="Email"
+                      alt=""
                       width={28}
                       height={26}
                       className="w-7 h-6"
@@ -1018,7 +1018,7 @@ export default function ContactPopup({ isOpen, onClose, preselectPriceList = fal
                 >
                   <Image
                     src="/images/contact/resize handle.svg"
-                    alt="Resize handle"
+                    alt=""
                     width={24}
                     height={24}
                     className="opacity-50 hover:opacity-75 transition-opacity"

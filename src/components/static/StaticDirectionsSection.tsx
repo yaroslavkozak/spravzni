@@ -1,4 +1,4 @@
-import type { StaticTranslator } from '@/src/lib/i18n-static'
+import type { Translator } from '@/src/lib/translator'
 import type { SupportedLanguage } from '@/src/lib/i18n'
 
 const detailTextClass =
@@ -8,7 +8,7 @@ const ENGLISH_MAP = '/images/map/map-eng.webp'
 const UKRAINIAN_MAP = '/images/map/map-ua.png'
 
 interface StaticDirectionsSectionProps {
-  t: StaticTranslator
+  t: Translator
   language?: SupportedLanguage
 }
 

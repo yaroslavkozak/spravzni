@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getServiceOptions } from '@/src/lib/database/services'
+import { getText } from '@/src/lib/database'
 import type { Env } from '@/types/cloudflare'
 import type { SupportedLanguage } from '@/src/lib/i18n'
 
@@ -57,15 +58,31 @@ export const Route = createFileRoute('/api/service-options')({
 
           // Fetch active service options from D1
           const options = await getServiceOptions(db, serviceIdNum, { activeOnly: true })
+          const defaultOverlay = await getText(db, 'vacationOptions.overlay', lang)
 
           // Transform options for frontend with language-specific fields
-          const transformedOptions = options.map((option) => ({
-            id: option.id,
-            title: lang === 'en' && option.title_en ? option.title_en : option.title_uk,
-            description:
-              lang === 'en' && option.description_en ? option.description_en : option.description_uk,
-            image: option.image_path,
-          }))
+          const transformedOptions = await Promise.all(
+            options.map(async (option) => {
+              const titleKey = `vacationOptions.option${option.id}.title`
+              const descKey = `vacationOptions.option${option.id}.desc`
+              const overlayKey = `vacationOptions.option${option.id}.overlay`
+              const translatedTitle = await getText(db, titleKey, lang)
+              const translatedDesc = await getText(db, descKey, lang)
+              const translatedOverlay = await getText(db, overlayKey, lang)
+
+              return {
+                id: option.id,
+                title:
+                  translatedTitle?.value ||
+                  (lang === 'en' && option.title_en ? option.title_en : option.title_uk),
+                description:
+                  translatedDesc?.value ||
+                  (lang === 'en' && option.description_en ? option.description_en : option.description_uk),
+                image: option.image_path,
+                overlayText: translatedOverlay?.value || defaultOverlay?.value || '',
+              }
+            })
+          )
 
           return new Response(
             JSON.stringify({

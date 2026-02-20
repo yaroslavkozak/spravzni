@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import AdminShell from '@/src/components/admin/AdminShell'
 
 export const Route = createFileRoute('/admin/report')({
   component: AdminReport,
@@ -14,17 +15,10 @@ interface ReportItem {
   updated_at: string
 }
 
-interface ReportSettings {
-  updated_date: string | null
-  incoming_amount: string | null
-  outgoing_amount: string | null
-}
-
 function AdminReport() {
   const navigate = useNavigate()
   const [user, setUser] = useState<{ email: string; name: string | null; role: string } | null>(null)
   const [items, setItems] = useState<ReportItem[]>([])
-  const [settings, setSettings] = useState<ReportSettings | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -39,12 +33,12 @@ function AdminReport() {
   const [outgoingAmountDraft, setOutgoingAmountDraft] = useState<string>('')
 
   useEffect(() => {
-    checkAuth()
+    void checkAuth()
   }, [])
 
   useEffect(() => {
     if (user) {
-      loadData()
+      void loadData()
     }
   }, [user])
 
@@ -66,7 +60,7 @@ function AdminReport() {
         navigate({ to: '/admin/login' })
       }
     } catch (err) {
-      console.error('Auth check error:', err)
+      console.error('Помилка перевірки авторизації:', err)
       navigate({ to: '/admin/login' })
     }
   }
@@ -95,7 +89,6 @@ function AdminReport() {
         setItems(itemsData.items || [])
       }
       if (settingsData.success) {
-        setSettings(settingsData.settings || null)
         setUpdatedDateDraft(settingsData.settings?.updated_date || '')
         setIncomingAmountDraft(settingsData.settings?.incoming_amount || '')
         setOutgoingAmountDraft(settingsData.settings?.outgoing_amount || '')
@@ -136,11 +129,9 @@ function AdminReport() {
         method: 'DELETE',
         credentials: 'include',
       })
-
       if (!response.ok) {
         throw new Error('Failed to delete report item')
       }
-
       await loadData()
     } catch (err) {
       console.error('Delete report item error:', err)
@@ -152,7 +143,6 @@ function AdminReport() {
     event.preventDefault()
     setIsSaving(true)
     setError(null)
-
     try {
       const url = editingItem
         ? `/api/admin/report-items/${editingItem.id}`
@@ -165,11 +155,9 @@ function AdminReport() {
         credentials: 'include',
         body: JSON.stringify(formData),
       })
-
       if (!response.ok) {
         throw new Error('Failed to save report item')
       }
-
       await loadData()
       resetForm()
     } catch (err) {
@@ -180,10 +168,9 @@ function AdminReport() {
     }
   }
 
-  const handleSaveDate = async () => {
+  const handleSaveSettings = async () => {
     setIsSaving(true)
     setError(null)
-
     try {
       const response = await fetch('/api/admin/report-settings', {
         method: 'PUT',
@@ -195,130 +182,111 @@ function AdminReport() {
           outgoing_amount: outgoingAmountDraft || null,
         }),
       })
-
       if (!response.ok) {
         throw new Error('Failed to update report settings')
       }
-
       await loadData()
     } catch (err) {
       console.error('Save report settings error:', err)
-      setError('Не вдалося зберегти дату оновлення')
+      setError('Не вдалося зберегти налаштування звіту')
     } finally {
       setIsSaving(false)
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include',
+      })
+      navigate({ to: '/admin/login' })
+    } catch (err) {
+      console.error('Помилка виходу:', err)
+    }
+  }
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F6F7F5] flex items-center justify-center font-montserrat">
         <div className="text-gray-600">Завантаження...</div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Звіт — рядки таблиці</h1>
-              <p className="text-sm text-gray-600 mt-1">
-                {user?.email} • {user?.role}
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={() => navigate({ to: '/admin/translations' })}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Переклади
-              </button>
-              <button
-                onClick={() => navigate({ to: '/admin/dashboard' })}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Панель
-              </button>
-              <button
-                onClick={() => navigate({ to: '/admin/services' })}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Послуги
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <AdminShell
+      title="Звіт — рядки таблиці"
+      subtitle="Додавайте, редагуйте та видаляйте рядки. Українські значення автоматично синхронізуються в переклади."
+      userEmail={user?.email}
+      onLogout={handleLogout}
+    >
+      <main className="mx-auto max-w-6xl space-y-6">
         {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
             {error}
           </div>
         )}
 
-        <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Дата оновлення</h2>
-              <p className="text-sm text-gray-500">Відображається у блоці “Оновлено”</p>
+              <h2 className="text-lg font-semibold text-gray-900">Налаштування блоку</h2>
+              <p className="text-sm text-gray-500">
+                Вхідний/вихідний залишок та дата. Зберігаються українською, переклади редагуються у розділі Переклади.
+              </p>
             </div>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div className="flex gap-3">
-              <input
-                type="date"
-                value={updatedDateDraft}
-                onChange={(event) => setUpdatedDateDraft(event.target.value)}
-                className="rounded-lg border border-gray-300 px-3 py-2 text-sm"
-              />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Дата оновлення</label>
+                <input
+                  type="date"
+                  value={updatedDateDraft}
+                  onChange={(event) => setUpdatedDateDraft(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                />
               </div>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Вхідний залишок
-                  </label>
-                  <input
-                    type="text"
-                    value={incomingAmountDraft}
-                    onChange={(event) => setIncomingAmountDraft(event.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                    placeholder="229 850, 00 ₴"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Вихідний залишок
-                  </label>
-                  <input
-                    type="text"
-                    value={outgoingAmountDraft}
-                    onChange={(event) => setOutgoingAmountDraft(event.target.value)}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                    placeholder="160 036, 00 ₴"
-                  />
-                </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Вхідний залишок</label>
+                <input
+                  type="text"
+                  value={incomingAmountDraft}
+                  onChange={(event) => setIncomingAmountDraft(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="229 850, 00 ₴"
+                />
               </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Вихідний залишок</label>
+                <input
+                  type="text"
+                  value={outgoingAmountDraft}
+                  onChange={(event) => setOutgoingAmountDraft(event.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="160 036, 00 ₴"
+                />
+              </div>
+            </div>
+            <div className="flex justify-end">
               <button
-                onClick={handleSaveDate}
+                onClick={() => void handleSaveSettings()}
                 disabled={isSaving}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#28694D] rounded-lg hover:bg-[#1f5a3f] disabled:opacity-50"
+                className="rounded-lg bg-[#28694D] px-4 py-2 text-sm font-medium text-white hover:bg-[#1f5a3f] disabled:opacity-50"
               >
-                Зберегти
+                Зберегти налаштування
               </button>
             </div>
           </div>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">
             {editingItem ? 'Редагування рядка' : 'Новий рядок'}
           </h2>
           <form onSubmit={handleSave} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Період</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Період</label>
                 <input
                   type="text"
                   value={formData.period}
@@ -328,7 +296,7 @@ function AdminReport() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Кошти UAH</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Кошти UAH</label>
                 <input
                   type="text"
                   value={formData.amount}
@@ -338,7 +306,7 @@ function AdminReport() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Стаття витрат</label>
+                <label className="mb-1 block text-sm font-medium text-gray-700">Стаття витрат</label>
                 <input
                   type="text"
                   value={formData.category}
@@ -348,12 +316,12 @@ function AdminReport() {
                 />
               </div>
             </div>
-            <div className="flex flex-wrap gap-3 justify-end">
+            <div className="flex flex-wrap justify-end gap-3">
               {editingItem && (
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
                 >
                   Скасувати
                 </button>
@@ -361,21 +329,21 @@ function AdminReport() {
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#28694D] rounded-lg hover:bg-[#1f5a3f] disabled:opacity-50"
+                className="rounded-lg bg-[#28694D] px-4 py-2 text-sm font-medium text-white hover:bg-[#1f5a3f] disabled:opacity-50"
               >
-                {editingItem ? 'Оновити' : 'Додати'}
+                {editingItem ? 'Оновити рядок' : 'Додати рядок'}
               </button>
             </div>
           </form>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="p-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Поточні рядки</h2>
+        <section className="rounded-lg border border-gray-200 bg-white shadow-sm">
+          <div className="border-b border-gray-200 p-4">
+            <h2 className="text-lg font-semibold text-gray-900">Поточні рядки ({items.length})</h2>
           </div>
           <div className="divide-y divide-gray-200">
             {items.map((item) => (
-              <div key={item.id} className="p-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div key={item.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <div className="text-sm text-gray-500">{item.period}</div>
                   <div className="text-base font-medium text-gray-900">{item.amount}</div>
@@ -389,7 +357,7 @@ function AdminReport() {
                     Редагувати
                   </button>
                   <button
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => void handleDelete(item.id)}
                     className="text-sm text-red-600 hover:text-red-800"
                   >
                     Видалити
@@ -405,6 +373,6 @@ function AdminReport() {
           </div>
         </section>
       </main>
-    </div>
+    </AdminShell>
   )
 }

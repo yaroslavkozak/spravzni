@@ -1,7 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { Env } from '@/types/cloudflare'
 import { getAdminUserFromSession } from '@/src/lib/database/admin-auth'
-import { createText, deleteText, getText, getTextsByLanguage, updateText } from '@/src/lib/database'
+import {
+  createText,
+  deleteText,
+  getAllTranslationRows,
+  getText,
+  updateText,
+} from '@/src/lib/database'
 import type { SupportedLanguage } from '@/src/lib/i18n'
 
 const supportedLanguages: SupportedLanguage[] = ['uk', 'en', 'pl']
@@ -51,18 +57,19 @@ export const Route = createFileRoute('/api/admin/translations')({
           const url = new URL(request.url)
           const lang = (url.searchParams.get('lang') || 'en') as SupportedLanguage
           const language = supportedLanguages.includes(lang) ? lang : 'en'
-
-          const texts = await getTextsByLanguage(db, language)
-          const translations: Record<string, string> = {}
-          for (const text of texts) {
-            translations[text.key] = text.value
-          }
+          const rows = await getAllTranslationRows(db)
+          const entries = rows.map((row) => ({
+            key: row.key,
+            uk: row.ua || '',
+            en: row.en || '',
+            pl: row.pl || '',
+          }))
 
           return new Response(
             JSON.stringify({
               success: true,
               language,
-              translations,
+              entries,
             }),
             {
               status: 200,
