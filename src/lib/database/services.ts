@@ -38,6 +38,24 @@ export async function getServices(
 }
 
 /**
+ * Get count of active service options per service_id (for showing vacation options button)
+ */
+export async function getActiveServiceOptionCounts(
+  db: D1Database
+): Promise<Record<number, number>> {
+  const result = await db
+    .prepare(
+      'SELECT service_id, COUNT(*) as count FROM service_options WHERE is_active = 1 GROUP BY service_id'
+    )
+    .all<{ service_id: number; count: number }>();
+  const map: Record<number, number> = {};
+  for (const row of result.results || []) {
+    map[row.service_id] = Number(row.count);
+  }
+  return map;
+}
+
+/**
  * Get a service by ID
  */
 export async function getServiceById(

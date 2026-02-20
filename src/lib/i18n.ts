@@ -97,16 +97,12 @@ export class I18n {
   t(key: string, params?: Record<string, string | number>): string {
     let translation = this.translations[key];
 
-    // Fallback to key if translation not found
+    // Fallback to key if translation not found (for debugging and when translations fail to load)
     if (!translation) {
-      // Try fallback language
       if (this.language !== this.config.fallbackLanguage) {
-        // This would require loading fallback translations
-        // For now, return key
         console.warn(`Translation missing for key: ${key} (language: ${this.language})`);
-        return '';
       }
-      return '';
+      return key;
     }
 
     // Replace parameters

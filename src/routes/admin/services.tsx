@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import AdminShell from '@/src/components/admin/AdminShell'
-import { getR2Url } from '@/src/lib/r2-media'
+import { getMediaR2Url, getR2Url } from '@/src/lib/r2-media'
 
 export const Route = createFileRoute('/admin/services')({
   component: AdminServices,
@@ -45,6 +45,7 @@ function AdminServices() {
   const [uploadingOptionImage, setUploadingOptionImage] = useState(false)
   const [isDraggingImage, setIsDraggingImage] = useState(false)
   const [isDraggingOptionImage, setIsDraggingOptionImage] = useState(false)
+  const [serviceImagePreviewUrl, setServiceImagePreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [serviceOptions, setServiceOptions] = useState<ServiceOption[]>([])
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null)
@@ -163,6 +164,22 @@ function AdminServices() {
       setServiceOptions([])
     }
   }
+
+  // Resolve service image_key to preview URL for thumbnail
+  useEffect(() => {
+    const key = formData.image_key?.trim()
+    if (!key) {
+      setServiceImagePreviewUrl(null)
+      return
+    }
+    let cancelled = false
+    getMediaR2Url(key).then((url) => {
+      if (!cancelled) setServiceImagePreviewUrl(url)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [formData.image_key])
 
   const selectService = (service: Service) => {
     setSelectedServiceId(service.id)
@@ -695,7 +712,15 @@ function AdminServices() {
                       className="hidden"
                       disabled={uploadingImage}
                     />
-                    <div className="mb-2 text-2xl leading-none">🖼️</div>
+                    {serviceImagePreviewUrl ? (
+                      <img
+                        src={serviceImagePreviewUrl}
+                        alt=""
+                        className="mb-2 max-h-32 w-auto max-w-full rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="mb-2 text-2xl leading-none">🖼️</div>
+                    )}
                     <p className="text-sm font-medium text-gray-800">
                       {uploadingImage ? 'Завантаження...' : 'Перетягніть зображення сюди'}
                     </p>
@@ -910,7 +935,15 @@ function AdminServices() {
                           className="hidden"
                           disabled={uploadingOptionImage}
                         />
-                        <div className="mb-2 text-2xl leading-none">🖼️</div>
+                        {optionFormData.image_path ? (
+                          <img
+                            src={optionFormData.image_path}
+                            alt=""
+                            className="mb-2 max-h-32 w-auto max-w-full rounded-lg object-contain"
+                          />
+                        ) : (
+                          <div className="mb-2 text-2xl leading-none">🖼️</div>
+                        )}
                         <p className="text-sm font-medium text-gray-800">
                           {uploadingOptionImage ? 'Завантаження...' : 'Перетягніть зображення сюди'}
                         </p>

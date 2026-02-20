@@ -1,5 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getServices, parseServiceParagraphs } from '@/src/lib/database/services'
+import {
+  getServices,
+  getActiveServiceOptionCounts,
+  parseServiceParagraphs,
+} from '@/src/lib/database/services'
 import type { Env } from '@/types/cloudflare'
 import type { SupportedLanguage } from '@/src/lib/i18n'
 
@@ -33,8 +37,11 @@ export const Route = createFileRoute('/api/services')({
             )
           }
 
-          // Fetch active services from D1
-          const services = await getServices(db, { activeOnly: true })
+          // Fetch active services and option counts from D1
+          const [services, optionCounts] = await Promise.all([
+            getServices(db, { activeOnly: true }),
+            getActiveServiceOptionCounts(db),
+          ])
 
           // Transform services for frontend with language-specific fields
           const normalizeButtonText = (value?: string | null): string | undefined => {
@@ -61,6 +68,11 @@ export const Route = createFileRoute('/api/services')({
                 ? service.overlay_text_en
                 : service.overlay_text_uk
 
+            // Show vacation options button only when service has primary_action vacationOptions and has options
+            const hasVacationOptions =
+              service.primary_action === 'vacationOptions' &&
+              (optionCounts[service.id] ?? 0) > 0
+
             // Build the service object, only including fields that have values
             const serviceObj: Record<string, unknown> = {
               id: service.id,
@@ -70,6 +82,7 @@ export const Route = createFileRoute('/api/services')({
               secondaryAction: service.secondary_action,
               imageSrc: service.image_key || `services.service${service.id}`,
               showPrimaryButton: service.show_primary_button,
+              hasVacationOptions,
             }
 
             // Only include button text if it's not undefined

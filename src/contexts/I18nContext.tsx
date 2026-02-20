@@ -112,7 +112,10 @@ export function I18nProvider({
   // Translation function
   const t = useCallback(
     (key: string, params?: Record<string, string | number>): string => {
-      let translation = translations[key] || '';
+      let translation = translations[key];
+      if (translation == null || translation === '') {
+        translation = key;
+      }
 
       // Replace parameters
       if (params) {

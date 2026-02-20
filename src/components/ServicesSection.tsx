@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import MediaImage from '@/src/components/MediaImage'
 import { useContactPopup } from '@/src/contexts/ContactPopupContext'
 import { useVacationOptionsPopup } from '@/src/contexts/VacationOptionsPopupContext'
@@ -17,6 +17,8 @@ interface ServiceItemProps {
   imageSrc: string
   overlayText?: string
   showPrimaryButton?: boolean
+  /** When primaryAction is vacationOptions, show button only if service has options (from API) */
+  hasVacationOptions?: boolean
   showBorder?: boolean
 }
 
@@ -31,6 +33,7 @@ const ServiceItem = ({
   imageSrc,
   overlayText,
   showPrimaryButton = true,
+  hasVacationOptions = false,
   showBorder = false,
 }: ServiceItemProps) => {
   const { openPopup } = useContactPopup()
@@ -56,7 +59,10 @@ const ServiceItem = ({
   const safeSecondaryButtonText = sanitizeText(secondaryButtonText)
   const safeOverlayText = sanitizeText(overlayText)
   
-  const hasPrimaryButton = showPrimaryButton && isValidButtonText(primaryButtonText)
+  const showVacationOptionsButton =
+    primaryAction !== 'vacationOptions' || hasVacationOptions
+  const hasPrimaryButton =
+    showPrimaryButton && isValidButtonText(primaryButtonText) && showVacationOptionsButton
   const hasSecondaryButton = isValidButtonText(secondaryButtonText)
   return (
     <div className="w-full border-y border-[#1111111C] mt-16 pt-2 lg:pt-0">
@@ -223,10 +229,25 @@ const ServiceItem = ({
   )
 }
 
-export default function ServicesSection() {
-  const { t } = useI18n()
+interface ApiService {
+  id: number
+  heading?: string
+  paragraphs?: string[]
+  primaryButtonText?: string
+  secondaryButtonText?: string
+  primaryAction?: 'vacationOptions' | 'none'
+  secondaryAction?: 'contact' | 'none'
+  imageSrc?: string
+  overlayText?: string
+  showPrimaryButton?: boolean
+  hasVacationOptions?: boolean
+}
 
-  const servicesData: ServiceItemProps[] = useMemo(() => [
+export default function ServicesSection() {
+  const { t, language } = useI18n()
+  const [apiServices, setApiServices] = useState<ServiceItemProps[] | null>(null)
+
+  const fallbackServices: ServiceItemProps[] = useMemo(() => [
     {
       id: 1,
       heading: t('services.service1.title'),
@@ -305,6 +326,47 @@ export default function ServicesSection() {
       overlayText: t('services.overlay.june'),
     },
   ], [t])
+
+  useEffect(() => {
+    let cancelled = false
+    const load = async () => {
+      try {
+        const response = await fetch(`/api/services?lang=${encodeURIComponent(language)}`, {
+          cache: 'default',
+        })
+        if (!response.ok || cancelled) return
+        const data = (await response.json()) as {
+          services?: ApiService[]
+        }
+        if (!cancelled && Array.isArray(data.services) && data.services.length > 0) {
+          setApiServices(
+            data.services.map((s) => ({
+              id: s.id,
+              heading: s.heading ?? '',
+              paragraphs: Array.isArray(s.paragraphs) ? s.paragraphs : [],
+              primaryButtonText: s.primaryButtonText,
+              secondaryButtonText: s.secondaryButtonText,
+              primaryAction: s.primaryAction ?? 'none',
+              secondaryAction: s.secondaryAction ?? 'contact',
+              imageSrc: s.imageSrc ?? `services.service${s.id}`,
+              overlayText: s.overlayText,
+              showPrimaryButton: s.showPrimaryButton !== false,
+              hasVacationOptions: s.hasVacationOptions === true,
+              showBorder: false,
+            }))
+          )
+        }
+      } catch {
+        if (!cancelled) setApiServices(null)
+      }
+    }
+    void load()
+    return () => {
+      cancelled = true
+    }
+  }, [language])
+
+  const servicesData = apiServices ?? fallbackServices
 
   useEffect(() => {
     const handleScrollToService = () => {
@@ -414,7 +476,6 @@ export default function ServicesSection() {
               <ServiceItem
                 {...service}
                 showBorder={index > 0}
-                showPrimaryButton={index === 0 ? service.showPrimaryButton !== false : false}
               />
             </div>
           ))
